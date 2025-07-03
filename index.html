@@ -375,9 +375,77 @@
       color: #9ca3af; /* gray-400 */
     }
 
+    /* New Top-Corner Dark/Light Mode Toggle Button */
+    .theme-toggle-btn {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      background-color: #fbbf24; /* Amber-400 */
+      color: #1f2937; /* Dark gray */
+      padding: 0.75rem;
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      z-index: 1001; /* Higher than floating settings button */
+      border: none;
+    }
+
+    .theme-toggle-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.9);
+      background-color: #facc15; /* Brighter amber on hover */
+    }
+
+    .theme-toggle-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+      transition: transform 0.3s ease; /* For icon rotation */
+    }
+
+    /* Styles for the icon based on dark mode */
+    html.dark .theme-toggle-icon.sun-icon {
+      display: none; /* Hide sun in dark mode */
+    }
+    html:not(.dark) .theme-toggle-icon.moon-icon {
+      display: none; /* Hide moon in light mode */
+    }
+    html.dark .theme-toggle-icon.moon-icon {
+      transform: rotate(360deg); /* Spin moon when active */
+    }
+    html:not(.dark) .theme-toggle-icon.sun-icon {
+      transform: rotate(360deg); /* Spin sun when active */
+    }
+
   </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white dark:bg-black dark:text-white">
+
+  <!-- New: Top-Corner Dark/Light Mode Toggle Button -->
+  <button class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode" onclick="document.documentElement.classList.toggle('dark')">
+    <!-- Sun Icon (for light mode) -->
+    <svg class="theme-toggle-icon sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+    <!-- Moon Icon (for dark mode) -->
+    <svg class="theme-toggle-icon moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+    </svg>
+  </button>
 
   <!-- 👑 GOLDEN QUEEN MD Top Logo + Title -->
   <div class="text-center py-8 animate-fadeIn">
@@ -508,10 +576,6 @@
       <button type="submit" class="submit-btn">Submit</button>
     </form>
   </section>
-
-  <div class="text-center mt-12">
-    <button onclick="document.documentElement.classList.toggle('dark')" class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2 rounded-full font-semibold shadow-md transition">Toggle Dark Mode</button>
-  </div>
 
   <!-- Floating Settings Button (now an anchor tag linking to settings.html) -->
   <a href="settings.html" target="_blank" class="floating-btn animate-float" aria-label="Open Settings Page">
