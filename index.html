@@ -90,6 +90,44 @@
     .animate-text-glow {
       animation: textGlow 2s ease-in-out infinite;
     }
+
+    /* Contributors 3D Card Hover Animation */
+    .card-3d {
+      perspective: 1000px;
+    }
+    .card-inner {
+      transition: transform 0.4s ease;
+      transform-style: preserve-3d;
+      border-radius: 1rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      padding: 1.5rem;
+      cursor: pointer;
+      color: white;
+    }
+    .card-3d:hover .card-inner {
+      transform: rotateY(15deg) rotateX(10deg) scale(1.05);
+      box-shadow: 0 15px 40px rgba(147, 51, 234, 0.6);
+    }
+    .card-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 9999px;
+      border: 3px solid #fff;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .card-name {
+      font-weight: 700;
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+    .card-role {
+      font-weight: 500;
+      color: #d1d5db; /* Tailwind gray-300 */
+      font-size: 0.875rem;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white dark:bg-black dark:text-white">
@@ -97,9 +135,9 @@
   <!-- 👑 GOLDEN QUEEN MD Top Logo + Title -->
   <div class="text-center py-8 animate-fadeIn">
     <img src="https://via.placeholder.com/120" alt="Bot Logo" class="mx-auto mb-4 rounded-full ring-4 ring-yellow-400 shadow-lg hover:scale-105 transition-transform duration-500" />
-    <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 animate-text-glow">
+    <h3 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 animate-text-glow">
       👑 GOLDEN QUEEN MD
-    </h1>
+    </h3>
     <p class="text-gray-300 text-lg">Dark Devils | Sinhala Bot Network</p>
   </div>
 
@@ -136,6 +174,46 @@
         Featuring song downloaders, TikTok tools, AI chat, moderation, and more — this bot is crafted for both <span class="text-yellow-400 font-semibold">fun and utility</span> across your WhatsApp groups.
       </p>
     </div>
+
+    <!-- Contributors / Team Members -->
+    <section>
+      <h2 class="text-3xl font-extrabold text-yellow-400 mb-8 text-center">💼 Contributors / Team Members</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+
+        <div class="card-3d">
+          <div class="card-inner text-center p-6">
+            <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/men/45.jpg" alt="Member 1" />
+            <div class="card-name">Vajira Rathnayaka</div>
+            <div class="card-role">Lead Developer</div>
+          </div>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-inner text-center p-6">
+            <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Member 2" />
+            <div class="card-name">Nadeesha Perera</div>
+            <div class="card-role">UI/UX Designer</div>
+          </div>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-inner text-center p-6">
+            <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/men/30.jpg" alt="Member 3" />
+            <div class="card-name">Kamal Fernando</div>
+            <div class="card-role">Backend Engineer</div>
+          </div>
+        </div>
+
+        <div class="card-3d">
+          <div class="card-inner text-center p-6">
+            <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Member 4" />
+            <div class="card-name">Shanika Silva</div>
+            <div class="card-role">QA & Support</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
     <!-- CONNECT CONTENT -->
     <div id="connectContent">
