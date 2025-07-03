@@ -5,6 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GOLDEN QUEEN MD • Dark Devils Network</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Smooth scale on hover */
+    .btn-animated {
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+    }
+    .btn-animated:hover {
+      transform: scale(1.05);
+    }
+
+    /* Pulse animation for active button */
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 8px 0 rgba(99, 102, 241, 0.7);
+      }
+      50% {
+        box-shadow: 0 0 16px 4px rgba(99, 102, 241, 0.9);
+      }
+    }
+    .btn-active {
+      animation: pulseGlow 2s infinite;
+    }
+
+    /* Icon style */
+    .btn-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+    }
+  </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white dark:bg-black dark:text-white">
   <div class="max-w-3xl mx-auto py-12 px-4 space-y-12">
@@ -24,8 +60,18 @@
 
       <!-- Tabs -->
       <div class="flex space-x-2 mb-6">
-        <button id="btnConnect" class="bg-indigo-700 px-4 py-2 rounded-lg shadow-md font-semibold text-white ring-2 ring-indigo-500">CONNECT</button>
-        <button id="btnVideos" class="bg-transparent hover:bg-indigo-700 hover:text-white px-4 py-2 rounded-lg font-semibold">VIDEOS</button>
+        <button id="btnConnect" class="btn-animated btn-active bg-indigo-700 px-4 py-2 rounded-lg shadow-md text-white ring-2 ring-indigo-500">
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          CONNECT
+        </button>
+        <button id="btnVideos" class="btn-animated bg-transparent hover:bg-indigo-700 hover:text-white px-4 py-2 rounded-lg text-indigo-300 font-semibold transition-colors duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-2-4v8m-6 0V6a2 2 0 012-2h5l4 4v8a2 2 0 01-2 2H9a2 2 0 01-2-2z"/>
+          </svg>
+          VIDEOS
+        </button>
       </div>
 
       <!-- Connect Content -->
@@ -192,10 +238,10 @@
     const videosContent = document.getElementById('videosContent');
 
     btnConnect.addEventListener('click', () => {
-      btnConnect.classList.add('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md');
+      btnConnect.classList.add('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md', 'btn-active');
       btnConnect.classList.remove('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white', 'font-semibold');
 
-      btnVideos.classList.remove('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md');
+      btnVideos.classList.remove('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md', 'btn-active');
       btnVideos.classList.add('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white', 'font-semibold');
 
       connectContent.classList.remove('hidden');
@@ -203,10 +249,10 @@
     });
 
     btnVideos.addEventListener('click', () => {
-      btnVideos.classList.add('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md');
+      btnVideos.classList.add('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md', 'btn-active');
       btnVideos.classList.remove('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white', 'font-semibold');
 
-      btnConnect.classList.remove('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md');
+      btnConnect.classList.remove('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md', 'btn-active');
       btnConnect.classList.add('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white', 'font-semibold');
 
       connectContent.classList.add('hidden');
