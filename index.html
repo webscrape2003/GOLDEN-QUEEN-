@@ -1,85 +1,305 @@
-
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" >
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>GOLDEN QUEEN MD • Dark Devils Network</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GOLDEN QUEEN MD</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    /* Reset & base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(270deg, #0f2027, #203a43, #2c5364);
+      background-size: 600% 600%;
+      animation: GradientAnimation 16s ease infinite;
+      color: white;
+      transition: background-color 0.5s, color 0.5s;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    @keyframes GradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Dark mode */
+    body.dark {
+      background: #121212;
+      color: #ddd;
+    }
+
+    /* Container */
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    header img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid #fbbf24;
+      object-fit: cover;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 5px #fbbf24);
+    }
+    header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #fbbf24;
+      margin: 0 0 8px;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #ccc;
+      margin: 0 0 20px;
+    }
+    #darkToggle {
+      background: #fbbf24;
+      border: none;
+      padding: 12px 28px;
+      font-weight: 600;
+      color: black;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: background 0.3s;
+      box-shadow: 0 0 10px #fbbf24;
+    }
+    #darkToggle:hover {
+      background: #fcd34d;
+    }
+
+    /* Glass card */
+    .card {
+      background: rgba(255 255 255 / 0.1);
+      border: 1px solid rgba(255 255 255 / 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 40px 0 rgba(255 191 36, 0.6);
+    }
+    h2.card-title {
+      color: #fbbf24;
+      font-weight: 600;
+      font-size: 1.75rem;
+      margin: 0 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    h3.command-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fbbf24;
+      margin: 0 0 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    p.command-desc {
+      margin: 0;
+      color: #ddd;
+      font-size: 1rem;
+      line-height: 1.3;
+    }
+
+    /* Bot Status */
+    .status p {
+      margin: 6px 0;
+      font-size: 1.1rem;
+    }
+
+    /* Search input */
+    #search {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: none;
+      font-size: 1.1rem;
+      background: rgba(255 255 255 / 0.15);
+      color: white;
+      outline-offset: 2px;
+      outline-color: #fbbf24;
+      margin-bottom: 32px;
+      transition: background-color 0.3s;
+    }
+    #search::placeholder {
+      color: #ddd;
+    }
+    #search:focus {
+      background: rgba(255 255 255 / 0.3);
+    }
+
+    /* Commands grid */
+    .commands-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    /* About */
+    .about p {
+      font-size: 1.1rem;
+      color: #ddd;
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 0.9rem;
+      color: #aaa;
+      user-select: none;
+    }
+
+    /* Emoji style */
+    .emoji {
+      font-size: 1.4rem;
+    }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white dark:bg-black dark:text-white">
-  <div class="max-w-3xl mx-auto py-12 px-4 space-y-12">
+<body>
+  <div class="container" role="main">
+    <header>
+      <img src="https://via.placeholder.com/120" alt="Bot Logo" />
+      <h1>👑 GOLDEN QUEEN MD</h1>
+      <p>Dark Devils | Sinhala Bot Network</p>
+      <button id="darkToggle" aria-pressed="false">Toggle Dark Mode</button>
+    </header>
 
-    <!-- Logo & Title -->
-    <div class="text-center space-y-3">
-      <img src="https://via.placeholder.com/120" alt="Bot Logo" class="mx-auto rounded-full ring-4 ring-yellow-500"/>
-      <h1 class="text-4xl font-extrabold text-yellow-400">👑 GOLDEN QUEEN MD</h1>
-      <p class="text-gray-300 text-lg">Dark Devils | Sinhala Bot Network</p>
-    </div>
+    <section class="card status" aria-label="Bot Status">
+      <h2 class="card-title"><span class="emoji">📊</span> Bot Status</h2>
+      <p>🟢 Online</p>
+      <p>🕐 Uptime: <strong id="uptime">0d 0h 0m</strong></p>
+      <p>⚙️ Version: <strong>1.0.0</strong></p>
+    </section>
 
-    <!-- Card Container -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <input
+      type="search"
+      id="search"
+      placeholder="Search commands..."
+      aria-label="Search commands"
+      autocomplete="off"
+    />
 
-      <!-- Bot Status Card -->
-      <div class="p-6 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:scale-105 transform transition">
-        <h2 class="text-xl font-semibold text-yellow-300 flex items-center"><span class="mr-2">📊</span>Bot Status</h2>
-        <p class="mt-2 space-y-1 text-gray-200">
-          <span>🟢 Online</span><br>
-          <span>🕐 Uptime: <strong id="uptime">00d 00h 00m</strong></span><br>
-          <span>⚙️ Version: <strong id="version">1.0.0</strong></span>
-        </p>
-      </div>
+    <section class="commands-grid" id="commandsGrid" aria-label="Commands list">
+      <!-- Commands will be inserted here dynamically -->
+    </section>
 
-      <!-- Top Commands Card -->
-      <div class="p-6 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:scale-105 transform transition">
-        <h2 class="text-xl font-semibold text-yellow-300 flex items-center"><span class="mr-2">🛠️</span>Top Commands</h2>
-        <ul class="mt-4 space-y-3 text-gray-200">
-          <li><span class="text-yellow-400">🎵 .play</span> – Play songs from YouTube</li>
-          <li><span class="text-yellow-400">📥 .yt</span> – Download video/audio</li>
-          <li><span class="text-yellow-400">👥 .group</span> – Group settings control</li>
-          <li><span class="text-yellow-400">🎮 .menu</span> – Show full menu</li>
-        </ul>
-      </div>
+    <section class="card about" aria-label="About Section" style="margin-top: 40px;">
+      <h2 class="card-title"><span class="emoji">ℹ️</span> About</h2>
+      <p>
+        GOLDEN QUEEN MD is a Sinhala WhatsApp bot designed for music, automation,
+        moderation, and fun experiences. Brought to you by the dedicated Dark Devils team.
+      </p>
+    </section>
 
-      <!-- Contact Card -->
-      <div class="p-6 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:scale-105 transform transition">
-        <h2 class="text-xl font-semibold text-yellow-300 flex items-center"><span class="mr-2">📧</span>Contact / Support</h2>
-        <p class="mt-2 text-gray-200">
-          For help, invite, or integrations:<br>
-          <a href="https://t.me/YourUsername" class="text-yellow-400 hover:underline">t.me/YourUsername</a><br>
-          <a href="https://wa.me/947XXXXXXXX" class="text-yellow-400 hover:underline">WhatsApp Chat</a>
-        </p>
-      </div>
-
-      <!-- About Card -->
-      <div class="p-6 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:scale-105 transform transition">
-        <h2 class="text-xl font-semibold text-yellow-300 flex items-center"><span class="mr-2">ℹ️</span>About</h2>
-        <p class="mt-2 text-gray-200">
-          GOLDEN QUEEN MD is a Sinhala WhatsApp bot designed for music, automation, moderation, and fun experiences. Brought to you by the dedicated Dark Devils team.
-        </p>
-      </div>
-    </div>
-
-    <!-- Dark Mode Toggle -->
-    <div class="text-center mt-12">
-      <button onclick="document.documentElement.classList.toggle('dark')" class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2 rounded-full font-semibold shadow-md transition">Toggle Dark Mode</button>
-    </div>
-
-    <!-- Footer -->
-    <footer class="text-center text-gray-400 text-sm mt-10">
+    <footer>
       © 2025 GOLDEN QUEEN MD — Powered by Vajira • Crafted with ❤️
     </footer>
   </div>
 
-  <!-- Uptime Script -->
   <script>
-    const start = Date.now() - 123456789;
-    function update() {
-      const ms = Date.now() - start;
-      const d = Math.floor(ms/86400000), h = Math.floor(ms/3600000)%24, m = Math.floor(ms/60000)%60;
-      document.getElementById("uptime").textContent = d+"d "+h+"h "+m+"m";
+    // Commands array
+    const commands = [
+      { name: ".play", description: "Play songs from YouTube", emoji: "🎵" },
+      { name: ".yt", description: "Download video/audio", emoji: "📥" },
+      { name: ".group", description: "Group settings control", emoji: "👥" },
+      { name: ".menu", description: "Show full command list", emoji: "🎮" },
+      { name: ".ttnowm", description: "Download TikTok without watermark", emoji: "📥" },
+      { name: ".startsongs", description: "Auto send songs every 8 minutes", emoji: "🎶" },
+      { name: ".vv", description: "Retrieve view-once message", emoji: "🐳" },
+    ];
+
+    // DOM references
+    const commandsGrid = document.getElementById("commandsGrid");
+    const searchInput = document.getElementById("search");
+    const darkToggleBtn = document.getElementById("darkToggle");
+    const uptimeEl = document.getElementById("uptime");
+
+    // Show commands on the page
+    function renderCommands(filter = "") {
+      commandsGrid.innerHTML = "";
+      const filtered = commands.filter(cmd =>
+        cmd.name.toLowerCase().includes(filter.toLowerCase()) ||
+        cmd.description.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        commandsGrid.innerHTML = `<p style="grid-column:1/-1; color:#aaa; text-align:center;">No commands found.</p>`;
+        return;
+      }
+
+      for (const cmd of filtered) {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.tabIndex = 0;
+        card.innerHTML = `
+          <h3 class="command-name"><span class="emoji">${cmd.emoji}</span> ${cmd.name}</h3>
+          <p class="command-desc">${cmd.description}</p>
+        `;
+        commandsGrid.appendChild(card);
+      }
     }
-    setInterval(update, 60000); update();
+
+    // Uptime counter
+    const startTime = Date.now() - 123456789; // Example start time
+
+    function updateUptime() {
+      const ms = Date.now() - startTime;
+      const d = Math.floor(ms / 86400000);
+      const h = Math.floor((ms / 3600000) % 24);
+      const m = Math.floor((ms / 60000) % 60);
+      uptimeEl.textContent = `${d}d ${h}h ${m}m`;
+    }
+    setInterval(updateUptime, 60 * 1000); // update every minute
+    updateUptime();
+
+    // Dark mode persistence
+    function loadDarkMode() {
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("dark");
+        darkToggleBtn.setAttribute("aria-pressed", "true");
+      } else {
+        document.body.classList.remove("dark");
+        darkToggleBtn.setAttribute("aria-pressed", "false");
+      }
+    }
+    loadDarkMode();
+
+    darkToggleBtn.addEventListener("click", () => {
+      const isDark = document.body.classList.toggle("dark");
+      darkToggleBtn.setAttribute("aria-pressed", isDark.toString());
+      localStorage.setItem("darkMode", isDark.toString());
+    });
+
+    // Search input event
+    searchInput.addEventListener("input", e => {
+      renderCommands(e.target.value);
+    });
+
+    // Initial render
+    renderCommands();
   </script>
 </body>
 </html>
