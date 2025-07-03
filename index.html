@@ -27,7 +27,7 @@
         box-shadow: 0 0 16px 4px rgba(99, 102, 241, 0.9);
       }
     }
-    .btn-active {
+    .btn-active-pulse { /* Renamed to avoid conflict with general 'btn-active' state */
       animation: pulseGlow 2s infinite;
     }
     .btn-icon {
@@ -561,13 +561,15 @@
 
     <!-- Connect / Videos Buttons -->
     <div class="flex space-x-2 mb-6 justify-center">
-      <!-- Default to light mode styles, dark: overrides -->
-      <button id="btnConnect" class="btn-animated btn-active bg-indigo-500 px-4 py-2 rounded-lg shadow-md text-white ring-2 ring-indigo-400 dark:bg-indigo-700 dark:ring-indigo-500">
+      <!-- Button classes are now fully defined in HTML for both light and dark modes -->
+      <button id="btnConnect" class="btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300
+        active-tab-styles"> <!-- This class will be toggled by JS -->
         <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
         </svg> CONNECT
       </button>
-      <button id="btnVideos" class="btn-animated bg-transparent hover:bg-indigo-100 hover:text-indigo-700 px-4 py-2 rounded-lg text-indigo-500 font-semibold transition-colors duration-300 dark:hover:bg-indigo-700 dark:hover:text-white dark:text-indigo-300">
+      <button id="btnVideos" class="btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300
+        inactive-tab-styles"> <!-- This class will be toggled by JS -->
         <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-2-4v8m-6 0V6a2 2 0 012-2h5l4 4v8a2 2 0 01-2 2H9a2 2 0 01-2-2z"/>
         </svg> VIDEOS
@@ -707,40 +709,43 @@
     const connectContent = document.getElementById('connectContent');
     const videosContent = document.getElementById('videosContent');
 
-    // Function to set active button styles
-    function setActiveButton(activeBtn, inactiveBtn) {
-      activeBtn.classList.add('bg-indigo-500', 'ring-2', 'ring-indigo-400', 'shadow-md', 'btn-active');
-      activeBtn.classList.remove('bg-transparent', 'hover:bg-indigo-100', 'hover:text-indigo-700', 'text-indigo-500');
-      // Add dark mode specific classes
-      activeBtn.classList.add('dark:bg-indigo-700', 'dark:ring-indigo-500', 'dark:text-white');
+    // Define the full set of classes for active and inactive states
+    // Tailwind will handle the dark: variants based on html.dark
+    const activeTabClasses = [
+      'bg-indigo-500', 'text-white', 'ring-2', 'ring-indigo-400', 'shadow-md', 'btn-active-pulse',
+      'dark:bg-indigo-700', 'dark:ring-indigo-500', 'dark:text-white'
+    ];
+    const inactiveTabClasses = [
+      'bg-transparent', 'hover:bg-indigo-100', 'hover:text-indigo-700', 'text-indigo-500',
+      'dark:hover:bg-indigo-700', 'dark:hover:text-white', 'dark:text-indigo-300'
+    ];
 
-      inactiveBtn.classList.remove('bg-indigo-500', 'ring-2', 'ring-indigo-400', 'shadow-md', 'btn-active');
-      inactiveBtn.classList.add('bg-transparent', 'hover:bg-indigo-100', 'hover:text-indigo-700', 'text-indigo-500');
-      // Remove dark mode specific classes
-      inactiveBtn.classList.remove('dark:bg-indigo-700', 'dark:ring-indigo-500', 'dark:text-white');
-      inactiveBtn.classList.add('dark:hover:bg-indigo-700', 'dark:hover:text-white', 'dark:text-indigo-300');
+    function setActiveTab(activeBtn, inactiveBtn) {
+      // Apply active classes to the active button
+      activeBtn.classList.add(...activeTabClasses);
+      activeBtn.classList.remove(...inactiveTabClasses);
+
+      // Apply inactive classes to the inactive button
+      inactiveBtn.classList.add(...inactiveTabClasses);
+      inactiveBtn.classList.remove(...activeTabClasses);
     }
 
     btnConnect.addEventListener('click', () => {
-      setActiveButton(btnConnect, btnVideos);
+      setActiveTab(btnConnect, btnVideos);
       connectContent.classList.remove('hidden');
       videosContent.classList.add('hidden');
     });
 
     btnVideos.addEventListener('click', () => {
-      setActiveButton(btnVideos, btnConnect);
+      setActiveTab(btnVideos, btnConnect);
       connectContent.classList.add('hidden');
       videosContent.classList.remove('hidden');
     });
 
-    // Initialize button state on page load (optional, but good for consistency)
-    // This ensures the correct styles are applied if the page is refreshed
-    // or if the 'dark' class is already present from a previous session.
+    // Initialize button state on page load
     document.addEventListener('DOMContentLoaded', () => {
-        // Simulate a click on the default active button (CONNECT)
-        btnConnect.click();
+        setActiveTab(btnConnect, btnVideos); // Set CONNECT as active initially
     });
-
 
     // Optional: Submit handler (demo only, no backend)
     document.getElementById('commentForm').addEventListener('submit', (e) => {
