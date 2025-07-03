@@ -766,6 +766,7 @@
       z-index: 9999;
       opacity: 1;
       transition: opacity 0.5s ease-out; /* For fade-out effect */
+      gap: 2rem; /* Space between elements */
     }
     html.dark #preloader {
       background-color: #111827; /* Dark mode default */
@@ -780,7 +781,7 @@
       width: 150px;
       height: 150px;
       border-radius: 50%;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0; /* Adjusted due to gap */
       box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
       animation: pulseGlow 2s infinite; /* Reusing existing pulse animation */
     }
@@ -791,9 +792,44 @@
       color: #d97706; /* Amber-700 */
       animation: textGlow 2s ease-in-out infinite; /* Reusing existing text glow */
       transition: color 0.5s ease;
+      margin-top: 0; /* Adjusted due to gap */
     }
     html.dark #preloader p {
       color: #fbbf24; /* Amber-400 */
+    }
+
+    /* Loading Bar Container */
+    .loading-bar-container {
+      width: 300px; /* Fixed width */
+      height: 20px;
+      background-color: #e5e7eb; /* Light gray for empty part */
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.2), 0 5px 15px rgba(0,0,0,0.1); /* Inner and outer shadow for depth */
+      transform: perspective(500px) rotateX(8deg); /* Subtle 3D tilt */
+      transition: transform 0.3s ease; /* Smooth transition for 3D effect */
+    }
+    html.dark .loading-bar-container {
+      background-color: #4b5563; /* Darker gray for empty part in dark mode */
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Loading Bar Fill */
+    .loading-bar-fill {
+      height: 100%;
+      width: 0%; /* Starts empty */
+      border-radius: 10px;
+      background: linear-gradient(90deg, #facc15, #f472b6, #e879f9); /* Animated gradient */
+      background-size: 200% 100%; /* For gradient animation */
+      animation: loadingBarGradient 3s linear infinite; /* Continuous gradient movement */
+      transition: width 0.1s linear; /* Smooth width fill */
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.7); /* Glow effect on fill */
+    }
+
+    @keyframes loadingBarGradient {
+      0% { background-position: 100% 0; }
+      100% { background-position: 0% 0; }
     }
 
     /* Main content initially hidden */
@@ -816,6 +852,9 @@
   <div id="preloader">
     <img src="https://i.ibb.co/kg43HQkB/IMG-20250630-WA0120.jpg" alt="GOLDEN QUEEN MD Logo" />
     <p>Loading GOLDEN QUEEN MD...</p>
+    <div class="loading-bar-container">
+      <div class="loading-bar-fill"></div>
+    </div>
   </div>
 
   <!-- Main Content Wrapper -->
@@ -1202,7 +1241,7 @@
       },
       {
         name: { en: "Twitter Video Downloader", si: "Twitter වීඩියෝ බාගත කරන්නා", ta: "Twitter வீடியோ பதிவிறக்கி" },
-        description: { en: "Download videos from Twitter tweets.", si: "Twitter ට්වීට් වලින් වීඩියෝ බාගන්න.", ta: "Twitter ட்வீட்களிலிருந்து வீடியோக்களைப் பதிவிறக்கவும்." },
+        description: { en: "Download videos from Twitter tweets.", si: "Twitter ට්වීට් වලින් වීඩියෝ බාගන්න.", ta: "Twitter ட்வீட்களிலிருந்து வீடியோ බාගන්න." },
         link: "#"
       },
       {
@@ -1483,6 +1522,7 @@
     // Preloader elements
     const preloader = document.getElementById('preloader');
     const mainContent = document.getElementById('mainContent');
+    const loadingBarFill = document.querySelector('.loading-bar-fill'); // Get the fill element
 
     function setLanguage(langCode) {
       currentLanguage = langCode;
@@ -1571,14 +1611,26 @@
         setActiveTab(btnConnect, btnVideos); // Set CONNECT as active initially
         setLanguage(currentLanguage); // Apply the stored or default language
 
-        // Preloader logic
-        setTimeout(() => {
-            preloader.classList.add('fade-out');
-            setTimeout(() => {
-                preloader.style.display = 'none';
-                mainContent.classList.add('loaded'); // Make main content visible
-            }, 500); // Matches CSS transition duration
-        }, 2000); // Display preloader for 2 seconds
+        // Preloader logic with loading bar
+        let progress = 0;
+        const totalDuration = 2500; // Total time for preloader (2.5 seconds)
+        const intervalTime = 25; // Update every 25ms
+        const increment = (100 / (totalDuration / intervalTime));
+
+        const loadingInterval = setInterval(() => {
+            progress += increment;
+            if (progress >= 100) {
+                progress = 100; // Cap at 100%
+                clearInterval(loadingInterval);
+                // Start fade-out after bar is full
+                preloader.classList.add('fade-out');
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                    mainContent.classList.add('loaded'); // Make main content visible
+                }, 500); // Matches CSS transition duration for fade-out
+            }
+            loadingBarFill.style.width = `${progress}%`;
+        }, intervalTime);
     });
   </script>
 </body>
