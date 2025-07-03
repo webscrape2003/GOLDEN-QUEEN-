@@ -6,6 +6,16 @@
   <title>GOLDEN QUEEN MD • Dark Devils Network</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    /* Base body background and text colors - default is light, dark: overrides */
+    body {
+      background: linear-gradient(to br, #f3f4f6, #e5e7eb, #d1d5db); /* Light gradient */
+      color: #1f2937; /* Dark gray text for light mode */
+    }
+    html.dark body {
+      background: linear-gradient(to br, #111827, #1f2937, #374151); /* Dark gradient */
+      color: #f9fafb; /* Light text for dark mode */
+    }
+
     /* Button animations */
     .btn-animated {
       transition: all 0.3s ease;
@@ -36,7 +46,7 @@
       fill: none;
     }
 
-    /* Animated gradient boxes */
+    /* Animated gradient boxes - these remain vibrant in both modes */
     .animated-gradient {
       position: relative;
       overflow: hidden;
@@ -46,7 +56,7 @@
       background-size: 1000% 1000%;
       animation: gradientShift 20s ease infinite;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-      color: white;
+      color: white; /* Text inside remains white */
     }
     @keyframes gradientShift {
       0% { background-position: 0% 50%; }
@@ -57,7 +67,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.4); /* Dark overlay */
       border-radius: 0.75rem;
       pointer-events: none;
     }
@@ -96,10 +106,15 @@
       animation: fadeIn 1.2s ease forwards;
       margin-top: 5rem;
       padding: 2rem;
-      background: linear-gradient(135deg, #1e293b, #111827);
+      background: linear-gradient(135deg, #e0e7ff, #c7d2fe); /* Light background */
       border-radius: 1rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      color: #374151; /* Dark text for light mode */
+    }
+    html.dark .contributors-section {
+      background: linear-gradient(135deg, #1e293b, #111827); /* Dark background */
       box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-      color: #fbbf24; /* Tailwind amber-400 */
+      color: #fbbf24; /* Amber text for dark mode */
     }
     .contributors-section h2 {
       font-weight: 800;
@@ -109,17 +124,23 @@
       position: relative;
       display: inline-block;
       padding-bottom: 0.25rem;
-      color: #fbbf24;
+      color: #4f46e5; /* Indigo for light mode */
+    }
+    html.dark .contributors-section h2 {
+      color: #fbbf24; /* Amber for dark mode */
     }
     .contributors-section h2::after {
       content: "";
       position: absolute;
       width: 40%;
       height: 3px;
-      background: #fbbf24;
+      background: #4f46e5; /* Indigo for light mode */
       bottom: 0;
       left: 30%;
       border-radius: 1rem;
+    }
+    html.dark .contributors-section h2::after {
+      background: #fbbf24; /* Amber for dark mode */
     }
     .contributors-grid {
       display: grid;
@@ -129,47 +150,63 @@
       align-items: center;
     }
     .contributor-card {
-      background: #374151; /* Tailwind gray-700 */
+      background: #ffffff; /* White for light mode */
       border-radius: 1rem;
       padding: 0.75rem 0.5rem 1rem;
       width: 110px;
       text-align: center;
-      box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       cursor: default;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
       animation: bounce 3.5s ease-in-out infinite;
       will-change: transform;
     }
+    html.dark .contributor-card {
+      background: #374151; /* Tailwind gray-700 for dark mode */
+      box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);
+    }
     .contributor-card:hover {
       transform: translateY(-6px) scale(1.1);
-      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.7);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* Darker shadow for light mode */
       z-index: 10;
+    }
+    html.dark .contributor-card:hover {
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.7); /* Amber shadow for dark mode */
     }
     .contributor-avatar {
       width: 72px;
       height: 72px;
       border-radius: 50%;
-      border: 2.5px solid #fbbf24;
+      border: 2.5px solid #4f46e5; /* Indigo for light mode */
       object-fit: cover;
       margin-bottom: 0.5rem;
       box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     }
+    html.dark .contributor-avatar {
+      border: 2.5px solid #fbbf24; /* Amber for dark mode */
+    }
     .contributor-name {
       font-weight: 700;
       font-size: 1rem;
-      color: #fbbf24;
+      color: #1f2937; /* Dark gray for light mode */
       margin-bottom: 0.15rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    html.dark .contributor-name {
+      color: #fbbf24; /* Amber for dark mode */
+    }
     .contributor-role {
       font-weight: 500;
       font-size: 0.8rem;
-      color: #d1d5db; /* Tailwind gray-300 */
+      color: #6b7280; /* Gray-500 for light mode */
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+    html.dark .contributor-role {
+      color: #d1d5db; /* Tailwind gray-300 for dark mode */
     }
 
     @keyframes bounce {
@@ -181,34 +218,44 @@
     .comment-section {
       max-width: 600px;
       margin: 3rem auto 4rem;
-      background: linear-gradient(135deg, #111827, #1e293b);
+      background: linear-gradient(135deg, #e0e7ff, #c7d2fe); /* Light background */
       border-radius: 1rem;
       padding: 2rem;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-      color: #fbbf24;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      color: #374151; /* Dark text for light mode */
       animation: fadeIn 1.3s ease forwards;
       position: relative;
       overflow: hidden;
     }
-
+    html.dark .comment-section {
+      background: linear-gradient(135deg, #111827, #1e293b); /* Dark background */
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      color: #fbbf24; /* Amber text for dark mode */
+    }
     .comment-section h2 {
       font-size: 1.9rem;
       font-weight: 800;
       text-align: center;
       margin-bottom: 1rem;
       position: relative;
-      color: #fbbf24;
+      color: #4f46e5; /* Indigo for light mode */
+    }
+    html.dark .comment-section h2 {
+      color: #fbbf24; /* Amber for dark mode */
     }
     .comment-section h2::after {
       content: "";
       position: absolute;
       width: 50px;
       height: 3px;
-      background: #fbbf24;
+      background: #4f46e5; /* Indigo for light mode */
       bottom: -8px;
       left: 50%;
       transform: translateX(-50%);
       border-radius: 1rem;
+    }
+    html.dark .comment-section h2::after {
+      background: #fbbf24; /* Amber for dark mode */
     }
 
     /* Floating label inputs */
@@ -222,32 +269,47 @@
       padding: 12px 14px;
       border-radius: 0.75rem;
       border: 2px solid transparent;
-      background-color: #374151; /* gray-700 */
-      color: #fbbf24;
+      background-color: #e2e8f0; /* Light gray for light mode */
+      color: #1f2937; /* Dark gray for light mode */
       font-size: 1rem;
       resize: none;
       outline-offset: 2px;
-      transition: border-color 0.3s ease;
+      transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    }
+    html.dark .input-group input,
+    html.dark .input-group textarea {
+      background-color: #374151; /* gray-700 for dark mode */
+      color: #fbbf24; /* Amber for dark mode */
     }
     .input-group input:focus,
     .input-group textarea:focus {
-      border-color: #fbbf24;
+      border-color: #4f46e5; /* Indigo for light mode focus */
+      box-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
+      background-color: #f1f5f9; /* Lighter gray on focus for light mode */
+    }
+    html.dark .input-group input:focus,
+    html.dark .input-group textarea:focus {
+      border-color: #fbbf24; /* Amber for dark mode focus */
       box-shadow: 0 0 10px #fbbf24;
-      background-color: #1f2937; /* darker gray */
+      background-color: #1f2937; /* darker gray on focus for dark mode */
     }
     .input-group label {
       position: absolute;
       top: 50%;
       left: 14px;
-      color: #fbbf24aa;
+      color: #6b7280; /* Gray-500 for light mode */
       font-weight: 600;
       pointer-events: none;
       transform: translateY(-50%);
       transition: all 0.25s ease;
       user-select: none;
       font-size: 1rem;
-      background: linear-gradient(135deg, #1e293b, #111827);
+      background: linear-gradient(135deg, #e0e7ff, #c7d2fe); /* Light background for label */
       padding: 0 6px;
+    }
+    html.dark .input-group label {
+      color: #fbbf24aa; /* Amber for dark mode */
+      background: linear-gradient(135deg, #1e293b, #111827); /* Dark background for label */
     }
     .input-group input:focus + label,
     .input-group input:not(:placeholder-shown) + label,
@@ -255,11 +317,17 @@
     .input-group textarea:not(:placeholder-shown) + label {
       top: -8px;
       font-size: 0.8rem;
-      color: #fbbf24;
+      color: #4f46e5; /* Indigo for light mode */
       font-weight: 700;
     }
+    html.dark .input-group input:focus + label,
+    html.dark .input-group input:not(:placeholder-shown) + label,
+    html.dark .input-group textarea:focus + label,
+    html.dark .input-group textarea:not(:placeholder-shown) + label {
+      color: #fbbf24; /* Amber for dark mode */
+    }
 
-    /* Submit Button */
+    /* Submit Button - remains amber for branding */
     .submit-btn {
       background: #fbbf24;
       color: #1f2937;
@@ -325,15 +393,20 @@
 
     /* New Footer Styles */
     .social-footer {
-      background: linear-gradient(135deg, #111827, #1e293b);
+      background: linear-gradient(135deg, #e0e7ff, #c7d2fe); /* Light background */
       padding: 2.5rem 1.5rem;
       margin-top: 5rem;
       text-align: center;
-      color: #d1d5db; /* gray-300 */
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #6b7280; /* Gray-500 for light mode */
+      border-top: 1px solid rgba(0, 0, 0, 0.1); /* Light border */
       animation: animateFooterFadeIn 1.5s ease forwards; /* Apply fade-in animation */
       animation-delay: 0.5s; /* Delay to appear after other content */
       opacity: 0; /* Start hidden for animation */
+    }
+    html.dark .social-footer {
+      background: linear-gradient(135deg, #111827, #1e293b); /* Dark background */
+      color: #d1d5db; /* gray-300 for dark mode */
+      border-top: 1px solid rgba(255, 255, 255, 0.1); /* Dark border */
     }
 
     @keyframes animateFooterFadeIn {
@@ -350,16 +423,24 @@
 
     .social-icon-link {
       display: inline-flex;
-      color: #fbbf24; /* Amber-400 */
+      color: #4f46e5; /* Indigo for light mode */
       transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
       text-decoration: none;
       border-radius: 50%; /* For circular hover effect */
       padding: 0.5rem; /* Padding around icon for hover area */
     }
+    html.dark .social-icon-link {
+      color: #fbbf24; /* Amber-400 for dark mode */
+    }
 
     .social-icon-link:hover {
       transform: translateY(-5px) scale(1.2); /* Lift and enlarge */
-      color: #facc15; /* Brighter amber */
+      color: #3730a3; /* Darker indigo for light mode hover */
+      filter: drop-shadow(0 0 8px rgba(79, 70, 229, 0.8)); /* Glow effect */
+      background-color: rgba(79, 70, 229, 0.1); /* Subtle background glow */
+    }
+    html.dark .social-icon-link:hover {
+      color: #facc15; /* Brighter amber for dark mode hover */
       filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8)); /* Glow effect */
       background-color: rgba(251, 191, 36, 0.1); /* Subtle background glow */
     }
@@ -372,7 +453,10 @@
 
     .social-footer p {
       font-size: 0.9rem;
-      color: #9ca3af; /* gray-400 */
+      color: #9ca3af; /* gray-400 for light mode */
+    }
+    html.dark .social-footer p {
+      color: #9ca3af; /* gray-400 for dark mode (no change needed here) */
     }
 
     /* New Top-Corner Dark/Light Mode Toggle Button */
@@ -453,15 +537,15 @@
     <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 animate-text-glow">
       👑 GOLDEN QUEEN MD
     </h1>
-    <p class="text-gray-300 text-lg">Dark Devils | Sinhala Bot Network</p>
+    <p class="text-gray-600 dark:text-gray-300 text-lg">Dark Devils | Sinhala Bot Network</p>
   </div>
 
   <div class="max-w-3xl mx-auto py-12 px-4 space-y-12">
 
     <!-- Dashboard Header -->
     <div class="text-center space-y-3">
-      <h1 class="text-4xl font-extrabold text-yellow-400">VAJIRA MD BOT DASHBOARD</h1>
-      <p class="text-gray-300 text-lg">Your Sinhala Bot Network | Dark Devils</p>
+      <h1 class="text-4xl font-extrabold text-indigo-700 dark:text-yellow-400">VAJIRA MD BOT DASHBOARD</h1>
+      <p class="text-gray-600 dark:text-gray-300 text-lg">Your Sinhala Bot Network | Dark Devils</p>
     </div>
 
     <!-- Connect / Videos Buttons -->
@@ -479,14 +563,16 @@
     </div>
 
     <!-- About Vajira MD -->
-    <div class="relative bg-white/10 border border-white/20 backdrop-blur-md rounded-xl p-6 mb-8 overflow-hidden shadow-lg animate-fadeIn">
-      <div class="absolute inset-0 animate-floatText opacity-10 pointer-events-none select-none text-8xl font-black text-white whitespace-nowrap">
+    <div class="relative bg-white/80 border border-gray-200 backdrop-blur-md rounded-xl p-6 mb-8 overflow-hidden shadow-lg animate-fadeIn
+                dark:bg-white/10 dark:border-white/20">
+      <div class="absolute inset-0 animate-floatText opacity-10 pointer-events-none select-none text-8xl font-black text-gray-300 whitespace-nowrap
+                  dark:text-white">
         VAJIRA MD • BOT
       </div>
-      <h2 class="text-2xl font-bold text-yellow-300 relative z-10 mb-2">🤖 About Vajira MD</h2>
-      <p class="text-gray-200 leading-relaxed relative z-10">
-        Vajira MD is a powerful Sinhala WhatsApp Bot built for <span class="text-yellow-400 font-semibold">automation, entertainment, and group management</span>.
-        Featuring song downloaders, TikTok tools, AI chat, moderation, and more — this bot is crafted for both <span class="text-yellow-400 font-semibold">fun and utility</span> across your WhatsApp groups.
+      <h2 class="text-2xl font-bold text-indigo-600 relative z-10 mb-2 dark:text-yellow-300">🤖 About Vajira MD</h2>
+      <p class="text-gray-700 leading-relaxed relative z-10 dark:text-gray-200">
+        Vajira MD is a powerful Sinhala WhatsApp Bot built for <span class="text-indigo-800 font-semibold dark:text-yellow-400">automation, entertainment, and group management</span>.
+        Featuring song downloaders, TikTok tools, AI chat, moderation, and more — this bot is crafted for both <span class="text-indigo-800 font-semibold dark:text-yellow-400">fun and utility</span> across your WhatsApp groups.
       </p>
     </div>
 
