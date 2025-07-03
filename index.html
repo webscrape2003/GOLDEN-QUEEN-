@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GOLDEN QUEEN MD • Dark Devils Network</title>
   <script src="https://cdn.tailwindcss.com"></script>
-
   <style>
-    /* Smooth scale on hover */
+    /* Button animations */
     .btn-animated {
       transition: all 0.3s ease;
       display: inline-flex;
@@ -18,8 +17,6 @@
     .btn-animated:hover {
       transform: scale(1.05);
     }
-
-    /* Pulse animation for active button */
     @keyframes pulseGlow {
       0%, 100% {
         box-shadow: 0 0 8px 0 rgba(99, 102, 241, 0.7);
@@ -31,8 +28,6 @@
     .btn-active {
       animation: pulseGlow 2s infinite;
     }
-
-    /* Icon style */
     .btn-icon {
       width: 1.2rem;
       height: 1.2rem;
@@ -41,11 +36,11 @@
       fill: none;
     }
 
-    /* Animated gradient background for pair site and videos boxes */
+    /* Animated gradient boxes */
     .animated-gradient {
       position: relative;
       overflow: hidden;
-      border-radius: 0.75rem; /* Rounded corners */
+      border-radius: 0.75rem;
       border: 1px solid rgba(255, 255, 255, 0.25);
       background: linear-gradient(270deg, #7928CA, #FF0080, #FF8C00, #40E0D0, #7928CA);
       background-size: 1000% 1000%;
@@ -54,18 +49,10 @@
       color: white;
     }
     @keyframes gradientShift {
-      0% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
-      100% {
-        background-position: 0% 50%;
-      }
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
-
-    /* Overlay for slightly darkening the background so text is visible */
     .animated-gradient::before {
       content: "";
       position: absolute;
@@ -74,201 +61,124 @@
       border-radius: 0.75rem;
       pointer-events: none;
     }
-
-    /* Make sure inner content is above overlay */
     .animated-gradient > * {
       position: relative;
       z-index: 1;
+    }
+
+    /* About Box Animation */
+    @keyframes floatText {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .animate-floatText {
+      animation: floatText 6s ease-in-out infinite;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 1s ease-out both;
     }
   </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white dark:bg-black dark:text-white">
   <div class="max-w-3xl mx-auto py-12 px-4 space-y-12">
 
-    <!-- Bot Logo and Title Above Dashboard -->
-    <div class="text-center space-y-3 mb-8">
+    <!-- Dashboard Header -->
+    <div class="text-center space-y-3">
+      <h1 class="text-4xl font-extrabold text-yellow-400">VAJIRA MD BOT DASHBOARD</h1>
+      <p class="text-gray-300 text-lg">Your Sinhala Bot Network | Dark Devils</p>
+    </div>
+
+    <!-- Connect / Videos Buttons -->
+    <div class="flex space-x-2 mb-6 justify-center">
+      <button id="btnConnect" class="btn-animated btn-active bg-indigo-700 px-4 py-2 rounded-lg shadow-md text-white ring-2 ring-indigo-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg> CONNECT
+      </button>
+      <button id="btnVideos" class="btn-animated bg-transparent hover:bg-indigo-700 hover:text-white px-4 py-2 rounded-lg text-indigo-300 font-semibold transition-colors duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-2-4v8m-6 0V6a2 2 0 012-2h5l4 4v8a2 2 0 01-2 2H9a2 2 0 01-2-2z"/>
+        </svg> VIDEOS
+      </button>
+    </div>
+
+    <!-- About Vajira MD -->
+    <div class="relative bg-white/10 border border-white/20 backdrop-blur-md rounded-xl p-6 mb-8 overflow-hidden shadow-lg animate-fadeIn">
+      <div class="absolute inset-0 animate-floatText opacity-10 pointer-events-none select-none text-8xl font-black text-white whitespace-nowrap">
+        VAJIRA MD • BOT
+      </div>
+      <h2 class="text-2xl font-bold text-yellow-300 relative z-10 mb-2">🤖 About Vajira MD</h2>
+      <p class="text-gray-200 leading-relaxed relative z-10">
+        Vajira MD is a powerful Sinhala WhatsApp Bot built for <span class="text-yellow-400 font-semibold">automation, entertainment, and group management</span>.
+        Featuring song downloaders, TikTok tools, AI chat, moderation, and more — this bot is crafted for both <span class="text-yellow-400 font-semibold">fun and utility</span> across your WhatsApp groups.
+      </p>
+    </div>
+
+    <!-- CONNECT CONTENT -->
+    <div id="connectContent">
+      <div class="animated-gradient p-6 mb-6 shadow-lg">
+        <h2 class="text-lg font-semibold text-white mb-2">🔗 Pair Site 1</h2>
+        <p class="text-indigo-200">Use this link to pair your bot.</p>
+        <button class="mt-3 bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-md font-medium">Copy Link</button>
+        <div class="w-full h-2 bg-indigo-600 rounded-full mt-4">
+          <div class="bg-indigo-400 h-2 rounded-full" style="width: 50%"></div>
+        </div>
+        <div class="flex space-x-4 mt-4">
+          <button class="flex-grow bg-indigo-700 hover:bg-indigo-600 py-2 rounded-md font-semibold">Open Pair</button>
+          <button class="flex-grow bg-indigo-700 hover:bg-indigo-600 py-2 rounded-md font-semibold">Open QR</button>
+        </div>
+      </div>
+      <div class="animated-gradient p-6 shadow-lg">
+        <h2 class="text-lg font-semibold text-white mb-2">🔗 Pair Site 2</h2>
+        <p class="text-indigo-200">Use this link to pair your bot.</p>
+        <button class="mt-3 bg-indigo-600 hover:bg-indigo-500 px-3 py-2 rounded-md font-medium">Copy Link</button>
+        <div class="w-full h-2 bg-indigo-600 rounded-full mt-4">
+          <div class="bg-indigo-400 h-2 rounded-full" style="width: 25%"></div>
+        </div>
+        <div class="flex space-x-4 mt-4">
+          <button class="flex-grow bg-indigo-700 hover:bg-indigo-600 py-2 rounded-md font-semibold">Open Pair</button>
+          <button class="flex-grow bg-indigo-700 hover:bg-indigo-600 py-2 rounded-md font-semibold">Open QR</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEOS CONTENT -->
+    <div id="videosContent" class="hidden space-y-6">
+      <div class="animated-gradient p-4 shadow-lg rounded-lg">
+        <h3 class="text-white font-bold text-lg mb-2">🎬 Setup Tutorial</h3>
+        <p class="text-indigo-200">Complete Repo Creation guide</p>
+        <button class="mt-3 w-full bg-indigo-600 hover:bg-indigo-500 text-indigo-50 px-4 py-2 rounded-md font-semibold">Watch Now</button>
+      </div>
+      <div class="animated-gradient p-4 shadow-lg rounded-lg">
+        <h3 class="text-white font-bold text-lg mb-2">🚀 Features Demo</h3>
+        <p class="text-indigo-200">See all features in action</p>
+        <button class="mt-3 w-full bg-indigo-600 hover:bg-indigo-500 text-indigo-50 px-4 py-2 rounded-md font-semibold">Watch Now</button>
+      </div>
+    </div>
+
+    <!-- Golden Queen MD Logo / Title -->
+    <div class="text-center space-y-3 pt-12">
       <img src="https://via.placeholder.com/120" alt="Bot Logo" class="mx-auto rounded-full ring-4 ring-yellow-500"/>
       <h1 class="text-4xl font-extrabold text-yellow-400">👑 GOLDEN QUEEN MD</h1>
-    </div>
-
-    <!-- Inserted VAJIRA MD BOT DASHBOARD (Moved Up) -->
-    <section class="pt-12">
-
-      <!-- Header -->
-      <h1 class="text-3xl font-bold mb-1 text-indigo-300">VAJIRA MD BOT DASHBOARD</h1>
-      <p class="mb-8 text-indigo-400">Your Sinhala Bot Network | Dark Devils</p>
-
-      <!-- Tabs -->
-      <div class="flex space-x-2 mb-6">
-        <button id="btnConnect" class="btn-animated btn-active bg-indigo-700 px-4 py-2 rounded-lg shadow-md text-white ring-2 ring-indigo-500">
-          <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-          </svg>
-          CONNECT
-        </button>
-        <button id="btnVideos" class="btn-animated bg-transparent hover:bg-indigo-700 hover:text-white px-4 py-2 rounded-lg text-indigo-300 font-semibold transition-colors duration-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-2-4v8m-6 0V6a2 2 0 012-2h5l4 4v8a2 2 0 01-2 2H9a2 2 0 01-2-2z"/>
-          </svg>
-          VIDEOS
-        </button>
-      </div>
-
-      <!-- Connect Content -->
-      <div id="connectContent">
-
-        <!-- Section: Pair Site 1 -->
-        <div class="animated-gradient p-6 mb-6 shadow-lg">
-          <div class="flex items-center space-x-3 mb-2">
-            <svg class="w-6 h-6 text-indigo-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 14.828a4 4 0 010-5.656m1.414-1.414a6 6 0 11-8.486 8.486M15 12h.01"></path>
-            </svg>
-            <h2 class="text-lg font-semibold text-indigo-100">Pair Site 1</h2>
-          </div>
-          <p class="text-indigo-300 mb-4">Pair your bot using this link.</p>
-          <button class="bg-indigo-600 hover:bg-indigo-500 text-indigo-50 px-3 py-1 rounded-md text-sm font-medium transition">Copy Link</button>
-
-          <!-- Progress Bar -->
-          <div class="w-full h-2 bg-indigo-600 rounded-full mt-4">
-            <div class="bg-indigo-400 h-2 rounded-full" style="width: 50%"></div>
-          </div>
-
-          <!-- Buttons below -->
-          <div class="flex space-x-4 mt-4">
-            <button class="flex-grow bg-indigo-700 hover:bg-indigo-600 py-2 rounded-md font-semibold transition">Open Pair</button>
-            <button class="flex-grow bg-indigo-700 hover:bg-indigo-600 py-2 rounded-md font-semibold transition">Open QR</button>
-          </div>
-        </div>
-
-        <!-- Section: Pair Site 2 -->
-        <div class="animated-gradient p-6 shadow-lg">
-          <div class="flex items-center space-x-3 mb-2">
-            <svg class="w-6 h-6 text-indigo-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 14.828a4 4 0 010-5.656m1.414-1.414a6 6 0 11-8.486 8.486M15 12h.01"></path>
-            </svg>
-            <h2 class="text-lg font-semibold text-indigo-100">Pair Site 2</h2>
-          </div>
-          <p class="text-indigo-300 mb-4">Pair your bot using this link.</p>
-          <button class="bg-indigo-600 hover:bg-indigo-500 text-indigo-50 px-3 py-1 rounded-md text-sm font-medium transition">Copy Link</button>
-
-          <!-- Progress Bar -->
-          <div class="w-full h-2 bg-indigo-600 rounded-full mt-4">
-            <div class="bg-indigo-400 h-2 rounded-full" style="width: 25%"></div>
-          </div>
-
-          <!-- Buttons below -->
-          <div class="flex space-x-4 mt-4">
-            <button class="flex-grow bg-indigo-700 hover:bg-indigo-600 py-2 rounded-md font-semibold transition">Open Pair</button>
-            <button class="flex-grow bg-indigo-700 hover:bg-indigo-600 py-2 rounded-md font-semibold transition">Open QR</button>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Videos Content -->
-      <div id="videosContent" class="hidden space-y-6">
-
-        <!-- Video Card 1 -->
-        <div class="animated-gradient p-4 shadow-lg rounded-lg flex flex-col space-y-3">
-          <div class="inline-flex items-center px-3 py-1 rounded-md bg-indigo-600 text-indigo-300 font-semibold text-sm w-max">PlayCircle</div>
-          <h3 class="text-white font-bold text-lg">Setup Tutorial</h3>
-          <p class="text-indigo-300">Complete Repo Creation guide</p>
-          <button class="mt-3 w-full bg-indigo-600 hover:bg-indigo-500 text-indigo-50 px-4 py-2 rounded-md font-semibold transition">Watch Now</button>
-        </div>
-
-        <!-- Video Card 2 -->
-        <div class="animated-gradient p-4 shadow-lg rounded-lg flex flex-col space-y-3">
-          <div class="inline-flex items-center px-3 py-1 rounded-md bg-indigo-600 text-indigo-300 font-semibold text-sm w-max">PlayCircle</div>
-          <h3 class="text-white font-bold text-lg">Features Demo</h3>
-          <p class="text-indigo-300">See all features in action</p>
-          <button class="mt-3 w-full bg-indigo-600 hover:bg-indigo-500 text-indigo-50 px-4 py-2 rounded-md font-semibold transition">Watch Now</button>
-        </div>
-
-        <!-- See More Button -->
-        <div class="text-center">
-          <button class="bg-indigo-700 hover:bg-indigo-600 text-indigo-50 px-4 py-2 rounded-md font-semibold inline-flex items-center space-x-2 transition">
-            <span>See More</span>
-            <svg class="w-4 h-4 text-indigo-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </button>
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- Logo & Title (Moved Down) -->
-    <div class="text-center space-y-3">
       <p class="text-gray-300 text-lg">Dark Devils | Sinhala Bot Network</p>
-    </div>
-
-    <!-- Card Container -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-      <!-- Bot Status Card -->
-      <div class="p-6 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:scale-105 transform transition">
-        <h2 class="text-xl font-semibold text-yellow-300 flex items-center"><span class="mr-2">📊</span>Bot Status</h2>
-        <p class="mt-2 space-y-1 text-gray-200">
-          <span>🟢 Online</span><br>
-          <span>🕐 Uptime: <strong id="uptime">00d 00h 00m</strong></span><br>
-          <span>⚙️ Version: <strong id="version">1.0.0</strong></span>
-        </p>
-      </div>
-
-      <!-- Top Commands Card -->
-      <div class="p-6 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:scale-105 transform transition">
-        <h2 class="text-xl font-semibold text-yellow-300 flex items-center"><span class="mr-2">🛠️</span>Top Commands</h2>
-        <ul class="mt-4 space-y-3 text-gray-200">
-          <li><span class="text-yellow-400">🎵 .play</span> – Play songs from YouTube</li>
-          <li><span class="text-yellow-400">📥 .yt</span> – Download video/audio</li>
-          <li><span class="text-yellow-400">👥 .group</span> – Group settings control</li>
-          <li><span class="text-yellow-400">🎮 .menu</span> – Show full menu</li>
-        </ul>
-      </div>
-
-      <!-- Contact Card -->
-      <div class="p-6 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:scale-105 transform transition">
-        <h2 class="text-xl font-semibold text-yellow-300 flex items-center"><span class="mr-2">📧</span>Contact / Support</h2>
-        <p class="mt-2 text-gray-200">
-          For help, invite, or integrations:<br>
-          <a href="https://t.me/YourUsername" class="text-yellow-400 hover:underline">t.me/YourUsername</a><br>
-          <a href="https://wa.me/947XXXXXXXX" class="text-yellow-400 hover:underline">WhatsApp Chat</a>
-        </p>
-      </div>
-
-      <!-- About Card -->
-      <div class="p-6 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 hover:scale-105 transform transition">
-        <h2 class="text-xl font-semibold text-yellow-300 flex items-center"><span class="mr-2">ℹ️</span>About</h2>
-        <p class="mt-2 text-gray-200">
-          GOLDEN QUEEN MD is a Sinhala WhatsApp bot designed for music, automation, moderation, and fun experiences. Brought to you by the dedicated Dark Devils team.
-        </p>
-      </div>
     </div>
 
   </div>
 
-  <!-- Dark Mode Toggle -->
   <div class="text-center mt-12">
     <button onclick="document.documentElement.classList.toggle('dark')" class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2 rounded-full font-semibold shadow-md transition">Toggle Dark Mode</button>
   </div>
 
-  <!-- Footer -->
   <footer class="text-center text-gray-400 text-sm mt-10">
     © 2025 GOLDEN QUEEN MD — Powered by Vajira • Crafted with ❤️
   </footer>
 
-  <!-- Uptime Script -->
+  <!-- JS Tabs Logic -->
   <script>
-    const start = Date.now() - 123456789;
-    function update() {
-      const ms = Date.now() - start;
-      const d = Math.floor(ms/86400000), h = Math.floor(ms/3600000)%24, m = Math.floor(ms/60000)%60;
-      document.getElementById("uptime").textContent = d+"d "+h+"h "+m+"m";
-    }
-    setInterval(update, 60000); update();
-
-    // Tabs functionality
     const btnConnect = document.getElementById('btnConnect');
     const btnVideos = document.getElementById('btnVideos');
     const connectContent = document.getElementById('connectContent');
@@ -276,10 +186,10 @@
 
     btnConnect.addEventListener('click', () => {
       btnConnect.classList.add('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md', 'btn-active');
-      btnConnect.classList.remove('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white', 'font-semibold');
+      btnConnect.classList.remove('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white');
 
       btnVideos.classList.remove('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md', 'btn-active');
-      btnVideos.classList.add('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white', 'font-semibold');
+      btnVideos.classList.add('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white');
 
       connectContent.classList.remove('hidden');
       videosContent.classList.add('hidden');
@@ -287,10 +197,10 @@
 
     btnVideos.addEventListener('click', () => {
       btnVideos.classList.add('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md', 'btn-active');
-      btnVideos.classList.remove('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white', 'font-semibold');
+      btnVideos.classList.remove('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white');
 
       btnConnect.classList.remove('bg-indigo-700', 'ring-2', 'ring-indigo-500', 'text-white', 'shadow-md', 'btn-active');
-      btnConnect.classList.add('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white', 'font-semibold');
+      btnConnect.classList.add('bg-transparent', 'hover:bg-indigo-700', 'hover:text-white');
 
       connectContent.classList.add('hidden');
       videosContent.classList.remove('hidden');
