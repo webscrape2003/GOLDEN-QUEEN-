@@ -176,6 +176,110 @@
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
     }
+
+    /* Comment Box Section */
+    .comment-section {
+      max-width: 600px;
+      margin: 3rem auto 4rem;
+      background: linear-gradient(135deg, #111827, #1e293b);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      color: #fbbf24;
+      animation: fadeIn 1.3s ease forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .comment-section h2 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 1rem;
+      position: relative;
+      color: #fbbf24;
+    }
+    .comment-section h2::after {
+      content: "";
+      position: absolute;
+      width: 50px;
+      height: 3px;
+      background: #fbbf24;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 1rem;
+    }
+
+    /* Floating label inputs */
+    .input-group {
+      position: relative;
+      margin-bottom: 1.75rem;
+    }
+    .input-group input,
+    .input-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 0.75rem;
+      border: 2px solid transparent;
+      background-color: #374151; /* gray-700 */
+      color: #fbbf24;
+      font-size: 1rem;
+      resize: none;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
+    }
+    .input-group input:focus,
+    .input-group textarea:focus {
+      border-color: #fbbf24;
+      box-shadow: 0 0 10px #fbbf24;
+      background-color: #1f2937; /* darker gray */
+    }
+    .input-group label {
+      position: absolute;
+      top: 50%;
+      left: 14px;
+      color: #fbbf24aa;
+      font-weight: 600;
+      pointer-events: none;
+      transform: translateY(-50%);
+      transition: all 0.25s ease;
+      user-select: none;
+      font-size: 1rem;
+      background: linear-gradient(135deg, #1e293b, #111827);
+      padding: 0 6px;
+    }
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label,
+    .input-group textarea:focus + label,
+    .input-group textarea:not(:placeholder-shown) + label {
+      top: -8px;
+      font-size: 0.8rem;
+      color: #fbbf24;
+      font-weight: 700;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      background: #fbbf24;
+      color: #1f2937;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 9999px;
+      width: 100%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6);
+      transition: background-color 0.3s ease, transform 0.25s ease;
+      border: none;
+      user-select: none;
+    }
+    .submit-btn:hover {
+      background: #facc15;
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.9);
+    }
+
   </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white dark:bg-black dark:text-white">
@@ -268,37 +372,53 @@
   </div>
 
   <!-- Small Contributors Section -->
-  <section class="contributors-section max-w-5xl mx-auto">
-    <h2>💼 Contributors / Team Members</h2>
-    <div class="contributors-grid">
-      <div class="contributor-card" title="Vajira Rathnayaka — Lead Developer">
-        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/men/45.jpg" alt="Vajira Rathnayaka" />
-        <div class="contributor-name">Vajira Rathnayaka</div>
-        <div class="contributor-role">Lead Developer</div>
+  <section class="contributors-section" aria-label="Contributors">
+    <h2>Team Contributors</h2>
+    <div class="contributors-grid" role="list">
+      <div class="contributor-card" role="listitem" tabindex="0">
+        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Vajira Rathnayaka" />
+        <div class="contributor-name" title="Vajira Rathnayaka">Vajira Rathnayaka</div>
+        <div class="contributor-role" title="Lead Developer">Lead Developer</div>
       </div>
-      <div class="contributor-card" title="Nadeesha Perera — UI/UX Designer">
-        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Nadeesha Perera" />
-        <div class="contributor-name">Nadeesha Perera</div>
-        <div class="contributor-role">UI/UX Designer</div>
+      <div class="contributor-card" role="listitem" tabindex="0">
+        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/women/45.jpg" alt="Nimali Perera" />
+        <div class="contributor-name" title="Nimali Perera">Nimali Perera</div>
+        <div class="contributor-role" title="UI/UX Designer">UI/UX Designer</div>
       </div>
-      <div class="contributor-card" title="Kamal Fernando — Backend Engineer">
-        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/men/30.jpg" alt="Kamal Fernando" />
-        <div class="contributor-name">Kamal Fernando</div>
-        <div class="contributor-role">Backend Engineer</div>
+      <div class="contributor-card" role="listitem" tabindex="0">
+        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/men/21.jpg" alt="Kamal Silva" />
+        <div class="contributor-name" title="Kamal Silva">Kamal Silva</div>
+        <div class="contributor-role" title="Backend Engineer">Backend Engineer</div>
       </div>
-      <div class="contributor-card" title="Shanika Silva — QA & Support">
-        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Shanika Silva" />
-        <div class="contributor-name">Shanika Silva</div>
-        <div class="contributor-role">QA & Support</div>
+      <div class="contributor-card" role="listitem" tabindex="0">
+        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Anusha Jayasuriya" />
+        <div class="contributor-name" title="Anusha Jayasuriya">Anusha Jayasuriya</div>
+        <div class="contributor-role" title="Content Writer">Content Writer</div>
       </div>
     </div>
+  </section>
+
+  <!-- Comment Box Section -->
+  <section class="comment-section" aria-label="Leave a Comment">
+    <h2>Leave a Comment</h2>
+    <form id="commentForm" autocomplete="off">
+      <div class="input-group">
+        <input type="text" id="name" name="name" placeholder=" " required />
+        <label for="name">Your Name</label>
+      </div>
+      <div class="input-group">
+        <textarea id="comment" name="comment" rows="4" placeholder=" " required></textarea>
+        <label for="comment">Your Comment</label>
+      </div>
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
   </section>
 
   <div class="text-center mt-12">
     <button onclick="document.documentElement.classList.toggle('dark')" class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2 rounded-full font-semibold shadow-md transition">Toggle Dark Mode</button>
   </div>
 
-  <footer class="text-center text-gray-400 text-sm mt-10 mb-8">
+  <footer class="text-center text-gray-400 text-sm mt-10">
     © 2025 GOLDEN QUEEN MD — Powered by Vajira • Crafted with ❤️
   </footer>
 
@@ -329,6 +449,13 @@
 
       connectContent.classList.add('hidden');
       videosContent.classList.remove('hidden');
+    });
+
+    // Optional: Submit handler (demo only, no backend)
+    document.getElementById('commentForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you for your comment!');
+      e.target.reset();
     });
   </script>
 </body>
