@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GOLDEN QUEEN MD • GoldenQueen Network</title>
+  <title data-i18n-key="pageTitle">GOLDEN QUEEN MD • GoldenQueen Network</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* Base styles for light mode, dark mode overrides with html.dark */
@@ -412,6 +412,7 @@
     }
     html.dark .social-footer {
       background: linear-gradient(135deg, #111827, #1e293b);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
       color: #d1d5db; /* gray-300 */
       border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
@@ -713,199 +714,311 @@
       animation: slideInUp 0.6s ease-out forwards;
     }
 
+    /* Language Selector Styles */
+    .language-selector-container {
+      position: fixed;
+      top: 1.5rem;
+      right: 5.5rem; /* Adjusted to be next to theme toggle */
+      z-index: 1001;
+    }
+    .language-selector {
+      background-color: #fbbf24; /* Amber-400 */
+      color: #1f2937; /* Dark gray */
+      padding: 0.75rem 1rem;
+      border-radius: 9999px; /* Pill shape */
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      -webkit-appearance: none; /* Remove default dropdown arrow */
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="color:%231f2937;"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>');
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1.25rem;
+      padding-right: 2.5rem; /* Make space for the custom arrow */
+    }
+    html.dark .language-selector {
+      background-color: #fbbf24; /* Amber-400 */
+      color: #1f2937; /* Dark gray */
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="color:%231f2937;"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>');
+    }
+    .language-selector:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.9);
+      background-color: #facc15;
+    }
+
+    /* --- PRELOADER STYLES --- */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #f9fafb; /* Light mode default */
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.5s ease-out; /* For fade-out effect */
+    }
+    html.dark #preloader {
+      background-color: #111827; /* Dark mode default */
+    }
+
+    #preloader.fade-out {
+      opacity: 0;
+      pointer-events: none; /* Disable interactions during fade-out */
+    }
+
+    #preloader img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+      animation: pulseGlow 2s infinite; /* Reusing existing pulse animation */
+    }
+
+    #preloader p {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #d97706; /* Amber-700 */
+      animation: textGlow 2s ease-in-out infinite; /* Reusing existing text glow */
+      transition: color 0.5s ease;
+    }
+    html.dark #preloader p {
+      color: #fbbf24; /* Amber-400 */
+    }
+
+    /* Main content initially hidden */
+    #mainContent {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.8s ease-in, visibility 0.8s ease-in;
+    }
+
+    #mainContent.loaded {
+      opacity: 1;
+      visibility: visible;
+    }
+
   </style>
 </head>
 <body class="bg-gray-100 text-gray-900 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 dark:text-white transition-colors duration-500">
 
-  <!-- New: Top-Corner Dark/Light Mode Toggle Button -->
-  <button class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode" onclick="document.documentElement.classList.toggle('dark')">
-    <!-- Sun Icon (for light mode) -->
-    <svg class="theme-toggle-icon sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="5"></circle>
-      <line x1="12" y1="1" x2="12" y2="3"></line>
-      <line x1="12" y1="21" x2="12" y2="23"></line>
-      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-      <line x1="1" y1="12" x2="3" y2="12"></line>
-      <line x1="21" y1="12" x2="23" y2="12"></line>
-      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-    </svg>
-    <!-- Moon Icon (for dark mode) -->
-    <svg class="theme-toggle-icon moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-    </svg>
-  </button>
-
-  <!-- 👑 GOLDEN QUEEN MD Top Logo + Title -->
-  <div class="text-center py-8 animate-fadeIn">
-    <img src="https://i.ibb.co/kg43HQkB/IMG-20250630-WA0120.jpg" alt="Bot Logo" class="mx-auto mb-4 rounded-full ring-4 ring-yellow-400 shadow-lg hover:scale-105 transition-transform duration-500" />
-    <h3 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 animate-text-glow">
-      👑 GOLDEN QUEEN MD
-    </h3>
-    <p class="text-gray-700 dark:text-gray-300">GoldenQueen | Sinhala Bot Network</p>
+  <!-- PRELOADER -->
+  <div id="preloader">
+    <img src="https://i.ibb.co/kg43HQkB/IMG-20250630-WA0120.jpg" alt="GOLDEN QUEEN MD Logo" />
+    <p>Loading GOLDEN QUEEN MD...</p>
   </div>
 
-  <div class="max-w-3xl mx-auto py-12 px-4 space-y-12">
-
-    <!-- Dashboard Header -->
-    <div class="text-center space-y-3">
-      <h1 class="text-4xl font-extrabold text-yellow-600 dark:text-yellow-400">GOLDEN QUEEN MD BOT DASHBOARD</h1>
-      <p class="text-gray-700 dark:text-gray-300">Your Sinhala Bot Network | GoldenQueen</p>
+  <!-- Main Content Wrapper -->
+  <div id="mainContent">
+    <!-- New: Language Selector -->
+    <div class="language-selector-container">
+      <select id="languageSelector" class="language-selector">
+        <option value="en">English</option>
+        <option value="si">සිංහල</option>
+        <option value="ta">தமிழ்</option>
+      </select>
     </div>
 
-    <!-- Connect / Videos Buttons -->
-    <div class="flex space-x-2 mb-6 justify-center">
-      <!-- Button classes are now fully defined in HTML for both light and dark modes -->
-      <button id="btnConnect" class="btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300
-        active-tab-styles"> <!-- This class will be toggled by JS -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-        </svg> CONNECT
-      </button>
-      <button id="btnVideos" class="btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300
-        inactive-tab-styles"> <!-- This class will be toggled by JS -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-2-4v8m-6 0V6a2 2 0 012-2h5l4 4v8a2 2 0 01-2 2H9a2 2 0 01-2-2z"/>
-        </svg> VIDEOS
-      </button>
+    <!-- New: Top-Corner Dark/Light Mode Toggle Button -->
+    <button class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode" onclick="document.documentElement.classList.toggle('dark')">
+      <!-- Sun Icon (for light mode) -->
+      <svg class="theme-toggle-icon sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <!-- Moon Icon (for dark mode) -->
+      <svg class="theme-toggle-icon moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+
+    <!-- 👑 GOLDEN QUEEN MD Top Logo + Title -->
+    <div class="text-center py-8 animate-fadeIn">
+      <img src="https://i.ibb.co/kg43HQkB/IMG-20250630-WA0120.jpg" alt="Bot Logo" class="mx-auto mb-4 rounded-full ring-4 ring-yellow-400 shadow-lg hover:scale-105 transition-transform duration-500" />
+      <h3 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 animate-text-glow" data-i18n-key="mainTitle">
+        👑 GOLDEN QUEEN MD
+      </h3>
+      <p class="text-gray-700 dark:text-gray-300" data-i18n-key="subTitle">GoldenQueen | Sinhala Bot Network</p>
     </div>
 
-    <!-- About Vajira MD -->
-    <div class="relative bg-white border border-gray-200 backdrop-blur-md rounded-xl p-6 mb-8 overflow-hidden shadow-lg animate-fadeIn dark:bg-white/10 dark:border-white/20">
-      <div class="absolute inset-0 animate-floatText opacity-10 pointer-events-none select-none text-8xl font-black text-gray-300 dark:text-white whitespace-nowrap">
-        GOLDEN QUEEN MD • BOT
+    <div class="max-w-3xl mx-auto py-12 px-4 space-y-12">
+
+      <!-- Dashboard Header -->
+      <div class="text-center space-y-3">
+        <h1 class="text-4xl font-extrabold text-yellow-600 dark:text-yellow-400" data-i18n-key="dashboardHeader">GOLDEN QUEEN MD BOT DASHBOARD</h1>
+        <p class="text-gray-700 dark:text-gray-300" data-i18n-key="dashboardSubHeader">Your Sinhala Bot Network | GoldenQueen</p>
       </div>
-      <h2 class="text-2xl font-bold text-yellow-600 dark:text-yellow-300 relative z-10 mb-2">🤖 About GOLDEN QUEEN MD</h2>
-      <p class="text-gray-700 dark:text-gray-200 leading-relaxed relative z-10">
-        GOLDEN QUEEN MD is a powerful Sinhala WhatsApp Bot built for <span class="text-yellow-700 dark:text-yellow-400 font-semibold">automation, entertainment, and group management</span>.
-        Featuring song downloaders, TikTok tools, AI chat, moderation, and more — this bot is crafted for both <span class="text-yellow-700 dark:text-yellow-400 font-semibold">fun and utility</span> across your WhatsApp groups.
-      </p>
-    </div>
 
-    <!-- CONNECT CONTENT -->
-    <div id="connectContent">
-      <div class="animated-gradient p-6 mb-6 shadow-lg">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">🔗 Pair Site 1</h2>
-        <p class="text-indigo-700 dark:text-indigo-200">Use this link to pair your bot.</p>
-        <div class="w-full h-2 bg-indigo-300 rounded-full mt-4 dark:bg-indigo-600">
-          <div class="bg-indigo-500 h-2 rounded-full dark:bg-indigo-400" style="width: 50%"></div>
+      <!-- Connect / Videos Buttons -->
+      <div class="flex space-x-2 mb-6 justify-center">
+        <!-- Button classes are now fully defined in HTML for both light and dark modes -->
+        <button id="btnConnect" class="btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300
+          active-tab-styles"> <!-- This class will be toggled by JS -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg> <span data-i18n-key="connectBtn">CONNECT</span>
+        </button>
+        <button id="btnVideos" class="btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300
+          inactive-tab-styles"> <!-- This class will be toggled by JS -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-2-4v8m-6 0V6a2 2 0 012-2h5l4 4v8a2 2 0 01-2 2H9a2 2 0 01-2-2z"/>
+          </svg> <span data-i18n-key="videosBtn">VIDEOS</span>
+        </button>
+      </div>
+
+      <!-- About Vajira MD -->
+      <div class="relative bg-white border border-gray-200 backdrop-blur-md rounded-xl p-6 mb-8 overflow-hidden shadow-lg animate-fadeIn dark:bg-white/10 dark:border-white/20">
+        <div class="absolute inset-0 animate-floatText opacity-10 pointer-events-none select-none text-8xl font-black text-gray-300 dark:text-white whitespace-nowrap" data-i18n-key="aboutFloatingText">
+          GOLDEN QUEEN MD • BOT
         </div>
-        <div class="flex space-x-4 mt-4">
-          <button class="flex-grow bg-indigo-600 hover:bg-indigo-700 py-2 rounded-md font-semibold text-white dark:bg-indigo-700 dark:hover:bg-indigo-600">Open Pair</button>
-          <button class="flex-grow bg-indigo-600 hover:bg-indigo-700 py-2 rounded-md font-semibold text-white dark:bg-indigo-700 dark:hover:bg-indigo-600">Open QR</button>
+        <h2 class="text-2xl font-bold text-yellow-600 dark:text-yellow-300 relative z-10 mb-2" data-i18n-key="aboutTitle">🤖 About GOLDEN QUEEN MD</h2>
+        <p class="text-gray-700 dark:text-gray-200 leading-relaxed relative z-10">
+          <span data-i18n-key="aboutTextPart1">GOLDEN QUEEN MD is a powerful Sinhala WhatsApp Bot built for</span> <span class="text-yellow-700 dark:text-yellow-400 font-semibold" data-i18n-key="aboutTextPart2">automation, entertainment, and group management</span>.
+          <span data-i18n-key="aboutTextPart3">Featuring song downloaders, TikTok tools, AI chat, moderation, and more — this bot is crafted for both</span> <span class="text-yellow-700 dark:text-yellow-400 font-semibold" data-i18n-key="aboutTextPart4">fun and utility</span> <span data-i18n-key="aboutTextPart5">across your WhatsApp groups.</span>
+        </p>
+      </div>
+
+      <!-- CONNECT CONTENT -->
+      <div id="connectContent">
+        <div class="animated-gradient p-6 mb-6 shadow-lg">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2" data-i18n-key="pairSiteTitle">🔗 Pair Site 1</h2>
+          <p class="text-indigo-700 dark:text-indigo-200" data-i18n-key="pairSiteDesc">Use this link to pair your bot.</p>
+          <div class="w-full h-2 bg-indigo-300 rounded-full mt-4 dark:bg-indigo-600">
+            <div class="bg-indigo-500 h-2 rounded-full dark:bg-indigo-400" style="width: 50%"></div>
+          </div>
+          <div class="flex space-x-4 mt-4">
+            <button class="flex-grow bg-indigo-600 hover:bg-indigo-700 py-2 rounded-md font-semibold text-white dark:bg-indigo-700 dark:hover:bg-indigo-600" data-i18n-key="openPairBtn">Open Pair</button>
+            <button class="flex-grow bg-indigo-600 hover:bg-indigo-700 py-2 rounded-md font-semibold text-white dark:bg-indigo-700 dark:hover:bg-indigo-600" data-i18n-key="openQRBtn">Open QR</button>
+          </div>
         </div>
       </div>
+
+      <!-- VIDEOS CONTENT -->
+      <div id="videosContent" class="hidden space-y-6">
+        <div class="animated-gradient p-4 shadow-lg rounded-lg">
+          <h3 class="text-gray-900 dark:text-white font-bold text-lg mb-2" data-i18n-key="setupTutorialTitle">🎬 Setup Tutorial</h3>
+          <p class="text-indigo-700 dark:text-indigo-200" data-i18n-key="setupTutorialDesc">Complete Repo Creation guide</p>
+          <button class="mt-3 w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md font-semibold dark:bg-indigo-600 dark:hover:bg-indigo-500 dark:text-indigo-50" data-i18n-key="watchNowBtn">Watch Now</button>
+        </div>
+        <div class="animated-gradient p-4 shadow-lg rounded-lg">
+          <h3 class="text-gray-900 dark:text-white font-bold text-lg mb-2" data-i18n-key="featuresDemoTitle">🚀 Features Demo</h3>
+          <p class="text-indigo-700 dark:text-indigo-200" data-i18n-key="featuresDemoDesc">See all features in action</p>
+          <button class="mt-3 w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md font-semibold dark:bg-indigo-600 dark:hover:bg-indigo-500 dark:text-indigo-50" data-i18n-key="watchNowBtn">Watch Now</button>
+        </div>
+      </div>
+
     </div>
 
-    <!-- VIDEOS CONTENT -->
-    <div id="videosContent" class="hidden space-y-6">
-      <div class="animated-gradient p-4 shadow-lg rounded-lg">
-        <h3 class="text-gray-900 dark:text-white font-bold text-lg mb-2">🎬 Setup Tutorial</h3>
-        <p class="text-indigo-700 dark:text-indigo-200">Complete Repo Creation guide</p>
-        <button class="mt-3 w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md font-semibold dark:bg-indigo-600 dark:hover:bg-indigo-500 dark:text-indigo-50">Watch Now</button>
+    <!-- Small Contributors Section -->
+    <section class="contributors-section" aria-label="Team Contributors">
+      <h2 data-i18n-key="contributorsTitle">Team Contributors</h2>
+      <div class="contributors-grid" role="list">
+        <div class="contributor-card" role="listitem" tabindex="0">
+          <img class="contributor-avatar" src="https://files.catbox.moe/mh4r12.jpg" alt="Vajira Rathnayaka" />
+          <div class="contributor-name" title="Vima Modz">Vima Modz</div>
+          <div class="contributor-role" title="Lead Developer" data-i18n-key="roleLeadDeveloper">Lead Developer</div>
+        </div>
+        <div class="contributor-card" role="listitem" tabindex="0">
+          <img class="contributor-avatar" src="https://files.catbox.moe/hcsy1u.jpg" alt="Nimali Perera" />
+          <div class="contributor-name" title="Adhi Ofc">Adhi Ofc</div>
+          <div class="contributor-role" title="Co-leader" data-i18n-key="roleCoLeader">Co-leader</div>
+        </div>
+        <div class="contributor-card" role="listitem" tabindex="0">
+          <img class="contributor-avatar" src="https://files.catbox.moe/1xhzvm.jpg" alt="Kamal Silva" />
+          <div class="contributor-name" title="Chama">Chama</div>
+          <div class="contributor-role" title="Backend Engineer" data-i18n-key="roleBackendEngineer">Backend Engineer</div>
+        </div>
+        <div class="contributor-card" role="listitem" tabindex="0">
+          <img class="contributor-avatar" src="https://files.catbox.moe/evbk38.jpg" alt="Anusha Jayasuriya" />
+          <div class="contributor-name" title="SHONU X">SHONU X</div>
+          <div class="contributor-role" title="web designer and coder" data-i18n-key="roleWebDesignerCoder">web designer &coder</div>
+        </div>
+        <div class="contributor-card" role="listitem" tabindex="0">
+          <img class="contributor-avatar" src="https://i.ibb.co/1JP4q925/Chat-GPT-Image-May-30-2025-02-40-15-PM.png" alt="Anusha Jayasuriya" />
+          <div class="contributor-name" title="Vajira Official">Vajira Official</div>
+          <div class="contributor-role" title="web designer and coder" data-i18n-key="roleWebDesignerCoder">web designer &coder</div>
+        </div>
+        <div class="contributor-card" role="listitem" tabindex="0">
+          <img class="contributor-avatar" src="https://files.catbox.moe/9dop6m.jpg" alt="Anusha Jayasuriya" />
+          <div class="contributor-name" title="Shehara parami">Shehara parami</div>
+          <div class="contributor-role" title="Voice suply" data-i18n-key="roleVoiceSupply">Voice suply</div>
+        </div>
       </div>
-      <div class="animated-gradient p-4 shadow-lg rounded-lg">
-        <h3 class="text-gray-900 dark:text-white font-bold text-lg mb-2">🚀 Features Demo</h3>
-        <p class="text-indigo-700 dark:text-indigo-200">See all features in action</p>
-        <button class="mt-3 w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md font-semibold dark:bg-indigo-600 dark:hover:bg-indigo-500 dark:text-indigo-50">Watch Now</button>
-      </div>
-    </div>
+    </section>
 
-  </div>
+    <!-- NEW: Plugin Search Section -->
+    <section class="plugins-section" aria-label="Explore Bot Plugins">
+      <h2 data-i18n-key="pluginsTitle">Explore Plugins</h2>
+      <div class="input-group search-input-group">
+        <input type="text" id="pluginSearch" placeholder=" " />
+        <label for="pluginSearch" data-i18n-key="searchPluginsPlaceholder">Search for plugins...</label>
+      </div>
+      <div id="pluginsGrid" class="plugins-grid">
+        <!-- Plugin cards will be injected here by JavaScript after search -->
+      </div>
+      <p id="noResultsMessage" class="no-results-message hidden" data-i18n-key="noPluginsFound">No plugins found matching your search.</p>
+    </section>
 
-  <!-- Small Contributors Section -->
-  <section class="contributors-section" aria-label="Team Contributors">
-    <h2>Team Contributors</h2>
-    <div class="contributors-grid" role="list">
-      <div class="contributor-card" role="listitem" tabindex="0">
-        <img class="contributor-avatar" src="https://files.catbox.moe/mh4r12.jpg" alt="Vajira Rathnayaka" />
-        <div class="contributor-name" title="Vima Modz">Vima Modz</div>
-        <div class="contributor-role" title="Lead Developer">Lead Developer</div>
-      </div>
-      <div class="contributor-card" role="listitem" tabindex="0">
-        <img class="contributor-avatar" src="https://files.catbox.moe/hcsy1u.jpg" alt="Nimali Perera" />
-        <div class="contributor-name" title="Adhi Ofc">Adhi Ofc</div>
-        <div class="contributor-role" title="Co-leader">Co-leader</div>
-      </div>
-      <div class="contributor-card" role="listitem" tabindex="0">
-        <img class="contributor-avatar" src="https://files.catbox.moe/1xhzvm.jpg" alt="Kamal Silva" />
-        <div class="contributor-name" title="Chama">Chama</div>
-        <div class="contributor-role" title="Backend Engineer">Backend Engineer</div>
-      </div>
-      <div class="contributor-card" role="listitem" tabindex="0">
-        <img class="contributor-avatar" src="https://files.catbox.moe/evbk38.jpg" alt="Anusha Jayasuriya" />
-        <div class="contributor-name" title="SHONU X">SHONU X</div>
-        <div class="contributor-role" title="web designer and coder">web designer &coder</div>
-      </div>
-      <div class="contributor-card" role="listitem" tabindex="0">
-        <img class="contributor-avatar" src="https://i.ibb.co/1JP4q925/Chat-GPT-Image-May-30-2025-02-40-15-PM.png" alt="Anusha Jayasuriya" />
-        <div class="contributor-name" title="Vajira Official">Vajira Official</div>
-        <div class="contributor-role" title="web designer and coder">web designer &coder</div>
-      </div>
-      <div class="contributor-card" role="listitem" tabindex="0">
-        <img class="contributor-avatar" src="https://files.catbox.moe/9dop6m.jpg" alt="Anusha Jayasuriya" />
-        <div class="contributor-name" title="Shehara parami">Shehara parami</div>
-        <div class="contributor-role" title="Voice suply">Voice suply</div>
-      </div>
-    </div>
-  </section>
+    <!-- Comment Box Section -->
+    <section class="comment-section" aria-label="Leave a Comment">
+      <h2 data-i18n-key="commentTitle">Leave a Comment</h2>
+      <form id="commentForm" autocomplete="off">
+        <div class="input-group">
+          <input type="text" id="name" name="name" placeholder=" " required />
+          <label for="name" data-i18n-key="yourNameLabel">Your Name</label>
+        </div>
+        <div class="input-group">
+          <textarea id="comment" name="comment" rows="4" placeholder=" " required></textarea>
+          <label for="comment" data-i18n-key="yourCommentLabel">Your Comment</label>
+        </div>
+        <button type="submit" class="submit-btn" data-i18n-key="submitBtn">Submit</button>
+      </form>
+    </section>
 
-  <!-- NEW: Plugin Search Section -->
-  <section class="plugins-section" aria-label="Explore Bot Plugins">
-    <h2>Explore Plugins</h2>
-    <div class="input-group search-input-group">
-      <input type="text" id="pluginSearch" placeholder=" " />
-      <label for="pluginSearch">Search for plugins...</label>
-    </div>
-    <div id="pluginsGrid" class="plugins-grid">
-      <!-- Plugin cards will be injected here by JavaScript after search -->
-    </div>
-    <p id="noResultsMessage" class="no-results-message hidden">No plugins found matching your search.</p>
-  </section>
+    <!-- Floating Settings Button (now an anchor tag linking to settings.html) -->
+    <a href="settings.html" target="_blank" rel="noopener noreferrer" class="floating-btn animate-float" aria-label="Open Settings Page">
+      <svg xmlns="http://www.w3.org/2000/svg" class="floating-btn-icon" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    </a>
 
-  <!-- Comment Box Section -->
-  <section class="comment-section" aria-label="Leave a Comment">
-    <h2>Leave a Comment</h2>
-    <form id="commentForm" autocomplete="off">
-      <div class="input-group">
-        <input type="text" id="name" name="name" placeholder=" " required />
-        <label for="name">Your Name</label>
+    <!-- New Social Media Footer -->
+    <footer class="social-footer">
+      <div class="social-icons">
+        <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Facebook">
+          <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.815c-3.238 0-4.185 1.912-4.185 4.479v2.521z"/></svg>
+        </a>
+        <a href="https://x.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="X (Twitter)">
+          <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.403 0-6.162 2.759-6.162 6.162 0 .483.055.953.162 1.404-5.125-.259-9.665-2.728-12.704-6.472-.526.906-.829 1.95-.829 3.066 0 2.132 1.084 4.006 2.724 5.107-.99-.031-1.92-.303-2.724-.752v.079c0 2.98 2.127 5.47 4.95 6.032-.518.141-1.06.217-1.611.217-.395 0-.779-.038-1.153-.11.782 2.45 3.056 4.23 5.76 4.279-2.092 1.64-4.738 2.62-7.61 2.62-.495 0-.98-.029-1.458-.085 2.704 1.736 5.93 2.755 9.38 2.755 11.257 0 17.413-9.314 17.413-17.413 0-.266-.007-.529-.02-.791.999-.722 1.869-1.629 2.558-2.654z"/></svg>
+        </a>
+        <a href="https://instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Instagram">
+          <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.204-.012 3.584-.07 4.85-1.691 3.252-1.691 4.771-4.919 4.919-1.266.058-1.644.069-4.85.069-3.204 0-3.584-.012-4.85-.07-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.849 0-3.204.012-3.584.07-4.85 1.691-3.252 1.691-4.771 4.919-4.919 1.266-.058 1.644-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.073 4.948.073 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.44-.645 1.44-1.44s-.645-1.44-1.44-1.44z"/></svg>
+        </a>
+        <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="GitHub">
+          <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+        </a>
       </div>
-      <div class="input-group">
-        <textarea id="comment" name="comment" rows="4" placeholder=" " required></textarea>
-        <label for="comment">Your Comment</label>
-      </div>
-      <button type="submit" class="submit-btn">Submit</button>
-    </form>
-  </section>
-
-  <!-- Floating Settings Button (now an anchor tag linking to settings.html) -->
-  <a href="settings.html" target="_blank" rel="noopener noreferrer" class="floating-btn animate-float" aria-label="Open Settings Page">
-    <svg xmlns="http://www.w3.org/2000/svg" class="floating-btn-icon" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z" />
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-  </a>
-
-  <!-- New Social Media Footer -->
-  <footer class="social-footer">
-    <div class="social-icons">
-      <a href="https://facebook.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Facebook">
-        <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.815c-3.238 0-4.185 1.912-4.185 4.479v2.521z"/></svg>
-      </a>
-      <a href="https://x.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="X (Twitter)">
-        <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.403 0-6.162 2.759-6.162 6.162 0 .483.055.953.162 1.404-5.125-.259-9.665-2.728-12.704-6.472-.526.906-.829 1.95-.829 3.066 0 2.132 1.084 4.006 2.724 5.107-.99-.031-1.92-.303-2.724-.752v.079c0 2.98 2.127 5.47 4.95 6.032-.518.141-1.06.217-1.611.217-.395 0-.779-.038-1.153-.11.782 2.45 3.056 4.23 5.76 4.279-2.092 1.64-4.738 2.62-7.61 2.62-.495 0-.98-.029-1.458-.085 2.704 1.736 5.93 2.755 9.38 2.755 11.257 0 17.413-9.314 17.413-17.413 0-.266-.007-.529-.02-.791.999-.722 1.869-1.629 2.558-2.654z"/></svg>
-      </a>
-      <a href="https://instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Instagram">
-        <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.204-.012 3.584-.07 4.85-1.691 3.252-1.691 4.771-4.919 4.919-1.266.058-1.644.069-4.85.069-3.204 0-3.584-.012-4.85-.07-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.849 0-3.204.012-3.584.07-4.85 1.691-3.252 1.691-4.771 4.919-4.919 1.266-.058 1.644-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.073 4.948.073 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.44-.645 1.44-1.44s-.645-1.44-1.44-1.44z"/></svg>
-      </a>
-      <a href="https://github.com/yourprofile" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="GitHub">
-        <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.835 2.809 1.305 3.493.998.108-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-      </a>
-    </div>
-    <p>© 2025 GOLDEN QUEEN MD — Powered by Vima Modz • Crafted with ❤️</p>
-  </footer>
+      <p data-i18n-key="footerText">© 2025 GOLDEN QUEEN MD — Powered by Vima Modz • Crafted with ❤️</p>
+    </footer>
+  </div> <!-- End of #mainContent -->
 
   <!-- JS Tabs Logic -->
   <script>
@@ -950,63 +1063,456 @@
     // Optional: Submit handler (demo only, no backend)
     document.getElementById('commentForm').addEventListener('submit', (e) => {
       e.preventDefault();
-      alert('Thank you for your comment!');
+      const currentLang = localStorage.getItem('selectedLanguage') || 'si';
+      alert(translations.alertCommentThanks[currentLang]);
       e.target.reset();
     });
 
     // --- NEW PLUGIN SEARCH SYSTEM JAVASCRIPT ---
 
-    // Plugin data (Expanded list)
+    // Plugin data (Expanded list with translations)
     const plugins = [
       // Core / Essential Plugins
-      { name: "Auto Sticker", description: "Automatically converts images to stickers.", link: "#" },
-      { name: "Group Manager", description: "Advanced tools for WhatsApp group administration.", link: "#" },
-      { name: "Welcome Message", description: "Set custom welcome messages for new members.", link: "#" },
-      { name: "Anti-Link", description: "Prevents sharing of unwanted links in groups.", link: "#" },
-      { name: "Fun Commands", description: "A collection of entertaining commands and games.", link: "#" },
-      { name: "Calculator", description: "Perform basic and advanced arithmetic operations.", link: "#" },
-      { name: "Dictionary", description: "Get definitions, synonyms, and antonyms for words.", link: "#" },
-      { name: "Translate", description: "Translate text to various languages instantly.", link: "#" },
-      { name: "QR Code Generator", description: "Generate QR codes for text or links.", link: "#" },
-      { name: "Wikipedia Search", description: "Search Wikipedia directly from WhatsApp.", link: "#" },
-      { name: "Weather Info", description: "Get current weather updates for any location.", link: "#" },
-      { name: "News Feeds", description: "Stay updated with the latest news from various sources.", link: "#" },
-      { name: "Quote Generator", description: "Generate random inspirational or funny quotes.", link: "#" },
-      { name: "Fact Finder", description: "Discover interesting and random facts.", link: "#" },
-      { name: "URL Shortener", description: "Shorten long URLs for easy sharing.", link: "#" },
-      { name: "Screenshot Taker", description: "Capture screenshots of web pages.", link: "#" },
-      { name: "Poll Maker", description: "Create polls in groups for quick decisions.", link: "#" },
-      { name: "Reminder", description: "Set reminders for important tasks or events.", link: "#" },
-      { name: "Notes", description: "Save and retrieve personal notes.", link: "#" },
-      { name: "Sticker Pack Creator", description: "Create custom sticker packs from multiple images.", link: "#" },
+      {
+        name: { en: "Auto Sticker", si: "ස්වයං ස්ටිකර්", ta: "தானியங்கு ஸ்டிக்கர்" },
+        description: { en: "Automatically converts images to stickers.", si: "පින්තූර ස්වයංක්‍රීයව ස්ටිකර් බවට පත් කරයි.", ta: "படங்களை தானாகவே ஸ்டிக்கர்களாக மாற்றுகிறது." },
+        link: "#"
+      },
+      {
+        name: { en: "Group Manager", si: "කණ්ඩායම් කළමනාකරු", ta: "குழு மேலாளர்" },
+        description: { en: "Advanced tools for WhatsApp group administration.", si: "WhatsApp සමූහ පරිපාලනය සඳහා උසස් මෙවලම්.", ta: "வாட்ஸ்அப் குழு நிர்வாகத்திற்கான மேம்பட்ட கருவிகள்." },
+        link: "#"
+      },
+      {
+        name: { en: "Welcome Message", si: "පිළිගැනීමේ පණිවිඩය", ta: "வரவேற்பு செய்தி" },
+        description: { en: "Set custom welcome messages for new members.", si: "නව සාමාජිකයින් සඳහා අභිරුචි පිළිගැනීමේ පණිවිඩ සකසන්න.", ta: "புதிய உறுப்பினர்களுக்கான தனிப்பயன் வரவேற்பு செய்திகளை அமைக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Anti-Link", si: "සබැඳි අවහිර කිරීම", ta: "இணைப்பு எதிர்ப்பு" },
+        description: { en: "Prevents sharing of unwanted links in groups.", si: "කණ්ඩායම් තුළ අනවශ්‍ය සබැඳි බෙදාගැනීම වළක්වයි.", ta: "குழுக்களில் தேவையற்ற இணைப்புகளைப் பகிர்வதைத் தடுக்கிறது." },
+        link: "#"
+      },
+      {
+        name: { en: "Fun Commands", si: "විනෝදජනක විධාන", ta: "வேடிக்கை கட்டளைகள்" },
+        description: { en: "A collection of entertaining commands and games.", si: "විනෝදාත්මක විධාන සහ ක්‍රීඩා එකතුවක්.", ta: "பொழுதுபோக்கு கட்டளைகள் மற்றும் விளையாட்டுகளின் தொகுப்பு." },
+        link: "#"
+      },
+      {
+        name: { en: "Calculator", si: "කැල්කියුලේටරය", ta: "கால்குலேட்டர்" },
+        description: { en: "Perform basic and advanced arithmetic operations.", si: "මූලික සහ උසස් ගණිතමය මෙහෙයුම් සිදු කරන්න.", ta: "அடிப்படை மற்றும் மேம்பட்ட எண்கணித செயல்பாடுகளைச் செய்யவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Dictionary", si: "ශබ්දකෝෂය", ta: "அகராதி" },
+        description: { en: "Get definitions, synonyms, and antonyms for words.", si: "වචන සඳහා අර්ථ දැක්වීම්, සමාන පද සහ ප්‍රතිවිරුද්ධ පද ලබා ගන්න.", ta: "வார்த்தைகளுக்கான வரையறைகள், ஒத்த சொற்கள் மற்றும் எதிர்ச்சொற்களைப் பெறுங்கள்." },
+        link: "#"
+      },
+      {
+        name: { en: "Translate", si: "පරිවර්තනය කරන්න", ta: "மொழிபெயர்" },
+        description: { en: "Translate text to various languages instantly.", si: "විවිධ භාෂාවලට ක්ෂණිකව පෙළ පරිවර්තනය කරන්න.", ta: "உரையை உடனடியாக பல்வேறு மொழிகளுக்கு மொழிபெயர்க்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "QR Code Generator", si: "QR කේත උත්පාදක", ta: "QR குறியீடு ஜெனரேட்டர்" },
+        description: { en: "Generate QR codes for text or links.", si: "පෙළ හෝ සබැඳි සඳහා QR කේත සාදන්න.", ta: "உரை அல்லது இணைப்புகளுக்கான QR குறியீடுகளை உருவாக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Wikipedia Search", si: "විකිපීඩියා සෙවීම", ta: "விக்கிபீடியா தேடல்" },
+        description: { en: "Search Wikipedia directly from WhatsApp.", si: "WhatsApp වෙතින් කෙලින්ම විකිපීඩියා සොයන්න.", ta: "வாட்ஸ்அப்பில் இருந்து நேரடியாக விக்கிபீடியாவைத் தேடுங்கள்." },
+        link: "#"
+      },
+      {
+        name: { en: "Weather Info", si: "කාලගුණ තොරතුරු", ta: "வானிலை தகவல்" },
+        description: { en: "Get current weather updates for any location.", si: "ඕනෑම ස්ථානයක් සඳහා වත්මන් කාලගුණ යාවත්කාලීන ලබා ගන්න.", ta: "எந்த இடத்திற்கும் தற்போதைய வானிலை புதுப்பிப்புகளைப் பெறுங்கள்." },
+        link: "#"
+      },
+      {
+        name: { en: "News Feeds", si: "පුවත් සංග්‍රහ", ta: "செய்தி ஊட்டங்கள்" },
+        description: { en: "Stay updated with the latest news from various sources.", si: "විවිධ මූලාශ්‍රවලින් නවතම පුවත් සමඟ යාවත්කාලීනව සිටින්න.", ta: "பல்வேறு ஆதாரங்களில் இருந்து சமீபத்திய செய்திகளுடன் புதுப்பித்த நிலையில் இருங்கள்." },
+        link: "#"
+      },
+      {
+        name: { en: "Quote Generator", si: "උපුටා දැක්වීම් උත්පාදක", ta: "மேற்கோள் ஜெனரேட்டர்" },
+        description: { en: "Generate random inspirational or funny quotes.", si: "අහඹු ආශ්වාදජනක හෝ විහිලු උපුටා දැක්වීම් සාදන්න.", ta: "சீரற்ற ஊக்கமளிக்கும் அல்லது வேடிக்கையான மேற்கோள்களை உருவாக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Fact Finder", si: "සත්‍ය සොයන්නා", ta: "உண்மை கண்டுபிடிப்பாளர்" },
+        description: { en: "Discover interesting and random facts.", si: "සිත්ගන්නාසුළු සහ අහඹු කරුණු සොයා ගන්න.", ta: "சுவாரஸ்யமான மற்றும் சீரற்ற உண்மைகளைக் கண்டறியவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "URL Shortener", si: "URL කෙටි කරන්නා", ta: "URL சுருக்கி" },
+        description: { en: "Shorten long URLs for easy sharing.", si: "පහසුවෙන් බෙදාගැනීම සඳහා දිගු URL කෙටි කරන්න.", ta: "எளிதாகப் பகிர நீண்ட URLகளை சுருக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Screenshot Taker", si: "තිර රූ ග්‍රාහක", ta: "ஸ்கிரீன்ஷாட் எடுப்பவர்" },
+        description: { en: "Capture screenshots of web pages.", si: "වෙබ් පිටු වල තිර රූ ග්‍රහණය කරන්න.", ta: "வலைப்பக்கங்களின் ஸ்கிரீன்ஷாட்களைப் பிடிக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Poll Maker", si: "ඡන්ද විමසුම් සාදන්නා", ta: "வாக்கெடுப்பு தயாரிப்பாளர்" },
+        description: { en: "Create polls in groups for quick decisions.", si: "ඉක්මන් තීරණ සඳහා කණ්ඩායම් තුළ ඡන්ද විමසුම් සාදන්න.", ta: "விரைவான முடிவுகளுக்காக குழுக்களில் வாக்கெடுப்புகளை உருவாக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Reminder", si: "මතක් කිරීම", ta: "நினைவூட்டல்" },
+        description: { en: "Set reminders for important tasks or events.", si: "වැදගත් කාර්යයන් හෝ සිදුවීම් සඳහා මතක් කිරීම් සකසන්න.", ta: "முக்கியமான பணிகள் அல்லது நிகழ்வுகளுக்கு நினைவூட்டல்களை அமைக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Notes", si: "සටහන්", ta: "குறிப்புகள்" },
+        description: { en: "Save and retrieve personal notes.", si: "පුද්ගලික සටහන් සුරකින්න සහ ලබා ගන්න.", ta: "தனிப்பட்ட குறிப்புகளைச் சேமித்து மீட்டெடுக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Sticker Pack Creator", si: "ස්ටිකර් පැක් සාදන්නා", ta: "ஸ்டிக்கர் பேக் கிரியேட்டர்" },
+        description: { en: "Create custom sticker packs from multiple images.", si: "බහු රූප වලින් අභිරුචි ස්ටිකර් පැක් සාදන්න.", ta: "பல படங்களிலிருந்து தனிப்பயன் ஸ்டிக்கர் பேக்குகளை உருவாக்கவும்." },
+
+      },
 
       // Download Plugins
-      { name: "Song Downloader", description: "Download songs directly from YouTube or other platforms.", link: "#" },
-      { name: "YouTube Downloader", description: "Download YouTube videos in various qualities.", link: "#" },
-      { name: "TikTok Downloader", description: "Download TikTok videos without watermark.", link: "#" },
-      { name: "Facebook Video Downloader", description: "Download videos from Facebook posts.", link: "#" },
-      { name: "Instagram Downloader", description: "Download Instagram photos, videos, and reels.", link: "#" },
-      { name: "Twitter Video Downloader", description: "Download videos from Twitter tweets.", link: "#" },
-      { name: "Pinterest Downloader", description: "Download images and videos from Pinterest.", link: "#" },
-      { name: "SoundCloud Downloader", description: "Download audio tracks from SoundCloud.", link: "#" },
-      { name: "Media Converter", description: "Convert media files between different formats.", link: "#" },
+      {
+        name: { en: "Song Downloader", si: "ගීත බාගත කරන්නා", ta: "பாடல் பதிவிறக்கி" },
+        description: { en: "Download songs directly from YouTube or other platforms.", si: "YouTube හෝ වෙනත් වේදිකාවලින් කෙලින්ම ගීත බාගන්න.", ta: "YouTube அல்லது பிற தளங்களில் இருந்து பாடல்களை நேரடியாகப் பதிவிறக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "YouTube Downloader", si: "YouTube බාගත කරන්නා", ta: "YouTube பதிவிறக்கி" },
+        description: { en: "Download YouTube videos in various qualities.", si: "විවිධ ගුණාත්මක භාවයෙන් YouTube වීඩියෝ බාගන්න.", ta: "பல்வேறு தரங்களில் YouTube வீடியோக்களைப் பதிவிறக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "TikTok Downloader", si: "TikTok බාගත කරන්නා", ta: "TikTok பதிவிறக்கி" },
+        description: { en: "Download TikTok videos without watermark.", si: "වෝටර්මාර්ක් නොමැතිව TikTok වීඩියෝ බාගන්න.", ta: "வாட்டர்மார்க் இல்லாமல் TikTok வீடியோக்களைப் பதிவிறக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Facebook Video Downloader", si: "Facebook වීඩියෝ බාගත කරන්නා", ta: "Facebook வீடியோ பதிவிறக்கி" },
+        description: { en: "Download videos from Facebook posts.", si: "Facebook පළ කිරීම් වලින් වීඩියෝ බාගන්න.", ta: "Facebook இடுகைகளில் இருந்து வீடியோக்களைப் பதிவிறக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Instagram Downloader", si: "Instagram බාගත කරන්නා", ta: "Instagram பதிவிறக்கி" },
+        description: { en: "Download Instagram photos, videos, and reels.", si: "Instagram ඡායාරූප, වීඩියෝ සහ රීල් බාගන්න.", ta: "Instagram புகைப்படங்கள், வீடியோக்கள் மற்றும் ரீல்களைப் பதிவிறக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Twitter Video Downloader", si: "Twitter වීඩියෝ බාගත කරන්නා", ta: "Twitter வீடியோ பதிவிறக்கி" },
+        description: { en: "Download videos from Twitter tweets.", si: "Twitter ට්වීට් වලින් වීඩියෝ බාගන්න.", ta: "Twitter ட்வீட்களிலிருந்து வீடியோக்களைப் பதிவிறக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Pinterest Downloader", si: "Pinterest බාගත කරන්නා", ta: "Pinterest பதிவிறக்கி" },
+        description: { en: "Download images and videos from Pinterest.", si: "Pinterest වෙතින් පින්තූර සහ වීඩියෝ බාගන්න.", ta: "Pinterest இலிருந்து படங்கள் மற்றும் வீடியோக்களைப் பதிவிறக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "SoundCloud Downloader", si: "SoundCloud බාගත කරන්නා", ta: "SoundCloud பதிவிறக்கி" },
+        description: { en: "Download audio tracks from SoundCloud.", si: "SoundCloud වෙතින් ශ්‍රව්‍ය පථ බාගන්න.", ta: "SoundCloud இலிருந்து ஆடியோ டிராக்குகளைப் பதிவிறக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Media Converter", si: "මාධ්‍ය පරිවර්තකය", ta: "மீடியா மாற்றி" },
+        description: { en: "Convert media files between different formats.", si: "විවිධ ආකෘති අතර මාධ්‍ය ගොනු පරිවර්තනය කරන්න.", ta: "வெவ்வேறு வடிவங்களுக்கு இடையில் மீடியா கோப்புகளை மாற்றவும்." },
+        link: "#"
+      },
 
       // AI & Utility Plugins
-      { name: "AI Chatbot", description: "Engage in intelligent conversations with AI.", link: "#" },
-      { name: "Image Editor", description: "Apply filters, crop, and resize images.", link: "#" },
-      { name: "Text to Speech", description: "Convert text messages into natural-sounding audio.", link: "#" },
-      { name: "OCR Reader", description: "Extract text from images.", link: "#" },
-      { name: "Barcode Scanner", description: "Scan and decode barcodes/QR codes.", link: "#" },
-      { name: "Random Number Generator", description: "Generate random numbers within a specified range.", link: "#" },
-      { name: "Password Generator", description: "Create strong, random passwords.", link: "#" },
-      { name: "Unit Converter", description: "Convert between various units of measurement.", link: "#" },
-      { name: "Time Zone Converter", description: "Convert times between different time zones.", link: "#" },
-      { name: "GitHub Info", description: "Fetch information about GitHub users and repositories.", link: "#" },
+      {
+        name: { en: "AI Chatbot", si: "AI චැට්බෝට්", ta: "AI சாட்போட்" },
+        description: { en: "Engage in intelligent conversations with AI.", si: "AI සමඟ බුද්ධිමත් සංවාදවල නිරත වන්න.", ta: "AI உடன் புத்திசாலித்தனமான உரையாடல்களில் ஈடுபடுங்கள்." },
+        link: "#"
+      },
+      {
+        name: { en: "Image Editor", si: "රූප සංස්කාරක", ta: "பட எடிட்டர்" },
+        description: { en: "Apply filters, crop, and resize images.", si: "පෙරහන් යොදන්න, කපන්න, සහ රූප ප්‍රමාණය වෙනස් කරන්න.", ta: "வடிப்பான்களைப் பயன்படுத்துங்கள், செதுக்குங்கள் மற்றும் படங்களை மறுஅளவிடுங்கள்." },
+        link: "#"
+      },
+      {
+        name: { en: "Text to Speech", si: "පෙළ සිට කථනය", ta: "உரையிலிருந்து பேச்சு" },
+        description: { en: "Convert text messages into natural-sounding audio.", si: "පෙළ පණිවිඩ ස්වභාවික ශබ්ද සහිත ශ්‍රව්‍ය බවට පරිවර්තනය කරන්න.", ta: "உரைச் செய்திகளை இயற்கையான ஒலிக்கும் ஆடியோவாக மாற்றவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "OCR Reader", si: "OCR කියවනය", ta: "OCR ரீடர்" },
+        description: { en: "Extract text from images.", si: "රූප වලින් පෙළ උපුටා ගන්න.", ta: "படங்களிலிருந்து உரையைப் பிரித்தெடுக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Barcode Scanner", si: "තීරු කේත ස්කෑනරය", ta: "பார்கோடு ஸ்கேனர்" },
+        description: { en: "Scan and decode barcodes/QR codes.", si: "තීරු කේත/QR කේත පරිලෝකනය කර විකේතනය කරන්න.", ta: "பார்கோடுகள்/QR குறியீடுகளை ஸ்கேன் செய்து டிகோட் செய்யவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Random Number Generator", si: "අහඹු අංක උත්පාදක", ta: "சீரற்ற எண் ஜெனரேட்டர்" },
+        description: { en: "Generate random numbers within a specified range.", si: "නිශ්චිත පරාසයක් තුළ අහඹු සංඛ්‍යා සාදන්න.", ta: "குறிப்பிட்ட வரம்பிற்குள் சீரற்ற எண்களை உருவாக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Password Generator", si: "මුරපද උත්පාදක", ta: "கடவுச்சொல் ஜெனரேட்டர்" },
+        description: { en: "Create strong, random passwords.", si: "ශක්තිමත්, අහඹු මුරපද සාදන්න.", ta: "வலுவான, சீரற்ற கடவுச்சொற்களை உருவாக்கவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Unit Converter", si: "ඒකක පරිවර්තකය", ta: "அலகு மாற்றி" },
+        description: { en: "Convert between various units of measurement.", si: "විවිධ මිනුම් ඒකක අතර පරිවර්තනය කරන්න.", ta: "பல்வேறு அளவீட்டு அலகுகளுக்கு இடையில் மாற்றவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "Time Zone Converter", si: "කාල කලාප පරිවර්තකය", ta: "நேர மண்டல மாற்றி" },
+        description: { en: "Convert times between different time zones.", si: "විවිධ කාල කලාප අතර වේලාවන් පරිවර්තනය කරන්න.", ta: "வெவ்வேறு நேர மண்டலங்களுக்கு இடையில் நேரங்களை மாற்றவும்." },
+        link: "#"
+      },
+      {
+        name: { en: "GitHub Info", si: "GitHub තොරතුරු", ta: "GitHub தகவல்" },
+        description: { en: "Fetch information about GitHub users and repositories.", si: "GitHub භාවිතා කරන්නන් සහ ගබඩා පිළිබඳ තොරතුරු ලබා ගන්න.", ta: "GitHub பயனர்கள் மற்றும் களஞ்சியங்கள் பற்றிய தகவல்களைப் பெறவும்." },
+        link: "#"
+      },
     ];
+
+    // Translations object
+    const translations = {
+      pageTitle: {
+        en: "GOLDEN QUEEN MD • GoldenQueen Network",
+        si: "ගෝල්ඩන් ක්වීන් MD • ගෝල්ඩන් ක්වීන් ජාලය",
+        ta: "கோல்டன் குயின் MD • கோல்டன் குயின் நெட்வொர்க்"
+      },
+      mainTitle: {
+        en: "👑 GOLDEN QUEEN MD",
+        si: "👑 ගෝල්ඩන් ක්වීන් MD",
+        ta: "👑 கோல்டன் குயின் MD"
+      },
+      subTitle: {
+        en: "GoldenQueen | Sinhala Bot Network",
+        si: "ගෝල්ඩන් ක්වීන් | සිංහල බොට් ජාලය",
+        ta: "கோல்டன் குயின் | சிங்கள போட் நெட்வொர்க்"
+      },
+      dashboardHeader: {
+        en: "GOLDEN QUEEN MD BOT DASHBOARD",
+        si: "ගෝල්ඩන් ක්වීන් MD බොට් උපකරණ පුවරුව",
+        ta: "கோல்டன் குயின் MD போட் டாஷ்போர்டு"
+      },
+      dashboardSubHeader: {
+        en: "Your Sinhala Bot Network | GoldenQueen",
+        si: "ඔබේ සිංහල බොට් ජාලය | ගෝල්ඩන් ක්වීන්",
+        ta: "உங்கள் சிங்கள போட் நெட்வொர்க் | கோல்டன் குயின்"
+      },
+      connectBtn: {
+        en: "CONNECT",
+        si: "සම්බන්ධ වන්න",
+        ta: "இணைக்கவும்"
+      },
+      videosBtn: {
+        en: "VIDEOS",
+        si: "වීඩියෝ",
+        ta: "வீடியோக்கள்"
+      },
+      aboutTitle: {
+        en: "🤖 About GOLDEN QUEEN MD",
+        si: "🤖 ගෝල්ඩන් ක්වීන් MD ගැන",
+        ta: "🤖 கோல்டன் குயின் MD பற்றி"
+      },
+      aboutTextPart1: {
+        en: "GOLDEN QUEEN MD is a powerful Sinhala WhatsApp Bot built for",
+        si: "ගෝල්ඩන් ක්වීන් MD යනු බලවත් සිංහල WhatsApp බොට් එකක් වන අතර එය නිර්මාණය කර ඇත්තේ",
+        ta: "கோல்டன் குயின் MD ஒரு சக்திவாய்ந்த சிங்கள வாட்ஸ்அப் போட் ஆகும், இது உருவாக்கப்பட்டது"
+      },
+      aboutTextPart2: {
+        en: "automation, entertainment, and group management",
+        si: "ස්වයංක්‍රීයකරණය, විනෝදාස්වාදය සහ සමූහ කළමනාකරණය",
+        ta: "தானியங்கு, பொழுதுபோக்கு மற்றும் குழு மேலாண்மை"
+      },
+      aboutTextPart3: {
+        en: "Featuring song downloaders, TikTok tools, AI chat, moderation, and more — this bot is crafted for both",
+        si: "ගීත බාගත කරන්නන්, TikTok මෙවලම්, AI චැට්, මධ්‍යස්ථකරණය සහ තවත් බොහෝ දේ ඇතුළත් — මෙම බොට් එක නිර්මාණය කර ඇත්තේ",
+        ta: "பாடல் பதிவிறக்கிகள், TikTok கருவிகள், AI அரட்டை, மிதப்படுத்தல் மற்றும் பலவற்றைக் கொண்டுள்ளது — இந்த போட் உருவாக்கப்பட்டது"
+      },
+      aboutTextPart4: {
+        en: "fun and utility",
+        si: "විනෝදය සහ උපයෝගීතාවය",
+        ta: "வேடிக்கை மற்றும் பயன்பாடு"
+      },
+      aboutTextPart5: {
+        en: "across your WhatsApp groups.",
+        si: "ඔබගේ WhatsApp කණ්ඩායම් හරහා.",
+        ta: "உங்கள் வாட்ஸ்அப் குழுக்களில்."
+      },
+      aboutFloatingText: {
+        en: "GOLDEN QUEEN MD • BOT",
+        si: "ගෝල්ඩන් ක්වීන් MD • බොට්",
+        ta: "கோல்டன் குயின் MD • போட்"
+      },
+      pairSiteTitle: {
+        en: "🔗 Pair Site 1",
+        si: "🔗 යුගල අඩවිය 1",
+        ta: "🔗 இணை தள 1"
+      },
+      pairSiteDesc: {
+        en: "Use this link to pair your bot.",
+        si: "ඔබගේ බොට් යුගල කිරීමට මෙම සබැඳිය භාවිතා කරන්න.",
+        ta: "உங்கள் போட்டை இணைக்க இந்த இணைப்பைப் பயன்படுத்தவும்."
+      },
+      openPairBtn: {
+        en: "Open Pair",
+        si: "යුගල විවෘත කරන්න",
+        ta: "இணைப்பைத் திற"
+      },
+      openQRBtn: {
+        en: "Open QR",
+        si: "QR විවෘත කරන්න",
+        ta: "QR ஐத் திற"
+      },
+      setupTutorialTitle: {
+        en: "🎬 Setup Tutorial",
+        si: "🎬 සැකසුම් නිබන්ධනය",
+        ta: "🎬 அமைப்பு பயிற்சி"
+      },
+      setupTutorialDesc: {
+        en: "Complete Repo Creation guide",
+        si: "සම්පූර්ණ Repo නිර්මාණ මාර්ගෝපදේශය",
+        ta: "முழுமையான களஞ்சிய உருவாக்கும் வழிகாட்டி"
+      },
+      watchNowBtn: {
+        en: "Watch Now",
+        si: "දැන් නරඹන්න",
+        ta: "இப்போது பார்க்கவும்"
+      },
+      featuresDemoTitle: {
+        en: "🚀 Features Demo",
+        si: "🚀 විශේෂාංග Demo",
+        ta: "🚀 அம்சங்கள் டெமோ"
+      },
+      featuresDemoDesc: {
+        en: "See all features in action",
+        si: "සියලුම විශේෂාංග ක්‍රියාවට නංවනු බලන්න",
+        ta: "அனைத்து அம்சங்களையும் செயலில் காண்க"
+      },
+      contributorsTitle: {
+        en: "Team Contributors",
+        si: "කණ්ඩායම් දායකයින්",
+        ta: "குழு பங்களிப்பாளர்கள்"
+      },
+      roleLeadDeveloper: {
+        en: "Lead Developer",
+        si: "ප්‍රධාන සංවර්ධක",
+        ta: "முன்னணி டெவலப்பர்"
+      },
+      roleCoLeader: {
+        en: "Co-leader",
+        si: "සහ-නායක",
+        ta: "துணைத் தலைவர்"
+      },
+      roleBackendEngineer: {
+        en: "Backend Engineer",
+        si: "බැක්එන්ඩ් ඉංජිනේරු",
+        ta: "பின்தள பொறியாளர்"
+      },
+      roleWebDesignerCoder: {
+        en: "web designer & coder",
+        si: "වෙබ් නිර්මාණකරු සහ කේතකරු",
+        ta: "வலை வடிவமைப்பாளர் & குறியீட்டாளர்"
+      },
+      roleVoiceSupply: {
+        en: "Voice suply",
+        si: "හඬ සැපයුම්",
+        ta: "குரல் சப்ளை"
+      },
+      pluginsTitle: {
+        en: "Explore Plugins",
+        si: "ප්ලගීන ගවේෂණය කරන්න",
+        ta: "செருகுநிரல்களை ஆராயுங்கள்"
+      },
+      searchPluginsPlaceholder: {
+        en: "Search for plugins...",
+        si: "ප්ලගීන සොයන්න...",
+        ta: "செருகுநிரல்களைத் தேடுங்கள்..."
+      },
+      viewDetailsBtn: {
+        en: "View Details",
+        si: "විස්තර බලන්න",
+        ta: "விவரங்களைக் காண்க"
+      },
+      noPluginsFound: {
+        en: "No plugins found matching your search.",
+        si: "ඔබගේ සෙවුමට ගැලපෙන ප්ලගීන හමු නොවීය.",
+        ta: "உங்கள் தேடலுடன் பொருந்தும் செருகுநிரல்கள் எதுவும் இல்லை."
+      },
+      commentTitle: {
+        en: "Leave a Comment",
+        si: "අදහසක් දක්වන්න",
+        ta: "கருத்து தெரிவிக்கவும்"
+      },
+      yourNameLabel: {
+        en: "Your Name",
+        si: "ඔබගේ නම",
+        ta: "உங்கள் பெயர்"
+      },
+      yourCommentLabel: {
+        en: "Your Comment",
+        si: "ඔබගේ අදහස",
+        ta: "உங்கள் கருத்து"
+      },
+      submitBtn: {
+        en: "Submit",
+        si: "ඉදිරිපත් කරන්න",
+        ta: "சமர்ப்பි"
+      },
+      footerText: {
+        en: "© 2025 GOLDEN QUEEN MD — Powered by Vima Modz • Crafted with ❤️",
+        si: "© 2025 ගෝල්ඩන් ක්වීන් MD — Vima Modz විසින් බලගන්වන ලදී • ❤️ සමඟින් නිර්මාණය කරන ලදී",
+        ta: "© 2025 கோல்டன் குயின் MD — Vima Modz ஆல் இயக்கப்படுகிறது • ❤️ உடன் உருவாக்கப்பட்டது"
+      },
+      alertCommentThanks: {
+        en: "Thank you for your comment!",
+        si: "ඔබගේ අදහසට ස්තූතියි!",
+        ta: "உங்கள் கருத்துக்காக நன்றி!"
+      }
+    };
+
+    let currentLanguage = localStorage.getItem('selectedLanguage') || 'si'; // Default to Sinhala
 
     const pluginsGrid = document.getElementById('pluginsGrid');
     const pluginSearchInput = document.getElementById('pluginSearch');
     const noResultsMessage = document.getElementById('noResultsMessage');
+    const languageSelector = document.getElementById('languageSelector');
+
+    // Preloader elements
+    const preloader = document.getElementById('preloader');
+    const mainContent = document.getElementById('mainContent');
+
+    function setLanguage(langCode) {
+      currentLanguage = langCode;
+      localStorage.setItem('selectedLanguage', langCode);
+      document.documentElement.lang = langCode; // Set HTML lang attribute
+
+      // Update page title
+      document.querySelector('title').textContent = translations.pageTitle[currentLanguage];
+
+      // Update all elements with data-i18n-key
+      document.querySelectorAll('[data-i18n-key]').forEach(element => {
+        const key = element.getAttribute('data-i18n-key');
+        if (translations[key] && translations[key][currentLanguage]) {
+          if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
+            element.setAttribute('placeholder', translations[key][currentLanguage]);
+          } else if (element.tagName === 'LABEL' && element.htmlFor) {
+            // For floating labels, we update textContent
+            element.textContent = translations[key][currentLanguage];
+          } else {
+            element.textContent = translations[key][currentLanguage];
+          }
+        }
+      });
+
+      // Update the selected option in the dropdown
+      languageSelector.value = currentLanguage;
+
+      // Re-render plugins to show translated names/descriptions
+      filterPlugins();
+    }
 
     function renderPlugins(filteredPlugins) {
       pluginsGrid.innerHTML = ''; // Clear existing plugins
@@ -1020,14 +1526,14 @@
           // Add animation delay for staggered effect
           card.style.animationDelay = `${index * 0.05}s`; // 50ms delay per card
           card.innerHTML = `
-            <h3 class="plugin-card-title">${plugin.name}</h3>
-            <p class="plugin-card-description">${plugin.description}</p>
+            <h3 class="plugin-card-title">${plugin.name[currentLanguage] || plugin.name.en}</h3>
+            <p class="plugin-card-description">${plugin.description[currentLanguage] || plugin.description.en}</p>
             <a href="${plugin.link}" target="_blank" rel="noopener noreferrer" class="plugin-card-button">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
                 <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
               </svg>
-              View Details
+              <span data-i18n-key="viewDetailsBtn">${translations.viewDetailsBtn[currentLanguage]}</span>
             </a>
           `;
           pluginsGrid.appendChild(card);
@@ -1046,8 +1552,8 @@
       }
 
       const filtered = plugins.filter(plugin =>
-        plugin.name.toLowerCase().includes(searchTerm) ||
-        plugin.description.toLowerCase().includes(searchTerm)
+        (plugin.name[currentLanguage] || plugin.name.en).toLowerCase().includes(searchTerm) ||
+        (plugin.description[currentLanguage] || plugin.description.en).toLowerCase().includes(searchTerm)
       );
       renderPlugins(filtered);
     }
@@ -1055,10 +1561,24 @@
     // Event listener for search input
     pluginSearchInput.addEventListener('input', filterPlugins);
 
-    // Initialize button state on page load
+    // Event listener for language selector
+    languageSelector.addEventListener('change', (event) => {
+      setLanguage(event.target.value);
+    });
+
+    // Initialize button state and language on page load
     document.addEventListener('DOMContentLoaded', () => {
         setActiveTab(btnConnect, btnVideos); // Set CONNECT as active initially
-        // Do NOT call renderPlugins(plugins) here, as we want it empty initially
+        setLanguage(currentLanguage); // Apply the stored or default language
+
+        // Preloader logic
+        setTimeout(() => {
+            preloader.classList.add('fade-out');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+                mainContent.classList.add('loaded'); // Make main content visible
+            }, 500); // Matches CSS transition duration
+        }, 2000); // Display preloader for 2 seconds
     });
   </script>
 </body>
