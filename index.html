@@ -280,6 +280,48 @@
       box-shadow: 0 6px 20px rgba(251, 191, 36, 0.9);
     }
 
+    /* New: Floating Settings Button */
+    .floating-btn {
+      position: fixed;
+      bottom: 2rem; /* Distance from bottom */
+      right: 2rem; /* Distance from right */
+      background-color: #fbbf24; /* Amber-400 */
+      color: #1f2937; /* Dark gray */
+      padding: 1rem;
+      border-radius: 50%; /* Make it round */
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      z-index: 1000; /* Ensure it's on top of other content */
+      border: none;
+    }
+
+    .floating-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 25px rgba(251, 191, 36, 0.9);
+    }
+
+    /* Floating animation for the button */
+    @keyframes floatUpDown {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); } /* Moves up 10px */
+    }
+
+    .floating-btn.animate-float {
+      animation: floatUpDown 3s ease-in-out infinite;
+    }
+
+    .floating-btn-icon {
+      width: 1.8rem; /* Size of the icon */
+      height: 1.8rem;
+      stroke: currentColor;
+      stroke-width: 2;
+      fill: none;
+    }
+
   </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white dark:bg-black dark:text-white">
@@ -417,6 +459,14 @@
   <div class="text-center mt-12">
     <button onclick="document.documentElement.classList.toggle('dark')" class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2 rounded-full font-semibold shadow-md transition">Toggle Dark Mode</button>
   </div>
+
+  <!-- New: Floating Settings Button -->
+  <button class="floating-btn animate-float" aria-label="Open Settings" onclick="document.documentElement.classList.toggle('dark')">
+    <svg xmlns="http://www.w3.org/2000/svg" class="floating-btn-icon" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z" />
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  </button>
 
   <footer class="text-center text-gray-400 text-sm mt-10">
     © 2025 GOLDEN QUEEN MD — Powered by Vajira • Crafted with ❤️
