@@ -104,6 +104,7 @@
       padding: 1.5rem;
       cursor: pointer;
       color: white;
+      will-change: transform;
     }
     .card-3d:hover .card-inner {
       transform: rotateY(15deg) rotateX(10deg) scale(1.05);
@@ -127,6 +128,15 @@
       font-weight: 500;
       color: #d1d5db; /* Tailwind gray-300 */
       font-size: 0.875rem;
+    }
+
+    /* Contributors Section Animation */
+    @keyframes floatSection {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .contributors-section {
+      animation: floatSection 8s ease-in-out infinite;
     }
   </style>
 </head>
@@ -175,46 +185,6 @@
       </p>
     </div>
 
-    <!-- Contributors / Team Members -->
-    <section>
-      <h2 class="text-3xl font-extrabold text-yellow-400 mb-8 text-center">💼 Contributors / Team Members</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
-
-        <div class="card-3d">
-          <div class="card-inner text-center p-6">
-            <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/men/45.jpg" alt="Member 1" />
-            <div class="card-name">Vajira Rathnayaka</div>
-            <div class="card-role">Lead Developer</div>
-          </div>
-        </div>
-
-        <div class="card-3d">
-          <div class="card-inner text-center p-6">
-            <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Member 2" />
-            <div class="card-name">Nadeesha Perera</div>
-            <div class="card-role">UI/UX Designer</div>
-          </div>
-        </div>
-
-        <div class="card-3d">
-          <div class="card-inner text-center p-6">
-            <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/men/30.jpg" alt="Member 3" />
-            <div class="card-name">Kamal Fernando</div>
-            <div class="card-role">Backend Engineer</div>
-          </div>
-        </div>
-
-        <div class="card-3d">
-          <div class="card-inner text-center p-6">
-            <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Member 4" />
-            <div class="card-name">Shanika Silva</div>
-            <div class="card-role">QA & Support</div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
     <!-- CONNECT CONTENT -->
     <div id="connectContent">
       <div class="animated-gradient p-6 mb-6 shadow-lg">
@@ -259,11 +229,46 @@
 
   </div>
 
+  <!-- Contributors / Team Members at Bottom -->
+  <section class="max-w-5xl mx-auto px-6 py-12 contributors-section animate-fadeIn bg-gradient-to-tr from-purple-900 via-indigo-900 to-blue-900 rounded-xl shadow-lg mt-20">
+    <h2 class="text-3xl font-extrabold text-yellow-400 mb-10 text-center tracking-wide">💼 Contributors / Team Members</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+      <div class="card-3d">
+        <div class="card-inner text-center p-6">
+          <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/men/45.jpg" alt="Member 1" />
+          <div class="card-name">Vajira Rathnayaka</div>
+          <div class="card-role">Lead Developer</div>
+        </div>
+      </div>
+      <div class="card-3d">
+        <div class="card-inner text-center p-6">
+          <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Member 2" />
+          <div class="card-name">Nadeesha Perera</div>
+          <div class="card-role">UI/UX Designer</div>
+        </div>
+      </div>
+      <div class="card-3d">
+        <div class="card-inner text-center p-6">
+          <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/men/30.jpg" alt="Member 3" />
+          <div class="card-name">Kamal Fernando</div>
+          <div class="card-role">Backend Engineer</div>
+        </div>
+      </div>
+      <div class="card-3d">
+        <div class="card-inner text-center p-6">
+          <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Member 4" />
+          <div class="card-name">Shanika Silva</div>
+          <div class="card-role">QA & Support</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="text-center mt-12">
     <button onclick="document.documentElement.classList.toggle('dark')" class="bg-yellow-400 hover:bg-yellow-300 text-black px-4 py-2 rounded-full font-semibold shadow-md transition">Toggle Dark Mode</button>
   </div>
 
-  <footer class="text-center text-gray-400 text-sm mt-10">
+  <footer class="text-center text-gray-400 text-sm mt-10 mb-8">
     © 2025 GOLDEN QUEEN MD — Powered by Vajira • Crafted with ❤️
   </footer>
 
