@@ -91,52 +91,90 @@
       animation: textGlow 2s ease-in-out infinite;
     }
 
-    /* Contributors 3D Card Hover Animation */
-    .card-3d {
-      perspective: 1000px;
-    }
-    .card-inner {
-      transition: transform 0.4s ease;
-      transform-style: preserve-3d;
+    /* Small Contributor Cards */
+    .contributors-section {
+      animation: fadeIn 1.2s ease forwards;
+      margin-top: 5rem;
+      padding: 2rem;
+      background: linear-gradient(135deg, #1e293b, #111827);
       border-radius: 1rem;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-      background: linear-gradient(135deg, #4f46e5, #9333ea);
-      padding: 1.5rem;
-      cursor: pointer;
-      color: white;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      color: #fbbf24; /* Tailwind amber-400 */
+    }
+    .contributors-section h2 {
+      font-weight: 800;
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.25rem;
+      color: #fbbf24;
+    }
+    .contributors-section h2::after {
+      content: "";
+      position: absolute;
+      width: 40%;
+      height: 3px;
+      background: #fbbf24;
+      bottom: 0;
+      left: 30%;
+      border-radius: 1rem;
+    }
+    .contributors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
+      gap: 1.25rem;
+      justify-items: center;
+      align-items: center;
+    }
+    .contributor-card {
+      background: #374151; /* Tailwind gray-700 */
+      border-radius: 1rem;
+      padding: 0.75rem 0.5rem 1rem;
+      width: 110px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);
+      cursor: default;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      animation: bounce 3.5s ease-in-out infinite;
       will-change: transform;
     }
-    .card-3d:hover .card-inner {
-      transform: rotateY(15deg) rotateX(10deg) scale(1.05);
-      box-shadow: 0 15px 40px rgba(147, 51, 234, 0.6);
+    .contributor-card:hover {
+      transform: translateY(-6px) scale(1.1);
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.7);
+      z-index: 10;
     }
-    .card-avatar {
-      width: 96px;
-      height: 96px;
-      border-radius: 9999px;
-      border: 3px solid #fff;
+    .contributor-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 2.5px solid #fbbf24;
       object-fit: cover;
-      margin-bottom: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      margin-bottom: 0.5rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
     }
-    .card-name {
+    .contributor-name {
       font-weight: 700;
-      font-size: 1.25rem;
-      margin-bottom: 0.25rem;
+      font-size: 1rem;
+      color: #fbbf24;
+      margin-bottom: 0.15rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .card-role {
+    .contributor-role {
       font-weight: 500;
+      font-size: 0.8rem;
       color: #d1d5db; /* Tailwind gray-300 */
-      font-size: 0.875rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    /* Contributors Section Animation */
-    @keyframes floatSection {
+    @keyframes bounce {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-8px); }
-    }
-    .contributors-section {
-      animation: floatSection 8s ease-in-out infinite;
     }
   </style>
 </head>
@@ -145,9 +183,9 @@
   <!-- 👑 GOLDEN QUEEN MD Top Logo + Title -->
   <div class="text-center py-8 animate-fadeIn">
     <img src="https://via.placeholder.com/120" alt="Bot Logo" class="mx-auto mb-4 rounded-full ring-4 ring-yellow-400 shadow-lg hover:scale-105 transition-transform duration-500" />
-    <h3 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 animate-text-glow">
+    <h1 class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600 animate-text-glow">
       👑 GOLDEN QUEEN MD
-    </h3>
+    </h1>
     <p class="text-gray-300 text-lg">Dark Devils | Sinhala Bot Network</p>
   </div>
 
@@ -229,37 +267,29 @@
 
   </div>
 
-  <!-- Contributors / Team Members at Bottom -->
-  <section class="max-w-5xl mx-auto px-6 py-12 contributors-section animate-fadeIn bg-gradient-to-tr from-purple-900 via-indigo-900 to-blue-900 rounded-xl shadow-lg mt-20">
-    <h2 class="text-3xl font-extrabold text-yellow-400 mb-10 text-center tracking-wide">💼 Contributors / Team Members</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
-      <div class="card-3d">
-        <div class="card-inner text-center p-6">
-          <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/men/45.jpg" alt="Member 1" />
-          <div class="card-name">Vajira Rathnayaka</div>
-          <div class="card-role">Lead Developer</div>
-        </div>
+  <!-- Small Contributors Section -->
+  <section class="contributors-section max-w-5xl mx-auto">
+    <h2>💼 Contributors / Team Members</h2>
+    <div class="contributors-grid">
+      <div class="contributor-card" title="Vajira Rathnayaka — Lead Developer">
+        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/men/45.jpg" alt="Vajira Rathnayaka" />
+        <div class="contributor-name">Vajira Rathnayaka</div>
+        <div class="contributor-role">Lead Developer</div>
       </div>
-      <div class="card-3d">
-        <div class="card-inner text-center p-6">
-          <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Member 2" />
-          <div class="card-name">Nadeesha Perera</div>
-          <div class="card-role">UI/UX Designer</div>
-        </div>
+      <div class="contributor-card" title="Nadeesha Perera — UI/UX Designer">
+        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/women/68.jpg" alt="Nadeesha Perera" />
+        <div class="contributor-name">Nadeesha Perera</div>
+        <div class="contributor-role">UI/UX Designer</div>
       </div>
-      <div class="card-3d">
-        <div class="card-inner text-center p-6">
-          <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/men/30.jpg" alt="Member 3" />
-          <div class="card-name">Kamal Fernando</div>
-          <div class="card-role">Backend Engineer</div>
-        </div>
+      <div class="contributor-card" title="Kamal Fernando — Backend Engineer">
+        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/men/30.jpg" alt="Kamal Fernando" />
+        <div class="contributor-name">Kamal Fernando</div>
+        <div class="contributor-role">Backend Engineer</div>
       </div>
-      <div class="card-3d">
-        <div class="card-inner text-center p-6">
-          <img class="card-avatar mx-auto" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Member 4" />
-          <div class="card-name">Shanika Silva</div>
-          <div class="card-role">QA & Support</div>
-        </div>
+      <div class="contributor-card" title="Shanika Silva — QA & Support">
+        <img class="contributor-avatar" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Shanika Silva" />
+        <div class="contributor-name">Shanika Silva</div>
+        <div class="contributor-role">QA & Support</div>
       </div>
     </div>
   </section>
