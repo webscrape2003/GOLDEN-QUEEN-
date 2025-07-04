@@ -1,1407 +1,1839 @@
 <!DOCTYPE html>
-<html lang="en" class="dark"> <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title data-i18n-key="pageTitle">GOLDEN QUEEN MD • GoldenQueen Network</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Base styles for light mode, dark mode overrides with html.dark */
 
-    /* --- FIX: Apply full page background to HTML element --- */
-    html {
-      background-color: #f3f4f6; /* Tailwind gray-100 for light mode */
-      transition: background-color 0.5s ease; /* Smooth transition for background color */
-    }
-    html.dark {
-      background: linear-gradient(to bottom right, #111827, #1f2937, #1e293b); /* Darker gradient for full background */
-      transition: background 0.5s ease; /* Smooth transition for gradient */
-    }
+<html lang="en" class="dark"> <!-- Added 'dark' class here to start in dark mode -->
 
-    body {
-      /* FIX: Reset body background to transparent to allow html background to show */
-      background-color: transparent;
-      color: #1f2937; /* Default text color for light mode */
-      transition: color 0.5s ease; /* Smooth text color transition */
-    }
-    html.dark body {
-      color: #ffffff; /* Default text color for dark mode */
-    }
-    /* --- END FIX --- */
+<head>
 
-    /* Button animations */
-    .btn-animated {
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 600;
-    }
-    .btn-animated:hover {
-      transform: scale(1.05);
-    }
-    @keyframes pulseGlow {
-      0%, 100% {
-        box-shadow: 0 0 8px 0 rgba(99, 102, 241, 0.7);
-      }
-      50% {
-        box-shadow: 0 0 16px 4px rgba(99, 102, 241, 0.9);
-      }
-    }
-    .btn-active-pulse { /* Renamed to avoid conflict with general 'btn-active' state */
-      animation: pulseGlow 2s infinite;
-    }
-    .btn-icon {
-      width: 1.2rem;
-      height: 1.2rem;
-      stroke-width: 2;
-      stroke: currentColor;
-      fill: none;
-    }
+  <meta charset="UTF-8" />
 
-    /* Animated gradient boxes */
-    .animated-gradient {
-      position: relative;
-      overflow: hidden;
-      border-radius: 0.75rem;
-      /* Light mode defaults */
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      background: white;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      color: black;
-      transition: all 0.5s ease; /* Smooth transition for theme change */
-    }
-    html.dark .animated-gradient {
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background: linear-gradient(270deg, #7928CA, #FF0080, #FF8C00, #40E0D0, #7928CA);
-      background-size: 1000% 1000%;
-      animation: gradientShift 20s ease infinite;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-      color: white;
-    }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .animated-gradient::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0); /* No overlay in light mode */
-      border-radius: 0.75rem;
-      pointer-events: none;
-      transition: background 0.5s ease;
-    }
-    html.dark .animated-gradient::before {
-      background: rgba(0, 0, 0, 0.4);
-    }
-    .animated-gradient > * {
-      position: relative;
-      z-index: 1;
-    }
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    /* About Box Animation */
-    @keyframes floatText {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    .animate-floatText {
-      animation: floatText 6s ease-in-out infinite;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fadeIn {
-      animation: fadeIn 1s ease-out both;
-    }
+  <title data-i18n-key="pageTitle">GOLDEN QUEEN MD • GoldenQueen Network</title>
 
-    /* Small Contributor Cards */
-    .contributors-section {
-      animation: fadeIn 1.2s ease forwards;
-      margin-top: 5rem;
-      padding: 2rem;
-      /* Light mode defaults */
-      background: #f9fafb; /* gray-50 */
-      border-radius: 1rem;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-      color: #d97706; /* Tailwind amber-700 */
-      transition: all 0.5s ease;
-    }
-    html.dark .contributors-section {
-      background: linear-gradient(135deg, #1e293b, #111827);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-      color: #fbbf24; /* Tailwind amber-400 */
-    }
-    .contributors-section h2 {
-      font-weight: 800;
-      font-size: 1.8rem;
-      text-align: center;
-      margin-bottom: 1rem;
-      position: relative;
-      display: inline-block;
-      padding-bottom: 0.25rem;
-      color: inherit; /* Inherit from parent */
-    }
-    .contributors-section h2::after {
-      content: "";
-      position: absolute;
-      width: 40%;
-      height: 3px;
-      background: currentColor; /* Use current text color */
-      bottom: 0;
-      left: 30%;
-      border-radius: 1rem;
-    }
-    .contributors-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
-      gap: 1.25rem;
-      justify-items: center;
-      align-items: center;
-    }
-    .contributor-card {
-      /* Light mode defaults */
-      background: #ffffff; /* white */
-      border-radius: 1rem;
-      padding: 0.75rem 0.5rem 1rem;
-      width: 110px;
-      text-align: center;
-      box-shadow: 0 4px 8px rgba(251, 191, 36, 0.1);
-      cursor: default;
-      transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.5s ease;
-      animation: bounce 3.5s ease-in-out infinite;
-      will-change: transform;
-    }
-    html.dark .contributor-card {
-      background: #374151; /* Tailwind gray-700 */
-      box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);
-    }
-    .contributor-card:hover {
-      transform: translateY(-6px) scale(1.1);
-      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.7); /* This shadow is strong, keep for both */
-      z-index: 10;
-    }
-    .contributor-avatar {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      /* Light mode default */
-      border: 2.5px solid #d97706; /* amber-700 */
-      object-fit: cover;
-      margin-bottom: 0.5rem;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-      transition: border-color 0.5s ease;
-    }
-    html.dark .contributor-avatar {
-      border: 2.5px solid #fbbf24; /* amber-400 */
-    }
-    .contributor-name {
-      font-weight: 700;
-      font-size: 1rem;
-      /* Light mode default */
-      color: #d97706; /* amber-700 */
-      margin-bottom: 0.15rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: color 0.5s ease;
-    }
-    html.dark .contributor-name {
-      color: #fbbf24; /* amber-400 */
-    }
-    .contributor-role {
-      font-weight: 500;
-      font-size: 0.8rem;
-      /* Light mode default */
-      color: #6b7280; /* Tailwind gray-500 */
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: color 0.5s ease;
-    }
-    html.dark .contributor-role {
-      color: #d1d5db; /* Tailwind gray-300 */
-    }
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
+  <style>
 
-    /* Comment Box Section */
-    .comment-section {
-      max-width: 600px;
-      margin: 3rem auto 4rem;
-      /* Light mode defaults */
-      background: #ffffff; /* white */
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-      color: #d97706; /* amber-700 */
-      animation: fadeIn 1.3s ease forwards;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.5s ease;
-    }
-    html.dark .comment-section {
-      background: linear-gradient(135deg, #111827, #1e293b);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-      color: #fbbf24;
-    }
-
-    .comment-section h2 {
-      font-size: 1.9rem;
-      font-weight: 800;
-      text-align: center;
-      margin-bottom: 1rem;
-      position: relative;
-      color: inherit; /* Inherit from parent */
-    }
-    .comment-section h2::after {
-      content: "";
-      position: absolute;
-      width: 50px;
-      height: 3px;
-      background: currentColor; /* Use current text color */
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 1rem;
-    }
-
-    /* Floating label inputs */
-    .input-group {
-      position: relative;
-      margin-bottom: 1.75rem;
-    }
-    .input-group input,
-    .input-group textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 0.75rem;
-      border: 2px solid transparent;
-      /* Light mode defaults */
-      background-color: #f3f4f6; /* gray-100 */
-      color: #1f2937; /* gray-900 */
-      font-size: 1rem;
-      resize: none;
-      outline-offset: 2px;
-      transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-    }
-    html.dark .input-group input,
-    html.dark .input-group textarea {
-      background-color: #374151; /* gray-700 */
-      color: #fbbf24;
-    }
-    .input-group input:focus,
-    .input-group textarea:focus {
-      /* Light mode defaults */
-      border-color: #d97706; /* amber-700 */
-      box-shadow: 0 0 10px rgba(217, 119, 6, 0.5);
-      background-color: #e5e7eb; /* gray-200 */
-    }
-    html.dark .input-group input:focus,
-    html.dark .input-group textarea:focus {
-      border-color: #fbbf24;
-      box-shadow: 0 0 10px #fbbf24;
-      background-color: #1f2937; /* darker gray */
-    }
-    .input-group label {
-      position: absolute;
-      top: 50%;
-      left: 14px;
-      /* Light mode defaults */
-      color: #9ca3af; /* gray-400 */
-      font-weight: 600;
-      pointer-events: none;
-      transform: translateY(-50%);
-      transition: all 0.25s ease;
-      user-select: none;
-      font-size: 1rem;
-      background: white; /* Match comment section background */
-      padding: 0 6px;
-    }
-    html.dark .input-group label {
-      color: #fbbf24aa;
-      background: linear-gradient(135deg, #1e293b, #111827); /* Match comment section background */
-    }
-    .input-group input:focus + label,
-    .input-group input:not(:placeholder-shown) + label,
-    .input-group textarea:focus + label,
-    .input-group textarea:not(:placeholder-shown) + label {
-      top: -8px;
-      font-size: 0.8rem;
-      /* Light mode default */
-      color: #d97706; /* amber-700 */
-      font-weight: 700;
-    }
-    html.dark .input-group input:focus + label,
-    html.dark .input-group input:not(:placeholder-shown) + label,
-    html.dark .input-group textarea:focus + label,
-    html.dark .input-group textarea:not(:placeholder-shown) + label {
-      color: #fbbf24;
-    }
-
-    /* Submit Button */
-    .submit-btn {
-      background: #fbbf24;
-      color: #1f2937;
-      font-weight: 700;
-      padding: 12px 24px;
-      border-radius: 9999px;
-      width: 100%;
-      font-size: 1.1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6);
-      transition: background-color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
-      border: none;
-      user-select: none;
-    }
-    .submit-btn:hover {
-      background: #facc15;
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.9);
-    }
-
-    /* Floating Settings Button (now an anchor tag) */
-    .floating-btn {
-      position: fixed;
-      bottom: 2rem; /* Distance from bottom */
-      right: 2rem; /* Distance from right */
-      background-color: #fbbf24; /* Amber-400 */
-      color: #1f2937; /* Dark gray */
-      padding: 1rem;
-      border-radius: 50%; /* Make it round */
-      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-      z-index: 1000; /* Ensure it's on top of other content */
-      border: none;
-      text-decoration: none; /* Remove underline for anchor tag */
-    }
-
-    .floating-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 12px 25px rgba(251, 191, 36, 0.9);
-    }
-
-    /* Floating animation for the button */
-    @keyframes floatUpDown {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); } /* Moves up 10px */
-    }
-
-    .floating-btn.animate-float {
-      animation: floatUpDown 3s ease-in-out infinite;
-    }
-
-    .floating-btn-icon {
-      width: 1.8rem; /* Size of the icon */
-      height: 1.8rem;
-      stroke: currentColor;
-      stroke-width: 2;
-      fill: none;
-    }
-
-    /* New Footer Styles */
-    .social-footer {
-      /* Light mode defaults */
-      background: #f9fafb; /* gray-50 */
-      padding: 2.5rem 1.5rem;
-      margin-top: 5rem;
-      text-align: center;
-      color: #6b7280; /* gray-500 */
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
-      animation: animateFooterFadeIn 1.5s ease forwards; /* Apply fade-in animation */
-      animation-delay: 0.5s; /* Delay to appear after other content */
-      opacity: 0; /* Start hidden for animation */
-      transition: all 0.5s ease;
-    }
-    html.dark .social-footer {
-      background: linear-gradient(135deg, #111827, #1e293b);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-      color: #d1d5db; /* gray-300 */
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    @keyframes animateFooterFadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .social-icons {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem; /* Space between icons */
-      margin-bottom: 1.5rem;
-    }
-
-    .social-icon-link {
-      display: inline-flex;
-      /* Light mode default */
-      color: #d97706; /* Amber-700 */
-      transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-      text-decoration: none;
-      border-radius: 50%; /* For circular hover effect */
-      padding: 0.5rem; /* Padding around icon for hover area */
-    }
-    html.dark .social-icon-link {
-      color: #fbbf24; /* Amber-400 */
-    }
-
-    .social-icon-link:hover {
-      transform: translateY(-5px) scale(1.2); /* Lift and enlarge */
-      /* Light mode hover */
-      color: #b45309; /* Brighter amber for light mode */
-      filter: drop-shadow(0 0 8px rgba(217, 119, 6, 0.8)); /* Glow effect */
-      background-color: rgba(217, 119, 6, 0.1); /* Subtle background glow */
-    }
-    html.dark .social-icon-link:hover {
-      color: #facc15; /* Brighter amber for dark mode */
-      filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8)); /* Glow effect */
-      background-color: rgba(251, 191, 36, 0.1); /* Subtle background glow */
-    }
-
-    .social-icon-svg {
-      width: 2rem; /* Size of the SVG icon */
-      height: 2rem;
-      fill: currentColor; /* Use the color of the parent link */
-    }
-
-    .social-footer p {
-      font-size: 0.9rem;
-      /* Light mode default */
-      color: #4b5563; /* gray-700 */
-      transition: color 0.5s ease;
-    }
-    html.dark .social-footer p {
-      color: #9ca3af; /* gray-400 */
-    }
-
-    /* New Top-Corner Dark/Light Mode Toggle Button */
-    .theme-toggle-btn {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      background-color: #fbbf24; /* Amber-400 */
-      color: #1f2937; /* Dark gray */
-      padding: 0.75rem;
-      border-radius: 50%;
-      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-      z-index: 1001; /* Higher than floating settings button */
-      border: none;
-    }
-
-    .theme-toggle-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.9);
-      background-color: #facc15; /* Brighter amber on hover */
-    }
-
-    .theme-toggle-icon {
-      width: 1.5rem;
-      height: 1.5rem;
-      stroke: currentColor;
-      stroke-width: 2;
-      fill: none;
-      transition: transform 0.3s ease; /* For icon rotation */
-    }
-
-    /* Styles for the icon based on dark mode */
-    html.dark .theme-toggle-icon.sun-icon {
-      display: none; /* Hide sun in dark mode */
-    }
-    html:not(.dark) .theme-toggle-icon.moon-icon {
-      display: none; /* Hide moon in light mode */
-    }
-    html.dark .theme-toggle-icon.moon-icon {
-      transform: rotate(360deg); /* Spin moon when active */
-    }
-    html:not(.dark) .theme-toggle-icon.sun-icon {
-      transform: rotate(360deg); /* Spin sun when active */
-    }
-
-    /* --- NEW PLUGIN SEARCH SECTION STYLES --- */
-    .plugins-section {
-      max-width: 900px; /* Wider than comment section for grid */
-      margin: 5rem auto 4rem;
-      padding: 2.5rem;
-      /* Light mode defaults */
-      background: #ffffff;
-      border-radius: 1.5rem;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-      color: #d97706; /* amber-700 */
-      animation: fadeIn 1.4s ease forwards;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.5s ease;
-    }
-    html.dark .plugins-section {
-      background: linear-gradient(135deg, #1e293b, #111827);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-      color: #fbbf24;
-    }
-    .plugins-section h2 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      text-align: center;
-      margin-bottom: 2rem;
-      position: relative;
-      color: inherit;
-    }
-    .plugins-section h2::after {
-      content: "";
-      position: absolute;
-      width: 80px;
-      height: 4px;
-      background: currentColor;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 1rem;
-    }
-
-    /* Search Input Group (reusing input-group styles, but with specific overrides) */
-    .search-input-group {
-      margin-bottom: 2.5rem;
-      max-width: 500px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .search-input-group input {
-      padding-left: 40px; /* Space for icon */
-    }
-    .search-input-group label {
-      left: 40px; /* Align label with text */
-      background: white; /* Match section background */
-    }
-    html.dark .search-input-group label {
-      background: linear-gradient(135deg, #1e293b, #111827); /* Match section background */
-    }
-    .search-input-group input:focus + label,
-    .search-input-group input:not(:placeholder-shown) + label {
-      left: 14px; /* Move label back to original position when active */
-    }
-    /* Add a search icon */
-    .search-input-group::before {
-      content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%239ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 20px;
-      height: 20px;
-      z-index: 2; /* Above input, below label */
-      pointer-events: none;
-      transition: stroke 0.3s ease;
-    }
-    html.dark .search-input-group::before {
-      content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24aa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
-    }
-    .search-input-group input:focus + label + .search-input-group::before,
-    .search-input-group input:not(:placeholder-shown) + label + .search-input-group::before {
-      stroke: #d97706; /* amber-700 */
-    }
-    html.dark .search-input-group input:focus + label + .search-input-group::before,
-    html.dark .search-input-group input:not(:placeholder-shown) + label + .search-input-group::before {
-      stroke: #fbbf24;
-    }
+    /* Base styles for light mode, dark mode overrides with html.dark */
 
 
-    /* Plugins Grid */
-    .plugins-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-      padding-top: 1rem;
-    }
 
-    /* Plugin Card */
-    .plugin-card {
-      /* Light mode defaults */
-      background: #f9fafb; /* gray-50 */
-      border-radius: 1rem;
-      padding: 1.5rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease, opacity 0.5s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      opacity: 0; /* Start hidden for JS animation */
-      transform: translateY(20px); /* Start below for slide-up */
-    }
-    html.dark .plugin-card {
-      background: #374151; /* gray-700 */
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-    .plugin-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 10px 25px rgba(251, 191, 36, 0.5);
-    }
+    /* Button animations */
 
-    .plugin-card-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      /* Light mode default */
-      color: #d97706; /* amber-700 */
-      transition: color 0.5s ease;
-    }
-    html.dark .plugin-card-title {
-      color: #fbbf24; /* amber-400 */
-    }
+    .btn-animated {
 
-    .plugin-card-description {
-      font-size: 0.95rem;
-      line-height: 1.5;
-      margin-bottom: 1.25rem;
-      flex-grow: 1; /* Allows description to take available space */
-      /* Light mode default */
-      color: #4b5563; /* gray-700 */
-      transition: color 0.5s ease;
-    }
-    html.dark .plugin-card-description {
-      color: #d1d5db; /* gray-300 */
-    }
+      transition: all 0.3s ease;
 
-    .plugin-card-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: #fbbf24;
-      color: #1f2937;
-      font-weight: 600;
-      padding: 0.75rem 1.25rem;
-      border-radius: 0.5rem;
-      text-decoration: none;
-      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-    }
-    .plugin-card-button:hover {
-      background: #facc15;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(251, 191, 36, 0.7);
-    }
+      display: inline-flex;
 
-    .plugin-card-button svg {
-      width: 1.2rem;
-      height: 1.2rem;
-      margin-right: 0.5rem;
-      stroke: currentColor;
-      stroke-width: 2;
-      fill: none;
-    }
+      align-items: center;
 
-    .no-results-message {
-      text-align: center;
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-top: 2rem;
-      /* Light mode default */
-      color: #ef4444; /* red-500 */
-      transition: color 0.5s ease;
-    }
-    html.dark .no-results-message {
-      color: #f87171; /* red-400 */
-    }
+      gap: 0.5rem;
 
-    /* Animation for plugin cards appearing */
-    @keyframes slideInUp {
-      from { opacity: 0; transform: translateY(50px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .plugin-card.animate-in {
-      animation: slideInUp 0.6s ease-out forwards;
-    }
+      font-weight: 600;
 
-    /* Language Selector Styles */
-    .language-selector-container {
-      position: fixed;
-      top: 1.5rem;
-      right: 5.5rem; /* Adjusted to be next to theme toggle */
-      z-index: 1001;
-    }
-    .language-selector {
-      background-color: #fbbf24; /* Amber-400 */
-      color: #1f2937; /* Dark gray */
-      padding: 0.75rem 1rem;
-      border-radius: 9999px; /* Pill shape */
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
-      -webkit-appearance: none; /* Remove default dropdown arrow */
-      -moz-appearance: none;
-      appearance: none;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="color:%231f2937;"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>');
-      background-repeat: no-repeat;
-      background-position: right 0.75rem center;
-      background-size: 1.25rem;
-      padding-right: 2.5rem; /* Make space for the custom arrow */
-    }
-    html.dark .language-selector {
-      background-color: #fbbf24; /* Amber-400 */
-      color: #1f2937; /* Dark gray */
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="color:%231f2937;"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>');
-    }
-    .language-selector:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.9);
-      background-color: #facc15;
-    }
+    }
 
-    /* --- PRELOADER STYLES --- */
-    #preloader {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background-color: #f3f4f6; /* Light mode default, matches html */
-      z-index: 9999;
-      opacity: 1;
-      transition: opacity 0.5s ease-out; /* For fade-out effect */
-      gap: 2rem; /* Space between elements */
-    }
-    html.dark #preloader {
-      background: linear-gradient(to bottom right, #111827, #1f2937, #1e293b); /* Dark mode default, matches html */
-    }
+    .btn-animated:hover {
 
-    #preloader.fade-out {
-      opacity: 0;
-      pointer-events: none; /* Disable interactions during fade-out */
-    }
+      transform: scale(1.05);
 
-    #preloader img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      margin-bottom: 0; /* Adjusted due to gap */
-      box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
-      animation: pulseGlow 2s infinite; /* Reusing existing pulse animation */
-    }
+    }
 
-    #preloader p {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #d97706; /* Amber-700 */
-      animation: textGlow 2s ease-in-out infinite; /* Reusing existing text glow */
-      transition: color 0.5s ease;
-      margin-top: 0; /* Adjusted due to gap */
-    }
-    html.dark #preloader p {
-      color: #fbbf24; /* Amber-400 */
-    }
+    @keyframes pulseGlow {
 
-    /* Loading Bar Container */
-    .loading-bar-container {
-      width: 300px; /* Fixed width */
-      height: 20px;
-      background-color: #e5e7eb; /* Light gray for empty part */
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.2), 0 5px 15px rgba(0,0,0,0.1); /* Inner and outer shadow for depth */
-      transform: perspective(500px) rotateX(8deg); /* Subtle 3D tilt */
-      transition: transform 0.3s ease; /* Smooth transition for 3D effect */
-    }
-    html.dark .loading-bar-container {
-      background-color: #4b5563; /* Darker gray for empty part in dark mode */
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3);
-    }
+      0%, 100% {
 
-    /* Loading Bar Fill */
-    .loading-bar-fill {
-      height: 100%;
-      width: 0%; /* Starts empty */
-      border-radius: 10px;
-      background: linear-gradient(90deg, #facc15, #f472b6, #e879f9); /* Animated gradient */
-      background-size: 200% 100%; /* For gradient animation */
-      animation: loadingBarGradient 3s linear infinite; /* Continuous gradient movement */
-      transition: width 0.1s linear; /* Smooth width fill */
-      box-shadow: 0 0 10px rgba(251, 191, 36, 0.7); /* Glow effect on fill */
-    }
+        box-shadow: 0 0 8px 0 rgba(99, 102, 241, 0.7);
 
-    @keyframes loadingBarGradient {
-      0% { background-position: 100% 0; }
-      100% { background-position: 0% 0; }
-    }
+      }
 
-    /* Main content initially hidden */
-    #mainContent {
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.8s ease-in, visibility 0.8s ease-in;
-    }
+      50% {
 
-    #mainContent.loaded {
-      opacity: 1;
-      visibility: visible;
-    }
+        box-shadow: 0 0 16px 4px rgba(99, 102, 241, 0.9);
 
-  </style>
+      }
+
+    }
+
+    .btn-active-pulse { /* Renamed to avoid conflict with general 'btn-active' state */
+
+      animation: pulseGlow 2s infinite;
+
+    }
+
+    .btn-icon {
+
+      width: 1.2rem;
+
+      height: 1.2rem;
+
+      stroke-width: 2;
+
+      stroke: currentColor;
+
+      fill: none;
+
+    }
+
+
+
+    /* Animated gradient boxes */
+
+    .animated-gradient {
+
+      position: relative;
+
+      overflow: hidden;
+
+      border-radius: 0.75rem;
+
+      /* Light mode defaults */
+
+      border: 1px solid rgba(0, 0, 0, 0.1);
+
+      background: white;
+
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+      color: black;
+
+      transition: all 0.5s ease; /* Smooth transition for theme change */
+
+    }
+
+    html.dark .animated-gradient {
+
+      border: 1px solid rgba(255, 255, 255, 0.25);
+
+      background: linear-gradient(270deg, #7928CA, #FF0080, #FF8C00, #40E0D0, #7928CA);
+
+      background-size: 1000% 1000%;
+
+      animation: gradientShift 20s ease infinite;
+
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+
+      color: white;
+
+    }
+
+    @keyframes gradientShift {
+
+      0% { background-position: 0% 50%; }
+
+      50% { background-position: 100% 50%; }
+
+      100% { background-position: 0% 50%; }
+
+    }
+
+    .animated-gradient::before {
+
+      content: "";
+
+      position: absolute;
+
+      inset: 0;
+
+      background: rgba(0, 0, 0, 0); /* No overlay in light mode */
+
+      border-radius: 0.75rem;
+
+      pointer-events: none;
+
+      transition: background 0.5s ease;
+
+    }
+
+    html.dark .animated-gradient::before {
+
+      background: rgba(0, 0, 0, 0.4);
+
+    }
+
+    .animated-gradient > * {
+
+      position: relative;
+
+      z-index: 1;
+
+    }
+
+
+
+    /* About Box Animation */
+
+    @keyframes floatText {
+
+      0%, 100% { transform: translateY(0); }
+
+      50% { transform: translateY(-10px); }
+
+    }
+
+    .animate-floatText {
+
+      animation: floatText 6s ease-in-out infinite;
+
+    }
+
+    @keyframes fadeIn {
+
+      from { opacity: 0; transform: translateY(20px); }
+
+      to { opacity: 1; transform: translateY(0); }
+
+    }
+
+    .animate-fadeIn {
+
+      animation: fadeIn 1s ease-out both;
+
+    }
+
+
+
+    /* Small Contributor Cards */
+
+    .contributors-section {
+
+      animation: fadeIn 1.2s ease forwards;
+
+      margin-top: 5rem;
+
+      padding: 2rem;
+
+      /* Light mode defaults */
+
+      background: #f9fafb; /* gray-50 */
+
+      border-radius: 1rem;
+
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+
+      color: #d97706; /* Tailwind amber-700 */
+
+      transition: all 0.5s ease;
+
+    }
+
+    html.dark .contributors-section {
+
+      background: linear-gradient(135deg, #1e293b, #111827);
+
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+
+      color: #fbbf24; /* Tailwind amber-400 */
+
+    }
+
+    .contributors-section h2 {
+
+      font-weight: 800;
+
+      font-size: 1.8rem;
+
+      text-align: center;
+
+      margin-bottom: 1rem;
+
+      position: relative;
+
+      display: inline-block;
+
+      padding-bottom: 0.25rem;
+
+      color: inherit; /* Inherit from parent */
+
+    }
+
+    .contributors-section h2::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 40%;
+
+      height: 3px;
+
+      background: currentColor; /* Use current text color */
+
+      bottom: 0;
+
+      left: 30%;
+
+      border-radius: 1rem;
+
+    }
+
+    .contributors-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit,minmax(110px,1fr));
+
+      gap: 1.25rem;
+
+      justify-items: center;
+
+      align-items: center;
+
+    }
+
+    .contributor-card {
+
+      /* Light mode defaults */
+
+      background: #ffffff; /* white */
+
+      border-radius: 1rem;
+
+      padding: 0.75rem 0.5rem 1rem;
+
+      width: 110px;
+
+      text-align: center;
+
+      box-shadow: 0 4px 8px rgba(251, 191, 36, 0.1);
+
+      cursor: default;
+
+      transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.5s ease;
+
+      animation: bounce 3.5s ease-in-out infinite;
+
+      will-change: transform;
+
+    }
+
+    html.dark .contributor-card {
+
+      background: #374151; /* Tailwind gray-700 */
+
+      box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);
+
+    }
+
+    .contributor-card:hover {
+
+      transform: translateY(-6px) scale(1.1);
+
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.7); /* This shadow is strong, keep for both */
+
+      z-index: 10;
+
+    }
+
+    .contributor-avatar {
+
+      width: 72px;
+
+      height: 72px;
+
+      border-radius: 50%;
+
+      /* Light mode default */
+
+      border: 2.5px solid #d97706; /* amber-700 */
+
+      object-fit: cover;
+
+      margin-bottom: 0.5rem;
+
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+
+      transition: border-color 0.5s ease;
+
+    }
+
+    html.dark .contributor-avatar {
+
+      border: 2.5px solid #fbbf24; /* amber-400 */
+
+    }
+
+    .contributor-name {
+
+      font-weight: 700;
+
+      font-size: 1rem;
+
+      /* Light mode default */
+
+      color: #d97706; /* amber-700 */
+
+      margin-bottom: 0.15rem;
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      transition: color 0.5s ease;
+
+    }
+
+    html.dark .contributor-name {
+
+      color: #fbbf24; /* amber-400 */
+
+    }
+
+    .contributor-role {
+
+      font-weight: 500;
+
+      font-size: 0.8rem;
+
+      /* Light mode default */
+
+      color: #6b7280; /* Tailwind gray-500 */
+
+      white-space: nowrap;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      transition: color 0.5s ease;
+
+    }
+
+    html.dark .contributor-role {
+
+      color: #d1d5db; /* Tailwind gray-300 */
+
+    }
+
+
+
+    @keyframes bounce {
+
+      0%, 100% { transform: translateY(0); }
+
+      50% { transform: translateY(-8px); }
+
+    }
+
+
+
+    /* Comment Box Section */
+
+    .comment-section {
+
+      max-width: 600px;
+
+      margin: 3rem auto 4rem;
+
+      /* Light mode defaults */
+
+      background: #ffffff; /* white */
+
+      border-radius: 1rem;
+
+      padding: 2rem;
+
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+
+      color: #d97706; /* amber-700 */
+
+      animation: fadeIn 1.3s ease forwards;
+
+      position: relative;
+
+      overflow: hidden;
+
+      transition: all 0.5s ease;
+
+    }
+
+    html.dark .comment-section {
+
+      background: linear-gradient(135deg, #111827, #1e293b);
+
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+
+      color: #fbbf24;
+
+    }
+
+
+
+    .comment-section h2 {
+
+      font-size: 1.9rem;
+
+      font-weight: 800;
+
+      text-align: center;
+
+      margin-bottom: 1rem;
+
+      position: relative;
+
+      color: inherit; /* Inherit from parent */
+
+    }
+
+    .comment-section h2::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 50px;
+
+      height: 3px;
+
+      background: currentColor; /* Use current text color */
+
+      bottom: -8px;
+
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      border-radius: 1rem;
+
+    }
+
+
+
+    /* Floating label inputs */
+
+    .input-group {
+
+      position: relative;
+
+      margin-bottom: 1.75rem;
+
+    }
+
+    .input-group input,
+
+    .input-group textarea {
+
+      width: 100%;
+
+      padding: 12px 14px;
+
+      border-radius: 0.75rem;
+
+      border: 2px solid transparent;
+
+      /* Light mode defaults */
+
+      background-color: #f3f4f6; /* gray-100 */
+
+      color: #1f2937; /* gray-900 */
+
+      font-size: 1rem;
+
+      resize: none;
+
+      outline-offset: 2px;
+
+      transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+
+    }
+
+    html.dark .input-group input,
+
+    html.dark .input-group textarea {
+
+      background-color: #374151; /* gray-700 */
+
+      color: #fbbf24;
+
+    }
+
+    .input-group input:focus,
+
+    .input-group textarea:focus {
+
+      /* Light mode defaults */
+
+      border-color: #d97706; /* amber-700 */
+
+      box-shadow: 0 0 10px rgba(217, 119, 6, 0.5);
+
+      background-color: #e5e7eb; /* gray-200 */
+
+    }
+
+    html.dark .input-group input:focus,
+
+    html.dark .input-group textarea:focus {
+
+      border-color: #fbbf24;
+
+      box-shadow: 0 0 10px #fbbf24;
+
+      background-color: #1f2937; /* darker gray */
+
+    }
+
+    .input-group label {
+
+      position: absolute;
+
+      top: 50%;
+
+      left: 14px;
+
+      /* Light mode defaults */
+
+      color: #9ca3af; /* gray-400 */
+
+      font-weight: 600;
+
+      pointer-events: none;
+
+      transform: translateY(-50%);
+
+      transition: all 0.25s ease;
+
+      user-select: none;
+
+      font-size: 1rem;
+
+      background: white; /* Match comment section background */
+
+      padding: 0 6px;
+
+    }
+
+    html.dark .input-group label {
+
+      color: #fbbf24aa;
+
+      background: linear-gradient(135deg, #1e293b, #111827); /* Match comment section background */
+
+    }
+
+    .input-group input:focus + label,
+
+    .input-group input:not(:placeholder-shown) + label,
+
+    .input-group textarea:focus + label,
+
+    .input-group textarea:not(:placeholder-shown) + label {
+
+      top: -8px;
+
+      font-size: 0.8rem;
+
+      /* Light mode default */
+
+      color: #d97706; /* amber-700 */
+
+      font-weight: 700;
+
+    }
+
+    html.dark .input-group input:focus + label,
+
+    html.dark .input-group input:not(:placeholder-shown) + label,
+
+    html.dark .input-group textarea:focus + label,
+
+    html.dark .input-group textarea:not(:placeholder-shown) + label {
+
+      color: #fbbf24;
+
+    }
+
+
+
+    /* Submit Button */
+
+    .submit-btn {
+
+      background: #fbbf24;
+
+      color: #1f2937;
+
+      font-weight: 700;
+
+      padding: 12px 24px;
+
+      border-radius: 9999px;
+
+      width: 100%;
+
+      font-size: 1.1rem;
+
+      cursor: pointer;
+
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6);
+
+      transition: background-color 0.3s ease, transform 0.25s ease, box-shadow 0.3s ease;
+
+      border: none;
+
+      user-select: none;
+
+    }
+
+    .submit-btn:hover {
+
+      background: #facc15;
+
+      transform: scale(1.05);
+
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.9);
+
+    }
+
+
+
+    /* Floating Settings Button (now an anchor tag) */
+
+    .floating-btn {
+
+      position: fixed;
+
+      bottom: 2rem; /* Distance from bottom */
+
+      right: 2rem; /* Distance from right */
+
+      background-color: #fbbf24; /* Amber-400 */
+
+      color: #1f2937; /* Dark gray */
+
+      padding: 1rem;
+
+      border-radius: 50%; /* Make it round */
+
+      box-shadow: 0 8px 20px rgba(251, 191, 36, 0.7);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      cursor: pointer;
+
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+
+      z-index: 1000; /* Ensure it's on top of other content */
+
+      border: none;
+
+      text-decoration: none; /* Remove underline for anchor tag */
+
+    }
+
+
+
+    .floating-btn:hover {
+
+      transform: scale(1.1);
+
+      box-shadow: 0 12px 25px rgba(251, 191, 36, 0.9);
+
+    }
+
+
+
+    /* Floating animation for the button */
+
+    @keyframes floatUpDown {
+
+      0%, 100% { transform: translateY(0); }
+
+      50% { transform: translateY(-10px); } /* Moves up 10px */
+
+    }
+
+
+
+    .floating-btn.animate-float {
+
+      animation: floatUpDown 3s ease-in-out infinite;
+
+    }
+
+
+
+    .floating-btn-icon {
+
+      width: 1.8rem; /* Size of the icon */
+
+      height: 1.8rem;
+
+      stroke: currentColor;
+
+      stroke-width: 2;
+
+      fill: none;
+
+    }
+
+
+
+    /* New Footer Styles */
+
+    .social-footer {
+
+      /* Light mode defaults */
+
+      background: #f9fafb; /* gray-50 */
+
+      padding: 2.5rem 1.5rem;
+
+      margin-top: 5rem;
+
+      text-align: center;
+
+      color: #6b7280; /* gray-500 */
+
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+      animation: animateFooterFadeIn 1.5s ease forwards; /* Apply fade-in animation */
+
+      animation-delay: 0.5s; /* Delay to appear after other content */
+
+      opacity: 0; /* Start hidden for animation */
+
+      transition: all 0.5s ease;
+
+    }
+
+    html.dark .social-footer {
+
+      background: linear-gradient(135deg, #111827, #1e293b);
+
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+
+      color: #d1d5db; /* gray-300 */
+
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    }
+
+
+
+    @keyframes animateFooterFadeIn {
+
+      from { opacity: 0; transform: translateY(20px); }
+
+      to { opacity: 1; transform: translateY(0); }
+
+    }
+
+
+
+    .social-icons {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 1.5rem; /* Space between icons */
+
+      margin-bottom: 1.5rem;
+
+    }
+
+
+
+    .social-icon-link {
+
+      display: inline-flex;
+
+      /* Light mode default */
+
+      color: #d97706; /* Amber-700 */
+
+      transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+
+      text-decoration: none;
+
+      border-radius: 50%; /* For circular hover effect */
+
+      padding: 0.5rem; /* Padding around icon for hover area */
+
+    }
+
+    html.dark .social-icon-link {
+
+      color: #fbbf24; /* Amber-400 */
+
+    }
+
+
+
+    .social-icon-link:hover {
+
+      transform: translateY(-5px) scale(1.2); /* Lift and enlarge */
+
+      /* Light mode hover */
+
+      color: #b45309; /* Brighter amber for light mode */
+
+      filter: drop-shadow(0 0 8px rgba(217, 119, 6, 0.8)); /* Glow effect */
+
+      background-color: rgba(217, 119, 6, 0.1); /* Subtle background glow */
+
+    }
+
+    html.dark .social-icon-link:hover {
+
+      color: #facc15; /* Brighter amber for dark mode */
+
+      filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8)); /* Glow effect */
+
+      background-color: rgba(251, 191, 36, 0.1); /* Subtle background glow */
+
+    }
+
+
+
+    .social-icon-svg {
+
+      width: 2rem; /* Size of the SVG icon */
+
+      height: 2rem;
+
+      fill: currentColor; /* Use the color of the parent link */
+
+    }
+
+
+
+    .social-footer p {
+
+      font-size: 0.9rem;
+
+      /* Light mode default */
+
+      color: #4b5563; /* gray-700 */
+
+      transition: color 0.5s ease;
+
+    }
+
+    html.dark .social-footer p {
+
+      color: #9ca3af; /* gray-400 */
+
+    }
+
+
+
+    /* New Top-Corner Dark/Light Mode Toggle Button */
+
+    .theme-toggle-btn {
+
+      position: fixed;
+
+      top: 1.5rem;
+
+      right: 1.5rem;
+
+      background-color: #fbbf24; /* Amber-400 */
+
+      color: #1f2937; /* Dark gray */
+
+      padding: 0.75rem;
+
+      border-radius: 50%;
+
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      cursor: pointer;
+
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+
+      z-index: 1001; /* Higher than floating settings button */
+
+      border: none;
+
+    }
+
+
+
+    .theme-toggle-btn:hover {
+
+      transform: scale(1.1);
+
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.9);
+
+      background-color: #facc15; /* Brighter amber on hover */
+
+    }
+
+
+
+    .theme-toggle-icon {
+
+      width: 1.5rem;
+
+      height: 1.5rem;
+
+      stroke: currentColor;
+
+      stroke-width: 2;
+
+      fill: none;
+
+      transition: transform 0.3s ease; /* For icon rotation */
+
+    }
+
+
+
+    /* Styles for the icon based on dark mode */
+
+    html.dark .theme-toggle-icon.sun-icon {
+
+      display: none; /* Hide sun in dark mode */
+
+    }
+
+    html:not(.dark) .theme-toggle-icon.moon-icon {
+
+      display: none; /* Hide moon in light mode */
+
+    }
+
+    html.dark .theme-toggle-icon.moon-icon {
+
+      transform: rotate(360deg); /* Spin moon when active */
+
+    }
+
+    html:not(.dark) .theme-toggle-icon.sun-icon {
+
+      transform: rotate(360deg); /* Spin sun when active */
+
+    }
+
+
+
+    /* --- NEW PLUGIN SEARCH SECTION STYLES --- */
+
+    .plugins-section {
+
+      max-width: 900px; /* Wider than comment section for grid */
+
+      margin: 5rem auto 4rem;
+
+      padding: 2.5rem;
+
+      /* Light mode defaults */
+
+      background: #ffffff;
+
+      border-radius: 1.5rem;
+
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+
+      color: #d97706; /* amber-700 */
+
+      animation: fadeIn 1.4s ease forwards;
+
+      position: relative;
+
+      overflow: hidden;
+
+      transition: all 0.5s ease;
+
+    }
+
+    html.dark .plugins-section {
+
+      background: linear-gradient(135deg, #1e293b, #111827);
+
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
+      color: #fbbf24;
+
+    }
+
+    .plugins-section h2 {
+
+      font-size: 2.2rem;
+
+      font-weight: 800;
+
+      text-align: center;
+
+      margin-bottom: 2rem;
+
+      position: relative;
+
+      color: inherit;
+
+    }
+
+    .plugins-section h2::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 80px;
+
+      height: 4px;
+
+      background: currentColor;
+
+      bottom: -10px;
+
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      border-radius: 1rem;
+
+    }
+
+
+
+    /* Search Input Group (reusing input-group styles, but with specific overrides) */
+
+    .search-input-group {
+
+      margin-bottom: 2.5rem;
+
+      max-width: 500px;
+
+      margin-left: auto;
+
+      margin-right: auto;
+
+    }
+
+    .search-input-group input {
+
+      padding-left: 40px; /* Space for icon */
+
+    }
+
+    .search-input-group label {
+
+      left: 40px; /* Align label with text */
+
+      background: white; /* Match section background */
+
+    }
+
+    html.dark .search-input-group label {
+
+      background: linear-gradient(135deg, #1e293b, #111827); /* Match section background */
+
+    }
+
+    .search-input-group input:focus + label,
+
+    .search-input-group input:not(:placeholder-shown) + label {
+
+      left: 14px; /* Move label back to original position when active */
+
+    }
+
+    /* Add a search icon */
+
+    .search-input-group::before {
+
+      content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%239ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+
+      position: absolute;
+
+      left: 14px;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      width: 20px;
+
+      height: 20px;
+
+      z-index: 2; /* Above input, below label */
+
+      pointer-events: none;
+
+      transition: stroke 0.3s ease;
+
+    }
+
+    html.dark .search-input-group::before {
+
+      content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23fbbf24aa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+
+    }
+
+    .search-input-group input:focus + label + .search-input-group::before,
+
+    .search-input-group input:not(:placeholder-shown) + label + .search-input-group::before {
+
+      stroke: #d97706; /* amber-700 */
+
+    }
+
+    html.dark .search-input-group input:focus + label + .search-input-group::before,
+
+    html.dark .search-input-group input:not(:placeholder-shown) + label + .search-input-group::before {
+
+      stroke: #fbbf24;
+
+    }
+
+
+
+
+
+    /* Plugins Grid */
+
+    .plugins-grid {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+      gap: 1.5rem;
+
+      padding-top: 1rem;
+
+    }
+
+
+
+    /* Plugin Card */
+
+    .plugin-card {
+
+      /* Light mode defaults */
+
+      background: #f9fafb; /* gray-50 */
+
+      border-radius: 1rem;
+
+      padding: 1.5rem;
+
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease, opacity 0.5s ease;
+
+      display: flex;
+
+      flex-direction: column;
+
+      justify-content: space-between;
+
+      opacity: 0; /* Start hidden for JS animation */
+
+      transform: translateY(20px); /* Start below for slide-up */
+
+    }
+
+    html.dark .plugin-card {
+
+      background: #374151; /* gray-700 */
+
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
+    }
+
+    .plugin-card:hover {
+
+      transform: translateY(-8px) scale(1.02);
+
+      box-shadow: 0 10px 25px rgba(251, 191, 36, 0.5);
+
+    }
+
+
+
+    .plugin-card-title {
+
+      font-size: 1.4rem;
+
+      font-weight: 700;
+
+      margin-bottom: 0.5rem;
+
+      /* Light mode default */
+
+      color: #d97706; /* amber-700 */
+
+      transition: color 0.5s ease;
+
+    }
+
+    html.dark .plugin-card-title {
+
+      color: #fbbf24; /* amber-400 */
+
+    }
+
+
+
+    .plugin-card-description {
+
+      font-size: 0.95rem;
+
+      line-height: 1.5;
+
+      margin-bottom: 1.25rem;
+
+      flex-grow: 1; /* Allows description to take available space */
+
+      /* Light mode default */
+
+      color: #4b5563; /* gray-700 */
+
+      transition: color 0.5s ease;
+
+    }
+
+    html.dark .plugin-card-description {
+
+      color: #d1d5db; /* gray-300 */
+
+    }
+
+
+
+    .plugin-card-button {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background: #fbbf24;
+
+      color: #1f2937;
+
+      font-weight: 600;
+
+      padding: 0.75rem 1.25rem;
+
+      border-radius: 0.5rem;
+
+      text-decoration: none;
+
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+
+      border: none;
+
+      cursor: pointer;
+
+      width: 100%;
+
+    }
+
+    .plugin-card-button:hover {
+
+      background: #facc15;
+
+      transform: translateY(-2px);
+
+      box-shadow: 0 4px 10px rgba(251, 191, 36, 0.7);
+
+    }
+
+
+
+    .plugin-card-button svg {
+
+      width: 1.2rem;
+
+      height: 1.2rem;
+
+      margin-right: 0.5rem;
+
+      stroke: currentColor;
+
+      stroke-width: 2;
+
+      fill: none;
+
+    }
+
+
+
+    .no-results-message {
+
+      text-align: center;
+
+      font-size: 1.1rem;
+
+      font-weight: 600;
+
+      margin-top: 2rem;
+
+      /* Light mode default */
+
+      color: #ef4444; /* red-500 */
+
+      transition: color 0.5s ease;
+
+    }
+
+    html.dark .no-results-message {
+
+      color: #f87171; /* red-400 */
+
+    }
+
+
+
+    /* Animation for plugin cards appearing */
+
+    @keyframes slideInUp {
+
+      from { opacity: 0; transform: translateY(50px); }
+
+      to { opacity: 1; transform: translateY(0); }
+
+    }
+
+    .plugin-card.animate-in {
+
+      animation: slideInUp 0.6s ease-out forwards;
+
+    }
+
+
+
+    /* Language Selector Styles */
+
+    .language-selector-container {
+
+      position: fixed;
+
+      top: 1.5rem;
+
+      right: 5.5rem; /* Adjusted to be next to theme toggle */
+
+      z-index: 1001;
+
+    }
+
+    .language-selector {
+
+      background-color: #fbbf24; /* Amber-400 */
+
+      color: #1f2937; /* Dark gray */
+
+      padding: 0.75rem 1rem;
+
+      border-radius: 9999px; /* Pill shape */
+
+      border: none;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+      box-shadow: 0 4px 15px rgba(251, 191, 36, 0.6);
+
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+
+      -webkit-appearance: none; /* Remove default dropdown arrow */
+
+      -moz-appearance: none;
+
+      appearance: none;
+
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="color:%231f2937;"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>');
+
+      background-repeat: no-repeat;
+
+      background-position: right 0.75rem center;
+
+      background-size: 1.25rem;
+
+      padding-right: 2.5rem; /* Make space for the custom arrow */
+
+    }
+
+    html.dark .language-selector {
+
+      background-color: #fbbf24; /* Amber-400 */
+
+      color: #1f2937; /* Dark gray */
+
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="color:%231f2937;"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>');
+
+    }
+
+    .language-selector:hover {
+
+      transform: scale(1.05);
+
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.9);
+
+      background-color: #facc15;
+
+    }
+
+
+
+    /* --- PRELOADER STYLES --- */
+
+    #preloader {
+
+      position: fixed;
+
+      top: 0;
+
+      left: 0;
+
+      width: 100%;
+
+      height: 100%;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background-color: #f9fafb; /* Light mode default */
+
+      z-index: 9999;
+
+      opacity: 1;
+
+      transition: opacity 0.5s ease-out; /* For fade-out effect */
+
+      gap: 2rem; /* Space between elements */
+
+    }
+
+    html.dark #preloader {
+
+      background-color: #111827; /* Dark mode default */
+
+    }
+
+
+
+    #preloader.fade-out {
+
+      opacity: 0;
+
+      pointer-events: none; /* Disable interactions during fade-out */
+
+    }
+
+
+
+    #preloader img {
+
+      width: 150px;
+
+      height: 150px;
+
+      border-radius: 50%;
+
+      margin-bottom: 0; /* Adjusted due to gap */
+
+      box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+
+      animation: pulseGlow 2s infinite; /* Reusing existing pulse animation */
+
+    }
+
+
+
+    #preloader p {
+
+      font-size: 1.8rem;
+
+      font-weight: 700;
+
+      color: #d97706; /* Amber-700 */
+
+      animation: textGlow 2s ease-in-out infinite; /* Reusing existing text glow */
+
+      transition: color 0.5s ease;
+
+      margin-top: 0; /* Adjusted due to gap */
+
+    }
+
+    html.dark #preloader p {
+
+      color: #fbbf24; /* Amber-400 */
+
+    }
+
+
+
+    /* Loading Bar Container */
+
+    .loading-bar-container {
+
+      width: 300px; /* Fixed width */
+
+      height: 20px;
+
+      background-color: #e5e7eb; /* Light gray for empty part */
+
+      border-radius: 10px;
+
+      overflow: hidden;
+
+      position: relative;
+
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.2), 0 5px 15px rgba(0,0,0,0.1); /* Inner and outer shadow for depth */
+
+      transform: perspective(500px) rotateX(8deg); /* Subtle 3D tilt */
+
+      transition: transform 0.3s ease; /* Smooth transition for 3D effect */
+
+    }
+
+    html.dark .loading-bar-container {
+
+      background-color: #4b5563; /* Darker gray for empty part in dark mode */
+
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.3);
+
+    }
+
+
+
+    /* Loading Bar Fill */
+
+    .loading-bar-fill {
+
+      height: 100%;
+
+      width: 0%; /* Starts empty */
+
+      border-radius: 10px;
+
+      background: linear-gradient(90deg, #facc15, #f472b6, #e879f9); /* Animated gradient */
+
+      background-size: 200% 100%; /* For gradient animation */
+
+      animation: loadingBarGradient 3s linear infinite; /* Continuous gradient movement */
+
+      transition: width 0.1s linear; /* Smooth width fill */
+
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.7); /* Glow effect on fill */
+
+    }
+
+
+
+    @keyframes loadingBarGradient {
+
+      0% { background-position: 100% 0; }
+
+      100% { background-position: 0% 0; }
+
+    }
+
+
+
+    /* Main content initially hidden */
+
+    #mainContent {
+
+      opacity: 0;
+
+      visibility: hidden;
+
+      transition: opacity 0.8s ease-in, visibility 0.8s ease-in;
+
+    }
+
+
+
+    #mainContent.loaded {
+
+      opacity: 1;
+
+      visibility: visible;
+
+    }
+
+
+
+  </style>
+
 </head>
-<body class="transition-colors duration-500"> <div id="preloader">
-    <img src="https://i.ibb.co/kg43HQkB/IMG-20250630-WA0120.jpg" alt="GOLDEN QUEEN MD Logo" />
-    <p>Loading GOLDEN QUEEN MD...</p>
-    <div class="loading-bar-container">
-      <div class="loading-bar-fill"></div>
-    </div>
-  </div>
 
-  <div id="mainContent">
-    <div class="language-selector-container">
-      <select id="languageSelector" class="language-selector">
-        <option value="en">English</option>
-        <option value="si">සිංහල</option>
-        <option value="ta">தமிழ்</option>
-      </select>
-    </div>
-
-    <button class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode" onclick="document.documentElement.classList.toggle('dark')">
-      <svg class="theme-toggle-icon sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
-      <svg class="theme-toggle-icon moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-      </svg>
-    </button>
-
-    <div class="text-center py-8 animate-fadeIn">
-      <img src="https://i.ibb.co/kg43HQkB/IMG-20250630-WA0120.jpg" alt="Bot Logo" class="mx-auto mb-4 rounded-full ring-4 ring-yellow-400 shadow-lg hover:scale-105 transition-transform duration-500" />
-    </div>
-
-    <div class="max-w-3xl mx-auto py-12 px-4 space-y-12">
-
-      <div class="text-center space-y-3">
-        <h1 class="text-4xl font-extrabold text-yellow-600 dark:text-yellow-400" data-i18n-key="dashboardHeader">GOLDEN QUEEN MD BOT DASHBOARD</h1>
-        <p class="text-gray-700 dark:text-gray-300" data-i18n-key="dashboardSubHeader">Your Sinhala Bot Network | GoldenQueen</p>
-      </div>
-
-      <div class="flex space-x-2 mb-6 justify-center">
-        <button id="btnConnect" class="btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300
-          active-tab-styles"> <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-          </svg> <span data-i18n-key="connectBtn">CONNECT</span>
-        </button>
-        <button id="btnVideos" class="btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300
-          inactive-tab-styles"> <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-2-4v8m-6 0V6a2 2 0 012-2h5l4 4v8a2 2 0 01-2 2H9a2 2 0 01-2-2z"/>
-          </svg> <span data-i18n-key="videosBtn">VIDEOS</span>
-        </button>
-      </div>
-
-      <div class="relative bg-white border border-gray-200 backdrop-blur-md rounded-xl p-6 mb-8 overflow-hidden shadow-lg animate-fadeIn dark:bg-white/10 dark:border-white/20">
-        <div class="absolute inset-0 animate-floatText opacity-10 pointer-events-none select-none text-8xl font-black text-gray-300 dark:text-white whitespace-nowrap" data-i18n-key="aboutFloatingText">
-          GOLDEN QUEEN MD • BOT
-        </div>
-        <h2 class="text-2xl font-bold text-yellow-600 dark:text-yellow-300 relative z-10 mb-2" data-i18n-key="aboutTitle">🤖 About GOLDEN QUEEN MD</h2>
-        <p class="text-gray-700 dark:text-gray-200 leading-relaxed relative z-10">
-          <span data-i18n-key="aboutTextPart1">GOLDEN QUEEN MD is a powerful Sinhala WhatsApp Bot built for</span> <span class="text-yellow-700 dark:text-yellow-400 font-semibold" data-i18n-key="aboutTextPart2">automation, entertainment, and group management</span>.
-          <span data-i18n-key="aboutTextPart3">Featuring song downloaders, TikTok tools, AI chat, moderation, and more — this bot is crafted for both</span> <span class="text-yellow-700 dark:text-yellow-400 font-semibold" data-i18n-key="aboutTextPart4">personal use and community administration</span>.
-          <span data-i18n-key="aboutTextPart5">Experience seamless interaction and powerful features with GOLDEN QUEEN MD.</span>
-        </p>
-      </div>
-
-      <div class="contributors-section">
-        <h2 data-i18n-key="contributorsTitle">🌟 Our Core Contributors 🌟</h2>
-        <div class="contributors-grid">
-          <div class="contributor-card">
-            <img src="https://i.ibb.co/C0V4k2n/IMG-20240702-WA0019.jpg" alt="Vajira" class="contributor-avatar mx-auto" />
-            <h3 class="contributor-name" data-i18n-key="contributor1Name">VAJIRA</h3>
-            <p class="contributor-role" data-i18n-key="contributor1Role">Founder & Dev</p>
-          </div>
-          <div class="contributor-card">
-            <img src="https://i.ibb.co/3k5f3x1/IMG-20240702-WA0020.jpg" alt="Imasha" class="contributor-avatar mx-auto" />
-            <h3 class="contributor-name" data-i18n-key="contributor2Name">IMASHA</h3>
-            <p class="contributor-role" data-i18n-key="contributor2Role">Co-Founder</p>
-          </div>
-          <div class="contributor-card">
-            <img src="https://i.ibb.co/0y7xXG7/IMG-20240702-WA0022.jpg" alt="Kavinda" class="contributor-avatar mx-auto" />
-            <h3 class="contributor-name" data-i18n-key="contributor3Name">KAVINDA</h3>
-            <p class="contributor-role" data-i18n-key="contributor3Role">Support</p>
-          </div>
-          <div class="contributor-card">
-            <img src="https://i.ibb.co/T5CgB1B/IMG-20240702-WA0023.jpg" alt="Thisara" class="contributor-avatar mx-auto" />
-            <h3 class="contributor-name" data-i18n-key="contributor4Name">THISARA</h3>
-            <p class="contributor-role" data-i18n-key="contributor4Role">Support</p>
-          </div>
-          <div class="contributor-card">
-            <img src="https://i.ibb.co/Wc6q7wS/IMG-20240702-WA0021.jpg" alt="Chathumi" class="contributor-avatar mx-auto" />
-            <h3 class="contributor-name" data-i18n-key="contributor5Name">CHATHUMI</h3>
-            <p class="contributor-role" data-i18n-key="contributor5Role">Support</p>
-          </div>
-        </div>
-      </div>
-
-      <section class="plugins-section">
-        <h2 data-i18n-key="pluginsTitle">✨ Discover Our Plugins ✨</h2>
-        <div class="search-input-group">
-          <input type="text" id="pluginSearch" placeholder=" " autocomplete="off" />
-          <label for="pluginSearch" data-i18n-key="searchPluginsPlaceholder">Search Plugins...</label>
-        </div>
-        <div id="pluginsGrid" class="plugins-grid">
-          <div class="plugin-card">
-            <h3 class="plugin-card-title" data-i18n-key="plugin1Title">Song Downloader</h3>
-            <p class="plugin-card-description" data-i18n-key="plugin1Description">Download your favorite songs directly from YouTube with a simple command.</p>
-            <a href="#" class="plugin-card-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              <span data-i18n-key="learnMoreBtn">Learn More</span>
-            </a>
-          </div>
-          <div class="plugin-card">
-            <h3 class="plugin-card-title" data-i18n-key="plugin2Title">TikTok Downloader</h3>
-            <p class="plugin-card-description" data-i18n-key="plugin2Description">Download TikTok videos without watermark, perfect for sharing and saving.</p>
-            <a href="#" class="plugin-card-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              <span data-i18n-key="learnMoreBtn">Learn More</span>
-            </a>
-          </div>
-          <div class="plugin-card">
-            <h3 class="plugin-card-title" data-i18n-key="plugin3Title">AI Chatbot</h3>
-            <p class="plugin-card-description" data-i18n-key="plugin3Description">Engage in smart conversations powered by advanced AI, available 24/7.</p>
-            <a href="#" class="plugin-card-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              <span data-i18n-key="learnMoreBtn">Learn More</span>
-            </a>
-          </div>
-          <div class="plugin-card">
-            <h3 class="plugin-card-title" data-i18n-key="plugin4Title">Group Manager</h3>
-            <p class="plugin-card-description" data-i18n-key="plugin4Description">Powerful tools to manage your WhatsApp groups efficiently, including moderation.</p>
-            <a href="#" class="plugin-card-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              <span data-i18n-key="learnMoreBtn">Learn More</span>
-            </a>
-          </div>
-          <div class="plugin-card">
-            <h3 class="plugin-card-title" data-i18n-key="plugin5Title">Image Search</h3>
-            <p class="plugin-card-description" data-i18n-key="plugin5Description">Find images on any topic using simple text queries. Great for quick references.</p>
-            <a href="#" class="plugin-card-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              <span data-i18n-key="learnMoreBtn">Learn More</span>
-            </a>
-          </div>
-          <div class="plugin-card">
-            <h3 class="plugin-card-title" data-i18n-key="plugin6Title">Sticker Maker</h3>
-            <p class="plugin-card-description" data-i18n-key="plugin6Description">Create custom WhatsApp stickers from your images or videos effortlessly.</p>
-            <a href="#" class="plugin-card-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              <span data-i18n-key="learnMoreBtn">Learn More</span>
-            </a>
-          </div>
-        </div>
-        <p id="noResults" class="no-results-message hidden" data-i18n-key="noResultsFound">No plugins found matching your search.</p>
-      </section>
-
-      <section class="comment-section">
-        <h2 data-i18n-key="commentSectionTitle">💬 Leave a Comment!</h2>
-        <form>
-          <div class="input-group">
-            <input type="text" id="commentName" placeholder=" " required />
-            <label for="commentName" data-i18n-key="yourNameLabel">Your Name</label>
-          </div>
-          <div class="input-group">
-            <textarea id="commentMessage" rows="4" placeholder=" " required></textarea>
-            <label for="commentMessage" data-i18n-key="yourCommentLabel">Your Comment</label>
-          </div>
-          <button type="submit" class="submit-btn" data-i18n-key="submitCommentBtn">Submit Comment</button>
-        </form>
-      </section>
-
-    </div>
-
-    <a href="#" class="floating-btn animate-float" aria-label="Settings">
-      <svg class="floating-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0-.33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82-.33V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0 .33 1.82H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-      </svg>
-    </a>
-
-    <footer class="social-footer">
-      <div class="social-icons">
-        <a href="#" class="social-icon-link" aria-label="WhatsApp">
-          <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12.04 2C7.06 2 3.04 6.02 3.04 11C3.04 13.06 3.73 14.94 4.88 16.4L3.49 20.52L7.69 19.14C9.15 20.25 10.97 20.89 12.04 20.89C17.02 20.89 21.04 16.87 21.04 11.89C21.04 6.91 17.02 2 12.04 2ZM16.64 15.65C16.38 16.11 13.99 17.34 13.56 17.47C13.13 17.61 12.8 17.62 12.48 17.47C12.16 17.32 11.07 16.96 9.87 15.91C8.75 14.99 8.01 13.89 7.79 13.52C7.57 13.15 7.42 12.83 7.76 12.55C8.03 12.3 8.31 12.12 8.57 11.84C8.83 11.55 8.91 11.37 9.07 11.07C9.24 10.77 9.16 10.63 9.09 10.47C9.02 10.32 8.44 8.87 8.21 8.39C7.98 7.91 7.76 7.97 7.59 7.97C7.43 7.97 7.24 7.96 7.06 7.96C6.88 7.96 6.58 8.01 6.32 8.28C6.06 8.55 5.34 9.19 5.34 10.6C5.34 12.02 6.38 13.38 6.53 13.63C6.69 13.88 8.65 17.05 11.75 18.39C14.16 19.43 14.79 19.41 15.64 19.34C16.32 19.29 16.88 18.89 17.06 18.59C17.25 18.29 17.35 18.04 17.52 17.76C17.7 17.48 17.76 17.24 17.82 17.14C17.96 16.92 18.01 16.82 17.97 16.71C17.92 16.6 17.68 16.31 17.39 16C17.11 15.69 16.84 15.62 16.64 15.65Z"/></svg>
-        </a>
-        <a href="#" class="social-icon-link" aria-label="Facebook">
-          <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.198 21.5H13.198V13.868H16.035L16.486 10.66H13.198V8.656C13.198 7.781 13.435 7.271 14.417 7.271H16.593V4.02C16.208 3.971 14.801 3.868 13.442 3.868C10.667 3.868 8.718 5.672 8.718 8.243V10.66H5.454V13.868H8.718V21.5H9.198Z"/></svg>
-        </a>
-        <a href="#" class="social-icon-link" aria-label="GitHub">
-          <svg class="social-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.247c-5.343 0-9.686 4.343-9.686 9.686 0 4.286 2.729 7.925 6.54 9.176.479.088.653-.207.653-.459 0-.225-.008-.823-.013-1.614-2.659.578-3.218-1.282-3.218-1.282-.435-1.107-1.06-1.403-1.06-1.403-.865-.589.065-.578.065-.578.96.068 1.465.986 1.465.986.853 1.465 2.235 1.042 2.775.797.088-.619.336-1.042.612-1.282-2.128-.242-4.373-1.064-4.373-4.739 0-1.047.375-1.905.987-2.578-.1-.242-.424-1.22.096-2.541 0 0 .805-.258 2.64.982 1.996-.554 4.148-.554 6.144 0 1.835-1.24 2.639-.982 2.639-.982.52 1.321.196 2.299.096 2.541.613.673.987 1.531.987 2.578 0 3.684-2.249 4.494-4.382 4.734.346.297.649.882.649 1.777 0 1.284-.012 2.315-.012 2.632 0 .254.17.549.658.457 3.811-1.252 6.535-4.89 6.535-9.175C21.686 6.59 17.343 2.247 12 2.247Z"/></svg>
-        </a>
-      </div>
-      <p data-i18n-key="copyrightText">© 2024 GOLDEN QUEEN MD. All rights reserved.</p>
-    </footer>
-
-  </div>
-
-  <script>
-    // JavaScript for Preloader
-    window.addEventListener('load', function() {
-      const preloader = document.getElementById('preloader');
-      const mainContent = document.getElementById('mainContent');
-      const loadingBarFill = document.querySelector('.loading-bar-fill');
-
-      let width = 0;
-      const interval = setInterval(() => {
-        if (width >= 100) {
-          clearInterval(interval);
-          preloader.classList.add('fade-out');
-          preloader.addEventListener('transitionend', () => {
-            preloader.style.display = 'none';
-            mainContent.classList.add('loaded'); // Show main content
-          });
-        } else {
-          width += Math.random() * 5 + 1; // Random increment for more natural feel
-          if (width > 100) width = 100;
-          loadingBarFill.style.width = width + '%';
-        }
-      }, 70); // Update every 70ms
-
-      // Fallback for very fast loads or if transitionend doesn't fire
-      setTimeout(() => {
-        if (!mainContent.classList.contains('loaded')) {
-          preloader.classList.add('fade-out');
-          preloader.addEventListener('transitionend', () => {
-            preloader.style.display = 'none';
-            mainContent.classList.add('loaded');
-          }, { once: true });
-        }
-      }, 3000); // Ensures it disappears after 3 seconds even if loading is stuck
-    });
+<body class="bg-gray-100 text-gray-900 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 dark:text-white transition-colors duration-500">
 
 
-    // JavaScript for Dark/Light Mode
-    const htmlElement = document.documentElement;
-    const themeToggleButton = document.querySelector('.theme-toggle-btn');
 
-    // Function to set the theme based on local storage or system preference
-    function setThemeFromPreference() {
-      const storedTheme = localStorage.getItem('theme');
-      if (storedTheme === 'dark') {
-        htmlElement.classList.add('dark');
-      } else if (storedTheme === 'light') {
-        htmlElement.classList.remove('dark');
-      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        // System preference is dark, but no stored preference
-        htmlElement.classList.add('dark');
-      }
-      // If no stored theme and system is light, it will default to light (no 'dark' class)
-    }
+  <!-- PRELOADER -->
 
-    // Call function on page load to apply saved theme or system preference
-    setThemeFromPreference();
+  <div id="preloader">
 
-    themeToggleButton.addEventListener('click', () => {
-      if (htmlElement.classList.contains('dark')) {
-        htmlElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-      } else {
-        htmlElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-      }
-    });
+    <img src="https://i.ibb.co/kg43HQkB/IMG-20250630-WA0120.jpg" alt="GOLDEN QUEEN MD Logo" />
 
-    // Listen for system theme changes (e.g., user changes OS theme)
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      // Only update if no explicit user preference is stored
-      if (!localStorage.getItem('theme')) {
-        if (e.matches) {
-          htmlElement.classList.add('dark');
-        } else {
-          htmlElement.classList.remove('dark');
-        }
-      }
-    });
+    <p>Loading GOLDEN QUEEN MD...</p>
+
+    <div class="loading-bar-container">
+
+      <div class="loading-bar-fill"></div>
+
+    </div>
+
+  </div>
 
 
-    // JavaScript for Tab Switching (Connect / Videos)
-    const btnConnect = document.getElementById('btnConnect');
-    const btnVideos = document.getElementById('btnVideos');
 
-    const activeTabClasses = 'bg-blue-600 text-white dark:bg-indigo-600 dark:text-white btn-active-pulse';
-    const inactiveTabClasses = 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600';
+  <!-- Main Content Wrapper -->
 
-    function setTabState(activeButton, inactiveButton) {
-      activeButton.className = `btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300 ${activeTabClasses}`;
-      inactiveButton.className = `btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300 ${inactiveTabClasses}`;
-    }
+  <div id="mainContent">
 
-    // Initial state
-    setTabState(btnConnect, btnVideos);
+    <!-- New: Language Selector -->
 
-    btnConnect.addEventListener('click', () => setTabState(btnConnect, btnVideos));
-    btnVideos.addEventListener('click', () => setTabState(btnVideos, btnConnect));
+    <div class="language-selector-container">
+
+      <select id="languageSelector" class="language-selector">
+
+        <option value="en">English</option>
+
+        <option value="si">සිංහල</option>
+
+        <option value="ta">தமிழ்</option>
+
+      </select>
+
+    </div>
 
 
-    // JavaScript for Plugin Search and Dynamic Display
-    const pluginsData = [
-      { id: 'plugin1', titleKey: 'plugin1Title', descriptionKey: 'plugin1Description', keywords: 'song, download, youtube, music, audio' },
-      { id: 'plugin2', titleKey: 'plugin2Title', descriptionKey: 'plugin2Description', keywords: 'tiktok, download, video, watermark' },
-      { id: 'plugin3', titleKey: 'plugin3Title', descriptionKey: 'plugin3Description', keywords: 'ai, chatbot, chat, artificial intelligence, conversation' },
-      { id: 'plugin4', titleKey: 'plugin4Title', descriptionKey: 'plugin4Description', keywords: 'group, manager, moderation, admin, whatsapp' },
-      { id: 'plugin5', titleKey: 'plugin5Title', descriptionKey: 'plugin5Description', keywords: 'image, search, picture, find, google' },
-      { id: 'plugin6', titleKey: 'plugin6Title', descriptionKey: 'plugin6Description', keywords: 'sticker, maker, custom, emoji, whatsapp' },
-      // Add more plugins here with their respective keys and keywords
-    ];
 
-    const i18n = {
-      en: {
-        pageTitle: "GOLDEN QUEEN MD • GoldenQueen Network",
-        dashboardHeader: "GOLDEN QUEEN MD BOT DASHBOARD",
-        dashboardSubHeader: "Your Sinhala Bot Network | GoldenQueen",
-        connectBtn: "CONNECT",
-        videosBtn: "VIDEOS",
-        aboutFloatingText: "GOLDEN QUEEN MD • BOT",
-        aboutTitle: "🤖 About GOLDEN QUEEN MD",
-        aboutTextPart1: "GOLDEN QUEEN MD is a powerful Sinhala WhatsApp Bot built for",
-        aboutTextPart2: "automation, entertainment, and group management",
-        aboutTextPart3: "Featuring song downloaders, TikTok tools, AI chat, moderation, and more — this bot is crafted for both",
-        aboutTextPart4: "personal use and community administration",
-        aboutTextPart5: "Experience seamless interaction and powerful features with GOLDEN QUEEN MD.",
-        contributorsTitle: "🌟 Our Core Contributors 🌟",
-        contributor1Name: "VAJIRA",
-        contributor1Role: "Founder & Dev",
-        contributor2Name: "IMASHA",
-        contributor2Role: "Co-Founder",
-        contributor3Name: "KAVINDA",
-        contributor3Role: "Support",
-        contributor4Name: "THISARA",
-        contributor4Role: "Support",
-        contributor5Name: "CHATHUMI",
-        contributor5Role: "Support",
-        pluginsTitle: "✨ Discover Our Plugins ✨",
-        searchPluginsPlaceholder: "Search Plugins...",
-        plugin1Title: "Song Downloader",
-        plugin1Description: "Download your favorite songs directly from YouTube with a simple command.",
-        plugin2Title: "TikTok Downloader",
-        plugin2Description: "Download TikTok videos without watermark, perfect for sharing and saving.",
-        plugin3Title: "AI Chatbot",
-        plugin3Description: "Engage in smart conversations powered by advanced AI, available 24/7.",
-        plugin4Title: "Group Manager",
-        plugin4Description: "Powerful tools to manage your WhatsApp groups efficiently, including moderation.",
-        plugin5Title: "Image Search",
-        plugin5Description: "Find images on any topic using simple text queries. Great for quick references.",
-        plugin6Title: "Sticker Maker",
-        plugin6Description: "Create custom WhatsApp stickers from your images or videos effortlessly.",
-        learnMoreBtn: "Learn More",
-        noResultsFound: "No plugins found matching your search.",
-        commentSectionTitle: "💬 Leave a Comment!",
-        yourNameLabel: "Your Name",
-        yourCommentLabel: "Your Comment",
-        submitCommentBtn: "Submit Comment",
-        copyrightText: "© 2024 GOLDEN QUEEN MD. All rights reserved.",
-        loadingText: "Loading GOLDEN QUEEN MD...",
-      },
-      si: {
-        pageTitle: "ගෝල්ඩන් ක්වීන් MD • ගෝල්ඩන් ක්වීන් ජාලය",
-        dashboardHeader: "ගෝල්ඩන් ක්වීන් MD බෝට් ඩෑෂ්බෝඩ්",
-        dashboardSubHeader: "ඔබේ සිංහල බෝට් ජාලය | ගෝල්ඩන් ක්වීන්",
-        connectBtn: "සම්බන්ධ වන්න",
-        videosBtn: "වීඩියෝ",
-        aboutFloatingText: "ගෝල්ඩන් ක්වීන් MD • බෝට්",
-        aboutTitle: "🤖 ගෝල්ඩන් ක්වීන් MD ගැන",
-        aboutTextPart1: "ගෝල්ඩන් ක්වීන් MD යනු ස්වයංක්‍රීයකරණය, විනෝදාස්වාදය, සහ සමූහ කළමනාකරණය සඳහා නිපදවන ලද බලවත් සිංහල WhatsApp බෝට් එකකි.",
-        aboutTextPart2: "ස්වයංක්‍රීයකරණය, විනෝදාස්වාදය, සහ සමූහ කළමනාකරණය",
-        aboutTextPart3: "ගීත බාගැනීම්, TikTok මෙවලම්, AI චැට්, මොඩරේෂන්, සහ තවත් දේ ඇතුළත්ව — මෙම බෝට් එක පුද්ගලික භාවිතය සහ ප්‍රජා පරිපාලනය යන දෙකටම ගැලපෙන ලෙස නිර්මාණය කර ඇත.",
-        aboutTextPart4: "පුද්ගලික භාවිතය සහ ප්‍රජා පරිපාලනය",
-        aboutTextPart5: "ගෝල්ඩන් ක්වීන් MD සමඟ බාධාවකින් තොර අන්තර්ක්‍රියා සහ බලවත් විශේෂාංග අත්විඳින්න.",
-        contributorsTitle: "🌟 අපගේ ප්‍රධාන දායකයින් 🌟",
-        contributor1Name: "වාජිර",
-        contributor1Role: "නිර්මාතෘ සහ සංවර්ධක",
-        contributor2Name: "ඉමාෂා",
-        contributor2Role: "සහ-නිර්මාතෘ",
-        contributor3Name: "කවිඳ",
-        contributor3Role: "සහාය",
-        contributor4Name: "තිසාර",
-        contributor4Role: "සහාය",
-        contributor5Name: "චතුමි",
-        contributor5Role: "සහාය",
-        pluginsTitle: "✨ අපගේ ප්ලගීන සොයා ගන්න ✨",
-        searchPluginsPlaceholder: "ප්ලගීන සොයන්න...",
-        plugin1Title: "ගීත බාගැනීම්",
-        plugin1Description: "ඔබේ ප්‍රියතම ගීත YouTube වෙතින් සරල විධානයකින් කෙලින්ම බාගන්න.",
-        plugin2Title: "TikTok බාගැනීම්",
-        plugin2Description: "වෝටර්මාක් නොමැතිව TikTok වීඩියෝ බාගන්න, බෙදාගැනීමට සහ සුරැකීමට පරිපූර්ණයි.",
-        plugin3Title: "AI චැට්බෝට්",
-        plugin3Description: "උසස් AI මගින් බලගැන්වූ බුද්ධිමත් සංවාද වල නිරත වන්න, 24/7 ලබා ගත හැකිය.",
-        plugin4Title: "සමූහ කළමනාකරු",
-        plugin4Description: "ඔබේ WhatsApp සමූහ කාර්යක්ෂමව කළමනාකරණය කිරීමට බලවත් මෙවලම්, මොඩරේෂන් ඇතුළුව.",
-        plugin5Title: "රූප සෙවුම්",
-        plugin5Description: "සරල පෙළ විමසුම් භාවිතයෙන් ඕනෑම මාතෘකාවක් පිළිබඳ රූප සොයන්න. ඉක්මන් යොමු කිරීම් සඳහා විශිෂ්ටයි.",
-        plugin6Title: "ස්ටිකර් සාදන්නා",
-        plugin6Description: "ඔබේ රූප හෝ වීඩියෝ වලින් පහසුවෙන් අභිරුචි WhatsApp ස්ටිකර් සාදන්න.",
-        learnMoreBtn: "තව දැනගන්න",
-        noResultsFound: "ඔබේ සෙවුමට ගැලපෙන ප්ලගීන හමු නොවීය.",
-        commentSectionTitle: "💬 අදහසක් දක්වන්න!",
-        yourNameLabel: "ඔබේ නම",
-        yourCommentLabel: "ඔබේ අදහස",
-        submitCommentBtn: "අදහස ඉදිරිපත් කරන්න",
-        copyrightText: "© 2024 ගෝල්ඩන් ක්වීන් MD. සියලුම හිමිකම් ඇවිරිණි.",
-        loadingText: "ගෝල්ඩන් ක්වීන් MD පූරණය වෙමින් පවතී...",
-      },
-      ta: {
-        pageTitle: "கோல்டன் குயின் MD • கோல்டன் குயின் நெட்வொர்க்",
-        dashboardHeader: "கோல்டன் குயின் MD போட் டாஷ்போர்டு",
-        dashboardSubHeader: "உங்கள் சிங்கள போட் நெட்வொர்க் | கோல்டன் குயின்",
-        connectBtn: "இணைக்கவும்",
-        videosBtn: "வீடியோக்கள்",
-        aboutFloatingText: "கோல்டன் குயின் MD • போட்",
-        aboutTitle: "🤖 கோல்டன் குயின் MD பற்றி",
-        aboutTextPart1: "கோல்டன் குயின் MD என்பது ஒரு சக்திவாய்ந்த சிங்கள WhatsApp போட் ஆகும், இது",
-        aboutTextPart2: "தானியங்குபடுத்தல், பொழுதுபோக்கு மற்றும் குழு மேலாண்மை",
-        aboutTextPart3: "பாடல்களைப் பதிவிறக்கும் கருவிகள், TikTok கருவிகள், AI அரட்டை, மிதப்படுத்தும் வசதி மற்றும் பல அம்சங்களுடன் — இந்த போட் தனிப்பட்ட பயன்பாடு மற்றும் சமூக நிர்வாகம் இரண்டிற்கும் ஏற்றதாக உருவாக்கப்பட்டுள்ளது.",
-        aboutTextPart4: "தனிப்பட்ட பயன்பாடு மற்றும் சமூக நிர்வாகம்",
-        aboutTextPart5: "கோல்டன் குயின் MD உடன் தடையற்ற தொடர்பு மற்றும் சக்திவாய்ந்த அம்சங்களை அனுபவிக்கவும்.",
-        contributorsTitle: "🌟 எங்கள் முக்கிய பங்களிப்பாளர்கள் 🌟",
-        contributor1Name: "வஜிரா",
-        contributor1Role: "நிறுவனர் & டெவலப்பர்",
-        contributor2Name: "இமாஷா",
-        contributor2Role: "இணை நிறுவனர்",
-        contributor3Name: "கவிந்தா",
-        contributor3Role: "ஆதரவு",
-        contributor4Name: "திசாரா",
-        contributor4Role: "ஆதரவு",
-        contributor5Name: "சத்துமி",
-        contributor5Role: "ஆதரவு",
-        pluginsTitle: "✨ எங்கள் செருகுநிரல்களைக் கண்டறியவும் ✨",
-        searchPluginsPlaceholder: "செருகுநிரல்களைத் தேடுங்கள்...",
-        plugin1Title: "பாடல் பதிவிறக்கி",
-        plugin1Description: "உங்களுக்குப் பிடித்த பாடல்களை YouTube இலிருந்து எளிய கட்டளையுடன் நேரடியாகப் பதிவிறக்கவும்.",
-        plugin2Title: "TikTok பதிவிறக்கி",
-        plugin2Description: "வாட்டர்மார்க் இல்லாமல் TikTok வீடியோக்களைப் பதிவிறக்கவும், பகிர்வதற்கும் சேமிப்பதற்கும் சிறந்தது.",
-        plugin3Title: "AI சாட்போட்",
-        plugin3Description: "மேம்பட்ட AI மூலம் இயங்கும் ஸ்மார்ட் உரையாடல்களில் ஈடுபடுங்கள், 24/7 கிடைக்கும்.",
-        plugin4Title: "குழு மேலாளர்",
-        plugin4Description: "மிதப்படுத்துதல் உட்பட, உங்கள் WhatsApp குழுக்களை திறமையாக நிர்வகிக்க சக்திவாய்ந்த கருவிகள்.",
-        plugin5Title: "படத் தேடல்",
-        plugin5Description: "எளிய உரை வினவல்களைப் பயன்படுத்தி எந்த தலைப்பிலும் படங்களைக் கண்டறியவும். விரைவான குறிப்புகளுக்கு சிறந்தது.",
-        plugin6Title: "ஸ்டிக்கர் மேக்கர்",
-        plugin6Description: "உங்கள் படங்கள் அல்லது வீடியோக்களிலிருந்து தனிப்பயன் WhatsApp ஸ்டிக்கர்களை சிரமமின்றி உருவாக்கவும்.",
-        learnMoreBtn: "மேலும் அறிக",
-        noResultsFound: "உங்கள் தேடலுடன் பொருந்தக்கூடிய செருகுநிரல்கள் எதுவும் கண்டறியப்படவில்லை.",
-        commentSectionTitle: "💬 கருத்து தெரிவிக்கவும்!",
-        yourNameLabel: "உங்கள் பெயர்",
-        yourCommentLabel: "உங்கள் கருத்து",
-        submitCommentBtn: "கருத்தை சமர்ப்பிக்கவும்",
-        copyrightText: "© 2024 கோல்டன் குயின் MD. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.",
-        loadingText: "கோல்டன் குயின் MD ஏற்றப்படுகிறது...",
-      },
-    };
+    <!-- New: Top-Corner Dark/Light Mode Toggle Button -->
 
-    let currentLang = localStorage.getItem('lang') || 'en';
+    <button class="theme-toggle-btn" aria-label="Toggle Dark/Light Mode" onclick="document.documentElement.classList.toggle('dark')">
 
-    function updateContent() {
-      const elements = document.querySelectorAll('[data-i18n-key]');
-      elements.forEach(element => {
-        const key = element.getAttribute('data-i18n-key');
-        if (i18n[currentLang] && i18n[currentLang][key]) {
-          if (element.tagName === 'INPUT' && element.hasAttribute('placeholder')) {
-            element.setAttribute('placeholder', i18n[currentLang][key]);
-          } else if (element.tagName === 'LABEL' && element.hasAttribute('for')) {
-            // Labels might also have placeholder keys, use innerText for them
-            element.innerText = i18n[currentLang][key];
-          } else {
-            element.innerText = i18n[currentLang][key];
-          }
-        }
-      });
+      <!-- Sun Icon (for light mode) -->
 
-      // Update preloader text specifically
-      const preloaderText = document.querySelector('#preloader p');
-      if (preloaderText) {
-        preloaderText.innerText = i18n[currentLang].loadingText;
-      }
+      <svg class="theme-toggle-icon sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 
-      // Re-render plugins with current language
-      renderPlugins(document.getElementById('pluginSearch').value);
-    }
+        <circle cx="12" cy="12" r="5"></circle>
 
-    function renderPlugins(searchTerm = '') {
-      const pluginsGrid = document.getElementById('pluginsGrid');
-      const noResultsMessage = document.getElementById('noResults');
-      pluginsGrid.innerHTML = ''; // Clear existing cards
+        <line x1="12" y1="1" x2="12" y2="3"></line>
 
-      const filteredPlugins = pluginsData.filter(plugin => {
-        const title = i18n[currentLang][plugin.titleKey].toLowerCase();
-        const description = i18n[currentLang][plugin.descriptionKey].toLowerCase();
-        const keywords = plugin.keywords.toLowerCase();
-        const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        <line x1="12" y1="21" x2="12" y2="23"></line>
 
-        return title.includes(lowerCaseSearchTerm) ||
-               description.includes(lowerCaseSearchTerm) ||
-               keywords.includes(lowerCaseSearchTerm);
-      });
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
 
-      if (filteredPlugins.length === 0) {
-        noResultsMessage.classList.remove('hidden');
-      } else {
-        noResultsMessage.classList.add('hidden');
-        filteredPlugins.forEach((plugin, index) => {
-          const pluginCard = document.createElement('div');
-          pluginCard.className = 'plugin-card';
-          pluginCard.innerHTML = `
-            <h3 class="plugin-card-title">${i18n[currentLang][plugin.titleKey]}</h3>
-            <p class="plugin-card-description">${i18n[currentLang][plugin.descriptionKey]}</p>
-            <a href="#" class="plugin-card-button">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              <span>${i18n[currentLang].learnMoreBtn}</span>
-            </a>
-          `;
-          pluginsGrid.appendChild(pluginCard);
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
 
-          // Add animation with delay
-          setTimeout(() => {
-            pluginCard.classList.add('animate-in');
-          }, index * 100); // Stagger animation
-        });
-      }
-    }
+        <line x1="1" y1="12" x2="3" y2="12"></line>
 
-    // Language Selector Event Listener
-    const languageSelector = document.getElementById('languageSelector');
-    languageSelector.value = currentLang; // Set initial selection
+        <line x1="21" y1="12" x2="23" y2="12"></line>
 
-    languageSelector.addEventListener('change', (event) => {
-      currentLang = event.target.value;
-      localStorage.setItem('lang', currentLang);
-      updateContent();
-    });
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
 
-    // Plugin Search Event Listener
-    const pluginSearchInput = document.getElementById('pluginSearch');
-    pluginSearchInput.addEventListener('input', (event) => {
-      renderPlugins(event.target.value);
-    });
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
 
-    // Initial content update and plugin render on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      updateContent(); // Applies the correct language on load
-      renderPlugins(''); // Render all plugins initially
-    });
-  </script>
-</body>
-</html>
+      </svg>
+
+      <!-- Moon Icon (for dark mode) -->
+
+      <svg class="theme-toggle-icon moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+
+      </svg>
+
+    </button>
+
+
+
+    <!-- 👑 GOLDEN QUEEN MD Top Logo + Title -->
+
+    <div class="text-center py-8 animate-fadeIn">
+
+      <img src="https://i.ibb.co/kg43HQkB/IMG-20250630-WA0120.jpg" alt="Bot Logo" class="mx-auto mb-4 rounded-full ring-4 ring-yellow-400 shadow-lg hover:scale-105 transition-transform duration-500" />
+
+    </div>
+
+
+
+    <div class="max-w-3xl mx-auto py-12 px-4 space-y-12">
+
+
+
+      <!-- Dashboard Header -->
+
+      <div class="text-center space-y-3">
+
+        <h1 class="text-4xl font-extrabold text-yellow-600 dark:text-yellow-400" data-i18n-key="dashboardHeader">GOLDEN QUEEN MD BOT DASHBOARD</h1>
+
+        <p class="text-gray-700 dark:text-gray-300" data-i18n-key="dashboardSubHeader">Your Sinhala Bot Network | GoldenQueen</p>
+
+      </div>
+
+
+
+      <!-- Connect / Videos Buttons -->
+
+      <div class="flex space-x-2 mb-6 justify-center">
+
+        <!-- Button classes are now fully defined in HTML for both light and dark modes -->
+
+        <button id="btnConnect" class="btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300
+
+          active-tab-styles"> <!-- This class will be toggled by JS -->
+
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
+
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+
+          </svg> <span data-i18n-key="connectBtn">CONNECT</span>
+
+        </button>
+
+        <button id="btnVideos" class="btn-animated px-4 py-2 rounded-lg font-semibold transition-colors duration-300
+
+          inactive-tab-styles"> <!-- This class will be toggled by JS -->
+
+          <svg xmlns="http://www.w3.org/2000/svg" class="btn-icon" viewBox="0 0 24 24" stroke="currentColor">
+
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-2-4v8m-6 0V6a2 2 0 012-2h5l4 4v8a2 2 0 01-2 2H9a2 2 0 01-2-2z"/>
+
+          </svg> <span data-i18n-key="videosBtn">VIDEOS</span>
+
+        </button>
+
+      </div>
+
+
+
+      <!-- About Vajira MD -->
+
+      <div class="relative bg-white border border-gray-200 backdrop-blur-md rounded-xl p-6 mb-8 overflow-hidden shadow-lg animate-fadeIn dark:bg-white/10 dark:border-white/20">
+
+        <div class="absolute inset-0 animate-floatText opacity-10 pointer-events-none select-none text-8xl font-black text-gray-300 dark:text-white whitespace-nowrap" data-i18n-key="aboutFloatingText">
+
+          GOLDEN QUEEN MD • BOT
+
+        </div>
+
+        <h2 class="text-2xl font-bold text-yellow-600 dark:text-yellow-300 relative z-10 mb-2" data-i18n-key="aboutTitle">🤖 About GOLDEN QUEEN MD</h2>
+
+        <p class="text-gray-700 dark:text-gray-200 leading-relaxed relative z-10">
+
+          <span data-i18n-key="aboutTextPart1">GOLDEN QUEEN MD is a powerful Sinhala WhatsApp Bot built for</span> <span class="text-yellow-700 dark:text-yellow-400 font-semibold" data-i18n-key="aboutTextPart2">automation, entertainment, and group management</span>.
+
+          <span data-i18n-key="aboutTextPart3">Featuring song downloaders, TikTok tools, AI chat, moderation, and more — this bot is crafted for both</span> <span class="text-yellow-
