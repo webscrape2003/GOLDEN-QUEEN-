@@ -1,23 +1,24 @@
-
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gemini AI - Ask Anything</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meta AI UI</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Gemini AI</h1>
-      <button id="toggleMode">🌙</button>
-    </header>
-    <main>
-      <h2><span id="typewriter"></span></h2>
-      <p>Your intelligent assistant. Ask anything.</p>
-      <button class="ask-btn">Start Chat</button>
-    </main>
+  <div class="wrapper">
+    <div class="glow-circle"></div>
+    <div class="chat-box">
+      <input type="text" placeholder="Ask Meta AI..." />
+      <button>↑</button>
+    </div>
+    <div class="suggestions">
+      <p><strong>📄 How</strong> did coffee conquer the world?</p>
+      <p><strong>📄 What</strong> are the best places to visit in Europe?</p>
+      <p><strong>📄 What</strong> are the best sources of protein?</p>
+      <p><strong>📄 Learn</strong> techniques for effective time management</p>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
