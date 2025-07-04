@@ -7,7 +7,7 @@
   <style>
     /* Base styles for light mode, dark mode overrides with html.dark */
 
-    /* Global HTML Background for full page transition */
+    /* --- FIX: Apply full page background to HTML element --- */
     html {
       background-color: #f3f4f6; /* Tailwind gray-100 for light mode */
       transition: background-color 0.5s ease; /* Smooth transition for background color */
@@ -18,7 +18,7 @@
     }
 
     body {
-      /* Reset body background to transparent to allow html background to show */
+      /* FIX: Reset body background to transparent to allow html background to show */
       background-color: transparent;
       color: #1f2937; /* Default text color for light mode */
       transition: color 0.5s ease; /* Smooth text color transition */
@@ -26,6 +26,7 @@
     html.dark body {
       color: #ffffff; /* Default text color for dark mode */
     }
+    /* --- END FIX --- */
 
     /* Button animations */
     .btn-animated {
