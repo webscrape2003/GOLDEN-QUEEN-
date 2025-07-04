@@ -1,60 +1,80 @@
-
 body {
   margin: 0;
+  padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  transition: background 0.3s, color 0.3s;
-}
-body.light {
-  background: #ffffff;
-  color: #111111;
-}
-body.dark {
-  background: #121212;
-  color: #f0f0f0;
-}
-.container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-}
-header {
-  width: 100%;
-  max-width: 800px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-#toggleMode {
-  font-size: 1.2rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-main {
-  text-align: center;
-  margin-top: 2rem;
-}
-h1 {
-  font-size: 2.5rem;
-}
-h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-}
-.ask-btn {
-  margin-top: 1.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 30px;
-  background: #6c63ff;
+  background-color: #0d0d0f;
   color: #fff;
-  cursor: pointer;
-  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  flex-direction: column;
 }
-.ask-btn:hover {
-  background: #574fd6;
+
+.wrapper {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+  padding: 20px;
+}
+
+.glow-circle {
+  width: 100px;
+  height: 100px;
+  margin: 40px auto;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #00d4ff, #ff00e0, #00d4ff);
+  animation: rotate 4s linear infinite;
+  box-shadow: 0 0 25px #00d4ff, 0 0 45px #ff00e0;
+}
+
+.chat-box {
+  background: #1a1a1d;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  gap: 10px;
+  box-shadow: 0 0 20px rgba(255,255,255,0.05);
+}
+
+.chat-box input {
+  background: transparent;
+  border: none;
+  outline: none;
+  flex: 1;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.chat-box button {
+  background: #2962ff;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.suggestions {
+  text-align: left;
+  margin-top: 25px;
+}
+
+.suggestions p {
+  padding: 12px;
+  background: #1f1f27;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.suggestions p:hover {
+  background: #2d2d37;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
 }
